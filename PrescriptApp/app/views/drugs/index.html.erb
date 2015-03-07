@@ -1,0 +1,52 @@
+<h1>Drugs</h1>
+
+<div><h2>Less Dynamic:</h2></div>
+<table>
+	<thead>
+		<tr>
+			<th>Brand Name</th>
+			<th>Generic Name</th>
+			<th>Company Name</th>
+			<th>Price</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @drugs.each do |drug| %>
+		<tr>
+			<td><%= drug.brand_name %></td>
+			<td><%= drug.generic_name %></td>
+			<td><%= drug.company_name %></td>
+			<td><%= drug.price %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<div><h2>More Dynamic:</h2></div>
+
+<table>
+	<thead>
+		<tr>
+		<%= @drugs.attribute_names.each do |name| %>
+			<th><% name %></th>
+		</tr>
+		<% end %>
+	</thead>
+
+	<tbody>
+		<% @drugs.each do |drug| %>
+		<tr>
+		<%= drug.attributes.each do |key, value| %>
+			<td><%= value %></td>
+		<% end %>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<p class='buttons' >
+	<%= Drug.prices %>
+</p>
+
+			
