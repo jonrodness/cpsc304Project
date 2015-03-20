@@ -1,3 +1,4 @@
+
 drop table Doctor;
 drop table Patient;
 drop table Prescription;
@@ -52,7 +53,7 @@ CREATE TABLE Prescription
 
 grant select on Prescription to public;
 
-CREATE TABLE Includes 
+CREATE TABLE Includes
     (PrescriptID INT,
     GenericName CHAR(30),
     CompanyName CHAR(30),
@@ -62,7 +63,7 @@ CREATE TABLE Includes
 
 grant select on Includes to public;
           
-CREATE TABLE Drug 
+CREATE TABLE Drug
     (BrandName CHAR(30),
     GenericName CHAR(30),
     CompanyName CHAR(30),
@@ -72,7 +73,7 @@ CREATE TABLE Drug
 
 grant select on Drug to public;
 
-CREATE TABLE InteractsWith 
+CREATE TABLE InteractsWith
     (dGenericName CHAR(30),
     dCompanyName CHAR(30),
     iGenericName CHAR(30),
@@ -94,7 +95,7 @@ CREATE TABLE Pharmacy
 
 grant select on Pharmacy to public;
 
-CREATE TABLE OrderedFrom 
+CREATE TABLE OrderedFrom
     (PrescriptID INT,
 	PharmacyAddress CHAR (50),
 	OrderNo INT,
@@ -105,7 +106,7 @@ CREATE TABLE OrderedFrom
 
 grant select on OrderedFrom to public;
 
-CREATE TABLE TimeBlock 
+CREATE TABLE TimeBlock
     (Date CHAR (20),
 	StartTime INT,
     EndTime INT,
@@ -113,7 +114,7 @@ CREATE TABLE TimeBlock
 
 grant select on TimeBlock to public;
 
-CREATE TABLE MakesAppointmentWith 
+CREATE TABLE MakesAppointmentWith
     (TimeMade CHAR (20),
 	DateMade CHAR (20),
     LicenseNum CHAR (20),

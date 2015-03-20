@@ -1,12 +1,12 @@
 ########User: Pharmacists
 
-#view prescriptions prescribed by doctor
+# Q1 view prescriptions prescribed by doctor
 #chris
 select Pr.PrescriptID
 from Prescription Pr, Doctor D
 where Pr.LicenseNum=D.LicenseNum;
 
-#change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
+# Q2 change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
 #chris
 update Prescription
     set ReadyForPickUp=TRUE;
@@ -107,15 +107,31 @@ where ReadyForPickup=TRUE;
 #can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
 #can view a list of all appointments for any picked date and any picked time
 #can register a patient who requested his/her services
+
 #can view personal information about a patient 
 # example query: view all data about patient number 999
 select *
 from Patient
 where CareCardNum=999;
+
 #can view a list of previous prescriptions for a certain patient
+#same as Q1
+
+
 #can view a list of previous drugs taken by a certain patient
+#chris
+select I.GenericName
+from Prescription Pr, Patient P, Includes I
+where P.CareCardNum= '1234 456 789' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
+
 #can check if a certain drug was taken in the past by a certain patient
+
+
 #can view a list of drugs that interact with a specific drug  (same as patient)
+select I.iGenericName
+from InteractsWith I, Drug D
+where D.GenericName=I.dGenericName AND D.CompanyName=I.dCompanyName;
+
 #notified when patients cancel an appointment
 #can view a list of past appointments by a certain patient
 #Generate a report about which prescriptions a doctor has previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
