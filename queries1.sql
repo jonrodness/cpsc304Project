@@ -7,17 +7,45 @@ from Prescription Pr, Doctor D
 where Pr.LicenseNum=D.LicenseNum;
 
 #change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
+#chris
+update Prescription
+    set ReadyForPickUp=TRUE;
+    where PresciptID ='1234 456 789';
+
 #can view past prescriptions for patient
+#chris
+select I.GenericName, Pr.Dosage
+from Prescription Pr, Patient P, Includes I
+where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
+
 #can print out a list of prescriptions filled that day
+#chris
+select I.GenericName, Pr.Dosage
+from Prescription Pr, Patient P, Includes I
+where Pr.date=curdate();
+
 #can reduce the refill number of a patient’s prescription
+#chris
+update Prescription
+    set Refills=Refills-1;
+    where PresciptID='1234 456 789';
 
 ########User: Patients
 
 #update personal information about him/herself
+#?????? so many possible attributes to update?
+
 
 #can input an address and a radius and see a list of doctors offices within the indicated radius of the indicated address
+
 #select doctor attributes from doctor tables and filter by attributes
+
 #select pharmacies that are currently open
+#
+select *
+from Pharmacy
+where ;
+
 #given a date/time, view pharmacies that are open at that date/time
 #can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
 #request permission to add a doctor to their personal list of doctors

@@ -47,7 +47,8 @@ CREATE TABLE Prescription
 	date CHAR (20),
     PRIMARY KEY (PrescriptID)
     FOREIGN KEY (LicenseNum) REFERENCES Doctor,
-    FOREIGN KEY (CareCardNum) REFERENCES Patient ON DELETE CASCADE);
+    FOREIGN KEY (CareCardNum) REFERENCES Patient ON DELETE CASCADE)
+    Check Refills >=0;
 
 grant select on Prescription to public;
 
@@ -115,12 +116,12 @@ grant select on TimeBlock to public;
 CREATE TABLE MakesAppointmentWith 
     (TimeMade CHAR (20),
 	DateMade CHAR (20),
-    DocNum CHAR (20),
+    LicenseNum CHAR (20),
 	Date CHAR (20),
 	StartTime INT,
 	EndTime INT,
 	CareCardNumber CHAR(10) NOT NULL,
-	PRIMARY KEY (DocNum, Date, StartTime, EndTime),
+	PRIMARY KEY (LicenseNum, Date, StartTime, EndTime),
 	FOREIGN KEY (LicenseNum) REFERENCES Doctor,
 	FOREIGN KEY (Date, StartTime, EndTime) REFERENCES Timeblock,
 	FOREIGN KEY (CareCardNum) REFERENCES Patient);
@@ -191,7 +192,7 @@ VALUES ('0921837515', '0045', '3', '1 pill 12 times per day for 3 days',
        '0982 173 333', 'TRUE', '12/21/2012');
 
 INSERT INTO Includes
-VALUES('2345', 'Acetaminophen', 'Johnson & Johnson');
+VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
 
 INSERT INTO Includes
 VALUES ('3456', 'Ibuprofen', 'Pfizer');
@@ -207,7 +208,7 @@ INSERT INTO Includes
 VALUES('0045', 'Escatalopram', 'Lexapro');
 
 INSERT INTO Drug 
-VALUES ('Tylenol', 'Acetaminophen', 'Johnson & Johnson', '10');
+VALUES ('Tylenol', 'Acetaminophen', 'Johnson and Johnson', '10');
 
 INSERT INTO Drug 
 VALUES ('Advil', 'Ibuprofen', 'Pfizer', '11');
