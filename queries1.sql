@@ -30,6 +30,22 @@ update Prescription
     set Refills=Refills-1;
     where PresciptID='1234 456 789';
 
+# sampel query: select all past prescriptions for patient number 999
+select
+from Prescription pr
+where pr.CareCardNum=999 and pr.date < DATE(NOW());
+
+#can print out a list of prescriptions filled that day
+select PrescriptID
+from Prescription
+where date = DATE(NOW());
+
+#can reduce the refill number of a patient’s prescription
+# sampel query: reduce the refill number of prescription id 999 from 6 to 5
+update Prescription
+set Refills=5
+where PrescriptID=999;
+
 ########User: Patients
 
 #update personal information about him/herself
@@ -40,11 +56,18 @@ update Prescription
 
 #select doctor attributes from doctor tables and filter by attributes
 
+
 #select pharmacies that are currently open
 #
 select *
 from Pharmacy
 where ;
+
+select *
+from Doctor
+
+#select pharmacies that are currently open
+
 
 #given a date/time, view pharmacies that are open at that date/time
 #can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
@@ -55,8 +78,22 @@ where ;
 #can view upcoming appointments, on a certain date(optional) and during a certain time(optional)
 #can (quickly)check if he/she took a certain drug before
 #can view a list of drugs that interact with a specific drug
+# example query: select the generic name of all drugs that interact with Ibuprofen
+select dGenericName
+from InteractsWith
+where iGenericName like '%Ibuprofen%';
+
 #can input a prescription ID and view a list of drugs that interact with this prescription
+/*
+# example: find all drugs that interact with the drug prescribed in prescription 99
+select
+from Prescription p, InteractsWith iw
+where p.
+*/ -- ^Don't think this query is possible given our schema -Alfred
 #can view status of prescription pick up (ready or not for pickup)
+select *
+from Prescription
+where ReadyForPickup=TRUE;
 #Generate a report about what prescriptions a patient is currently using, when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
 #second analogous report, but for previous prescriptions (not current)
 
@@ -71,6 +108,10 @@ where ;
 #can view a list of all appointments for any picked date and any picked time
 #can register a patient who requested his/her services
 #can view personal information about a patient 
+# example query: view all data about patient number 999
+select *
+from Patient
+where CareCardNum=999;
 #can view a list of previous prescriptions for a certain patient
 #can view a list of previous drugs taken by a certain patient
 #can check if a certain drug was taken in the past by a certain patient
