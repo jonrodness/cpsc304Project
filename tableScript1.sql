@@ -13,7 +13,7 @@ drop table MakesAppointmentWith;
 # ---------------- CREATION ---------------- #
 
 CREATE TABLE Doctor 
-    (LicenseNum INT,
+    (LicenseNum CHAR (20),
     FirstName CHAR (20),
     LastName CHAR (20),
     Address CHAR (50),
@@ -25,7 +25,7 @@ CREATE TABLE Doctor
 grant select on Doctor to public;
 
 CREATE TABLE Patient
-    (CareCardNum INT,
+    (CareCardNum CHAR (20),
     FirstName CHAR (20),    
     LastName CHAR (20), 
     Age INT,
@@ -33,17 +33,17 @@ CREATE TABLE Patient
     Height INT,
     Address CHAR (50),
     PhoneNumber INT, 
-    PRIMARY KEY CareCardNum,
+    PRIMARY KEY (CareCardNum),
     UNIQUE (Address, FirstName, LastName));
 
 grant select on Patient to public;               
 
 CREATE TABLE Prescription 
-    (LicenseNum INT,
-    PrescriptID INT,  
+    (LicenseNum CHAR (20),
+    PrescriptID CHAR (20),  
     Refills INT,  
     Dosage CHAR (50),
-    CareCardNum INT,
+    CareCardNum CHAR (20),
    	ReadyForPickUp BOOLEAN,
 	date DATE,
     PRIMARY KEY (PrescriptID),
@@ -64,7 +64,7 @@ CREATE TABLE Drug
 grant select on Drug to public;
 
 CREATE TABLE Includes
-    (PrescriptID INT,
+    (PrescriptID CHAR (20),
     GenericName CHAR (30),
     CompanyName CHAR (30),
     PRIMARY KEY (PrescriptID, GenericName, CompanyName),
@@ -85,7 +85,7 @@ grant select on InteractsWith to public;
 
 CREATE TABLE Pharmacy
     (Address CHAR (50),
-    PhoneNumber INT,
+    PhoneNumber CHAR (20),
     Name CHAR (20),   
     WeekdayHoursOpening TIME,
     WeekdayHoursClosing TIME,
@@ -97,9 +97,9 @@ CREATE TABLE Pharmacy
 grant select on Pharmacy to public;
 
 CREATE TABLE OrderedFrom
-    (PrescriptID INT,
+    (PrescriptID CHAR (20),
 	PharmacyAddress CHAR (50),
-	OrderNo INT,
+	OrderNo CHAR (20),
 	PRIMARY KEY (PrescriptID, PharmacyAddress),
 	FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID) ON DELETE CASCADE,
 	FOREIGN KEY (PharmacyAddress) REFERENCES Pharmacy (Address) ON DELETE CASCADE,
@@ -108,27 +108,28 @@ CREATE TABLE OrderedFrom
 grant select on OrderedFrom to public;
 
 CREATE TABLE TimeBlock
-    (Date DATE,
+    (TimeBlockDate DATE,
 	StartTime TIME,
     EndTime TIME,
-    PRIMARY KEY (Date, StartTime, EndTime));
+    PRIMARY KEY (TimeBlockDate, StartTime, EndTime));
 
 grant select on TimeBlock to public;
 
 CREATE TABLE MakesAppointmentWith
     (TimeMade TIME,
 	DateMade DATE,
-    LicenseNum INT,
-	Date DATE,
+    LicenseNum CHAR (20),
+	TimeBlockDate DATE,
 	StartTime TIME,
 	EndTime TIME,
-	CareCardNum INT,
-	PRIMARY KEY (LicenseNum, Date, StartTime, EndTime),
+	CareCardNum CHAR (20),
+	PRIMARY KEY (LicenseNum, TimeBlockDate, StartTime, EndTime),
 	FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
-	FOREIGN KEY (Date, StartTime, EndTime) REFERENCES TimeBlock (Date, StartTime, EndTime),
+	FOREIGN KEY (TimeBlockDate, StartTime, EndTime) REFERENCES TimeBlock (TimeBlockDate, StartTime, EndTime),
 	FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum));
 
 grant select on MakesAppointmentWith to public;
+
 
 
 # ---------------- INSERTION ---------------- #
@@ -175,23 +176,23 @@ VALUES ('1099282394', 'Jane', 'Doe', '50', '56', '150',
 
 INSERT INTO Prescription
 VALUES ('1234567890', '2345', '10', '4 pills 2 times per day for 10 days', 
-       '1234456789', 'TRUE', '26/08/2012');
+       '1234456789', 'TRUE', '2012-08-26');
 
 INSERT INTO Prescription
 VALUES ('2345678901', '3456', '0', '1 tbsp 1 time per day for 1 day', 
-       '2345 456 789', 'FALSE', '05/10/2014');
+       '2345 456 789', 'FALSE', '2014-05-10');
 
 INSERT INTO Prescription
 VALUES ('1098233744', '9876', '200', '12 pills 8 times per day for 45 days', 
-       '0987123576', 'FALSE', '16/12/2013');
+       '0987123576', 'FALSE', '2013-12-16');
 
 INSERT INTO Prescription
 VALUES ('2034765764', '0098', '2', '1 pill 3 times per day for 10 days', 
-       '1987473123', 'TRUE', '12/12/2012');
+       '1987473123', 'TRUE', '2012-12-12');
 
 INSERT INTO Prescription
 VALUES ('0921837515', '0045', '3', '1 pill 12 times per day for 3 days', 
-       '0982173333', 'TRUE', '12/21/2012');
+       '0982173333', 'TRUE', '2012-12-21');
 
 INSERT INTO Includes
 VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
@@ -278,31 +279,32 @@ INSERT INTO OrderedFrom
 VALUES ('6345', '6180 Fraser St, Vancouver, BC V5W 3A1', '42385728055');
 
 INSERT INTO TimeBlock
-VALUES ('04/03/2015', '09:00:00', '10:00:00');
+VALUES ('2015-04-03', '09:00:00', '10:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('06/07/2874', '09:00:00', '12:00:00');
+VALUES ('2874-06-07', '09:00:00', '12:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('07/14/2015', '13:00:00', '15:00:00');
+VALUES ('2015-07-14', '13:00:00', '15:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('10/24/2015', '15:00:00', '16:00:00');
+VALUES ('2015-10-24', '15:00:00', '16:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('07/04/2015', '16:00:00', '16:30:00');
+VALUES ('2015-07-04', '16:00:00', '16:30:00');
 
-INSERT INTO MakesAppointment_with
-VALUES ('09:00:00', '04/03/2015','1232131241','04/03/2015','09:00:00','10:00:00','1234567890');
+INSERT INTO MakesAppointmentWith
+VALUES ('09:00:00', '2015-04-03','1232131241','2015-04-03','09:00:00','10:00:00','1234567890');
 
-INSERT INTO MakesAppointment_with
-VALUES ('10:00:00', '06/08/2874', '5483843482', '06/07/2874', '09:00:00', '12:00:00', '2346528765');
+INSERT INTO MakesAppointmentWith
+VALUES ('10:00:00', '2874-06-08', '5483843482', '2874-06-07', '09:00:00', '12:00:00', '2346528765');
 
-INSERT INTO MakesAppointment_with
-VALUES ('11:30:00', '07/14/2015' , '3422344543', '07/14/2015', '13:00:00', '15:00:00', '1457629875');
+INSERT INTO MakesAppointmentWith
+VALUES ('11:30:00', '2015-07-14' , '3422344543', '2015-07-14', '13:00:00', '15:00:00', '1457629875');
 
-INSERT INTO MakesAppointment_with
-VALUES('14:30:00', '10/24/2015', '3409389847', '10/24/2015', '15:00:00', '16:00:00', '3453438890');
+INSERT INTO MakesAppointmentWith
+VALUES('14:30:00', '2015-10-24', '3409389847', '2015-10-24', '15:00:00', '16:00:00', '3453438890');
 
-INSERT INTO MakesAppointment_with
-VALUES('08:30:00', '07/04/2015', '2743873823', '07/04/2015', '16:00:00', '16:30:00', '1099282394');
+INSERT INTO MakesAppointmentWith
+VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
+
