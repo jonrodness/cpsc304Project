@@ -33,17 +33,17 @@ CREATE TABLE Patient
     Height INT,
     Address CHAR (50),
     PhoneNumber CHAR (9), 
-    PRIMARY KEY (CareCardNum),
+    PRIMARY KEY CareCardNum,
     UNIQUE (Address, FirstName, LastName));
 
 grant select on Patient to public;               
 
 CREATE TABLE Prescription 
-    (LicenseNum INT NOT NULL,
+    (LicenseNum INT,
     PrescriptID INT,  
     Refills INT,  
     Dosage CHAR (50),
-    CareCardNum CHAR (10) NOT NULL,
+    CareCardNum CHAR (10),
    	ReadyForPickUp BOOLEAN,
 	date CHAR (20),
     PRIMARY KEY (PrescriptID),
@@ -54,9 +54,9 @@ CREATE TABLE Prescription
 grant select on Prescription to public;
 
 CREATE TABLE Drug
-    (BrandName CHAR(30),
-    GenericName CHAR(30),
-    CompanyName CHAR(30),
+    (BrandName CHAR (30),
+    GenericName CHAR (30),
+    CompanyName CHAR (30),
     Price INT,
     PRIMARY KEY (GenericName, CompanyName),
     UNIQUE (BrandName));        
@@ -74,10 +74,10 @@ CREATE TABLE Includes
 grant select on Includes to public;
 
 CREATE TABLE InteractsWith
-    (dGenericName CHAR(30),
-    dCompanyName CHAR(30),
-    iGenericName CHAR(30),
-    iCompanyName CHAR(30),
+    (dGenericName CHAR (30),
+    dCompanyName CHAR (30),
+    iGenericName CHAR (30),
+    iCompanyName CHAR (30),
     PRIMARY KEY (dGenericName, dCompanyName, iGenericName, iCompanyName),
 	FOREIGN KEY (iGenericName, iCompanyName) REFERENCES Drug (GenericName, CompanyName) ON DELETE CASCADE);
 
@@ -85,8 +85,8 @@ grant select on InteractsWith to public;
 
 CREATE TABLE Pharmacy
     (Address CHAR (50),
-    PhoneNumber CHAR(9),
-    Name CHAR(20),   
+    PhoneNumber CHAR (9),
+    Name CHAR (20),   
     WeekdayHoursOpening TIME,
     WeekdayHoursClosing TIME,
     WeekendHoursOpening TIME,
@@ -101,8 +101,8 @@ CREATE TABLE OrderedFrom
 	PharmacyAddress CHAR (50),
 	OrderNo INT,
 	PRIMARY KEY (PrescriptID, PharmacyAddress),
-	FOREIGN KEY (PrescriptID) REFERENCES Prescription ON DELETE CASCADE,
-	FOREIGN KEY (PharmacyAddress) REFERENCES Pharmacy ON DELETE CASCADE,
+	FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID) ON DELETE CASCADE,
+	FOREIGN KEY (PharmacyAddress) REFERENCES Pharmacy (Address) ON DELETE CASCADE,
 	UNIQUE (OrderNo));
 
 grant select on OrderedFrom to public;
@@ -118,15 +118,15 @@ grant select on TimeBlock to public;
 CREATE TABLE MakesAppointmentWith
     (TimeMade CHAR (20),
 	DateMade CHAR (20),
-    LicenseNum CHAR (20),
+    LicenseNum INT,
 	Date CHAR (20),
 	StartTime INT,
 	EndTime INT,
-	CareCardNumber CHAR(10) NOT NULL,
+	CareCardNum CHAR(10) NOT NULL,
 	PRIMARY KEY (LicenseNum, Date, StartTime, EndTime),
-	FOREIGN KEY (LicenseNum) REFERENCES Doctor,
-	FOREIGN KEY (Date, StartTime, EndTime) REFERENCES Timeblock,
-	FOREIGN KEY (CareCardNum) REFERENCES Patient);
+	FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
+	FOREIGN KEY (Date, StartTime, EndTime) REFERENCES Timeblock (Date, StartTime, EndTime),
+	FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum));
 
 grant select on MakesAppointmentWith to public;
 
