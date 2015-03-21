@@ -33,8 +33,8 @@ CREATE TABLE Patient
     Height INT,
     Address CHAR (50),
     PhoneNumber CHAR(9), 
-    PRIMARY KEY (CareCardNum)
-    UNIQUE KEY (Address, First Name, Last Name));
+    PRIMARY KEY (CareCardNum),
+    UNIQUE (Address, FirstName, LastName));
 
 grant select on Patient to public;               
 
