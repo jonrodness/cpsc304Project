@@ -92,7 +92,7 @@ CREATE TABLE Pharmacy
     WeekendHoursOpening TIME,
     WeekendHoursClosing TIME,
     PRIMARY KEY (Address),
-    UNIQUE PhoneNumber);
+    UNIQUE (PhoneNumber));
 
 grant select on Pharmacy to public;
 
