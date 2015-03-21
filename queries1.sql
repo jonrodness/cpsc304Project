@@ -31,17 +31,20 @@ update Prescription
     where PresciptID='1234 456 789';
 
 # sampel query: select all past prescriptions for patient number 999
+# alfredo
 select
 from Prescription pr
 where pr.CareCardNum=999 and pr.date < DATE(NOW());
 
 #can print out a list of prescriptions filled that day
+#alfredo
 select PrescriptID
 from Prescription
 where date = DATE(NOW());
 
 #can reduce the refill number of a patient’s prescription
 # sampel query: reduce the refill number of prescription id 999 from 6 to 5
+#alfredo
 update Prescription
 set Refills=5
 where PrescriptID=999;
@@ -61,10 +64,8 @@ where PrescriptID=999;
 #
 select *
 from Pharmacy
-where ;
+where CAST(Created as time) between '23:00:00' and '06:59:59';
 
-select *
-from Doctor
 
 #select pharmacies that are currently open
 
@@ -101,6 +102,11 @@ where ReadyForPickup=TRUE;
 ########User: Doctors
 #can update personal information about him/herself
 #can prescribe a drug
+#chris--need to put variable names later
+insert into Prescription
+values ('doctorIDvariable','?','?' ,'?' ,'?' , 'FALSE', NOW());
+
+
 #same as the patient ^^^
 #can view a list of pharmacies that are open at the moment
 #can view a list of pharmacies that are open on a certain date and time(optional)
@@ -134,4 +140,8 @@ where D.GenericName=I.dGenericName AND D.CompanyName=I.dCompanyName;
 
 #notified when patients cancel an appointment
 #can view a list of past appointments by a certain patient
+select M.DateMade
+from MakesAppointmentWith M, Doctor D
+where D.LicenseNum=M.LicenseNum;
+
 #Generate a report about which prescriptions a doctor has previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
