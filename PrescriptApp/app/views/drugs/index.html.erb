@@ -28,22 +28,47 @@
 <table>
 	<thead>
 		<tr>
-		<%= @drugs.attribute_names.each do |name| %>
-			<th><% name %></th>
+		<% @drugs.attribute_names.each do |title| %>
+			<th><%= title %></th>
+		<% end %>
+		</tr>
+	</thead>
+
+ 	<tbody>
+		<% @drugs.each do |drug| %>
+		<tr>
+		<% drug.attributes.each do |key, value| %>
+			<td><%= value %></td>
+		<% end %>
 		</tr>
 		<% end %>
+	</tbody> -->
+</table>
+
+
+
+<div><h2>TEST3</h2></div>
+
+<table>
+	<thead>
+		<tr>
+		<% @result.columns.each do |title| %>
+			<th><%= title %></th>
+		<% end %>
+		</tr>
 	</thead>
 
 	<tbody>
-		<% @drugs.each do |drug| %>
+		<% @result.rows.each do |row| %>
 		<tr>
-		<%= drug.attributes.each do |key, value| %>
+		<% row.each do |value| %>
 			<td><%= value %></td>
 		<% end %>
 		</tr>
 		<% end %>
 	</tbody>
 </table>
+
 
 <%= link_to "Home", root_path %>
 
