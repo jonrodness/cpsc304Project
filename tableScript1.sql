@@ -1,3 +1,6 @@
+create database doctors;
+    use doctors;
+
 drop table MakesAppointmentWith;
 drop table OrderedFrom;
 drop table InteractsWith;
@@ -131,7 +134,6 @@ CREATE TABLE MakesAppointmentWith
 
 grant select on MakesAppointmentWith to public;
 
-
 # ---------------- INSERTION ---------------- #
 
 INSERT INTO Doctor
@@ -196,23 +198,6 @@ INSERT INTO Prescription
 VALUES ('3409389847', '0045', '3', '1 pill 12 times per day for 3 days', 
        '1099282394', '1', '2012-12-21');
 
-
-INSERT INTO Includes
-VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
-
-INSERT INTO Includes
-VALUES ('3456', 'Ibuprofen', 'Pfizer');
-
-INSERT INTO Includes
-VALUES ('9876', 'Dextromethorphan', 'Robitussin');
-
-INSERT INTO Includes
-VALUES ('0098', 'Paroxetine', 'Paxil');
-
-
-INSERT INTO Includes
-VALUES('0045', 'Escatalopram', 'Lexapro');
-
 INSERT INTO Drug 
 VALUES ('Tylenol', 'Acetaminophen', 'Johnson and Johnson', '10');
 
@@ -227,6 +212,33 @@ VALUES ('Ritalin', 'Methylphenidate', 'Novartis', '50');
 
 INSERT INTO Drug 
 VALUES ('Plavix', 'Clopidogrel', 'Sanofi', '20');
+
+
+INSERT INTO Includes
+VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
+
+INSERT INTO Includes
+VALUES ('3456', 'Ibuprofen', 'Pfizer');
+
+INSERT INTO Includes
+VALUES ('9876', 'Clindamycin', 'DatabaseDrugs Inc.');
+
+INSERT INTO Includes
+VALUES ('0098', 'Methylphenidate', 'Novartis');
+
+INSERT INTO Includes
+VALUES ('0045', 'Clopidogrel', 'Sanofi');
+
+# INSERT INTO Includes
+# VALUES ('9876', 'Dextromethorphan', 'Robitussin')
+# 
+# INSERT INTO Includes
+# VALUES ('0098', 'Paroxetine', 'Paxil')
+# 
+# INSERT INTO Includes
+# VALUES('0045', 'Escatalopram', 'Lexapro');
+
+
 
 INSERT INTO InteractsWith
 VALUES ('Ibuprofen', 'Advil', 'Coumadin', 'Warfarin');
@@ -270,16 +282,16 @@ INSERT INTO OrderedFrom
 VALUES ('2345', '885 Broadway W, Vancouver, BC V5Z 1J9', '03457436534');
 
 INSERT INTO OrderedFrom
-VALUES ('3467', '3303 Main St, Vancouver, BC V5V 3M8', '54362785237');
+VALUES ('3456', '3303 Main St, Vancouver, BC V5V 3M8', '54362785237');
 
 INSERT INTO OrderedFrom
-VALUES ('5633', '4255 Arbutus St, Vancouver, BC V6J 4R1', '41327584378');
+VALUES ('9876', '4255 Arbutus St, Vancouver, BC V6J 4R1', '41327584378');
 
 INSERT INTO OrderedFrom
-VALUES ('5678', '102-888 8th Ave W, Vancouver, BC V5Z 3Y1', '64389564389');
+VALUES ('0098', '102-888 8th Ave W, Vancouver, BC V5Z 3Y1', '64389564389');
 
 INSERT INTO OrderedFrom
-VALUES ('6345', '6180 Fraser St, Vancouver, BC V5W 3A1', '42385728055');
+VALUES ('0045', '6180 Fraser St, Vancouver, BC V5W 3A1', '42385728055');
 
 INSERT INTO TimeBlock
 VALUES ('2015-04-03', '09:00:00', '10:00:00');
@@ -310,4 +322,8 @@ VALUES('14:30:00', '2015-10-24', '3409389847', '2015-10-24', '15:00:00', '16:00:
 
 INSERT INTO MakesAppointmentWith
 VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
+
+
+    
+
 
