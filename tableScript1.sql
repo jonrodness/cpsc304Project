@@ -9,6 +9,7 @@ drop table Drug;
 drop table Pharmacy;
 drop table TimeBlock;
 
+
 # ---------------- CREATION ---------------- #
 
 CREATE TABLE Doctor 
@@ -37,6 +38,7 @@ grant select on Doctor to public;
 
 grant select on Patient to public;               
 
+#bit 0 false, 1 true
 CREATE TABLE Prescription 
     (LicenseNum CHAR(10),
     PrescriptID CHAR(10),  
@@ -174,6 +176,7 @@ VALUES ('1099282394', 'Jane', 'Doe', '50', '56', '150',
         '868 Rainbow Road, Richmond, BC V6R 2S1', '7782132349');
 
 INSERT INTO Prescription
+
 VALUES ('1232131241', '2345', '10', '4 pills 2 times per day for 10 days', 
        '1234567890', '1', '2012-08-26');
 
@@ -192,6 +195,7 @@ VALUES ('2743873823', '0098', '2', '1 pill 3 times per day for 10 days',
 INSERT INTO Prescription
 VALUES ('3409389847', '0045', '3', '1 pill 12 times per day for 3 days', 
        '1099282394', '1', '2012-12-21');
+
 
 INSERT INTO Includes
 VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
