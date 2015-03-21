@@ -25,41 +25,41 @@ CREATE TABLE Doctor
 grant select on Doctor to public;
 
 CREATE TABLE Patient
-    (CareCardNum CHAR(10),
+    (CareCardNum CHAR (10),
     FirstName CHAR (20),    
     LastName CHAR (20), 
     Age INT,
     Weight INT,
     Height INT,
     Address CHAR (50),
-    PhoneNumber CHAR(9), 
-    PRIMARY KEY (CareCardNum)
-    UNIQUE KEY (Address, First Name, Last Name));
+    PhoneNumber CHAR (9), 
+    PRIMARY KEY (CareCardNum),
+    UNIQUE (Address, FirstName, LastName));
 
 grant select on Patient to public;               
 
 CREATE TABLE Prescription 
-    (LicenseNum CHAR(20) NOT NULL,
+    (LicenseNum CHAR (20) NOT NULL,
     PrescriptID INT,  
     Refills INT,  
-    Dosage CHAR(50),
+    Dosage CHAR (50),
     CareCardNum CHAR (10) NOT NULL,
    	ReadyForPickUp BOOLEAN,
 	date CHAR (20),
-    PRIMARY KEY (PrescriptID)
+    PRIMARY KEY (PrescriptID),
     FOREIGN KEY (LicenseNum) REFERENCES Doctor,
-    FOREIGN KEY (CareCardNum) REFERENCES Patient ON DELETE CASCADE)
-    Check Refills >=0;
+    FOREIGN KEY (CareCardNum) REFERENCES Patient ON DELETE CASCADE,
+    Check (Refills >= 0));
 
 grant select on Prescription to public;
 
 CREATE TABLE Includes
     (PrescriptID INT,
-    GenericName CHAR(30),
-    CompanyName CHAR(30),
+    GenericName CHAR (30),
+    CompanyName CHAR (30),
     PRIMARY KEY (PrescriptID, GenericName, CompanyName),
     FOREIGN KEY (PrescriptID) REFERENCES Prescription,
-	FOREIGN KEY (GenericName, CompanyName) REFERENCES Drug));
+	FOREIGN KEY (GenericName, CompanyName) REFERENCES Drug);
 
 grant select on Includes to public;
           
@@ -93,7 +93,7 @@ CREATE TABLE Pharmacy
     WeekendHoursOpening TIME,
     WeekendHoursClosing TIME,
     PRIMARY KEY (Address),
-    UNIQUE PhoneNumber));
+    UNIQUE PhoneNumber);
 
 grant select on Pharmacy to public;
 
