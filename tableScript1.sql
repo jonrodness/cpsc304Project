@@ -1,14 +1,13 @@
-
+drop table MakesAppointmentWith;
+drop table OrderedFrom;
+drop table InteractsWith;
+drop table Includes;
+drop table Prescription;
 drop table Doctor;
 drop table Patient;
-drop table Prescription;
-drop table Includes;
 drop table Drug;
-drop table InteractsWith;
 drop table Pharmacy;
-drop table OrderedFrom;
 drop table TimeBlock;
-drop table MakesAppointmentWith;
 
 # ---------------- CREATION ---------------- #
 
@@ -24,7 +23,7 @@ CREATE TABLE Doctor
 
 grant select on Doctor to public;
 
-CREATE TABLE Patient
+ CREATE TABLE Patient
     (CareCardNum CHAR(10),
     FirstName VARCHAR(20),    
     LastName VARCHAR(20), 
@@ -44,7 +43,7 @@ CREATE TABLE Prescription
     Refills INT,  
     Dosage VARCHAR(50),
     CareCardNum CHAR(10),
-    ReadyForPickUp BOOLEAN,
+    ReadyForPickUp bit,
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
     FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
@@ -131,8 +130,8 @@ CREATE TABLE MakesAppointmentWith
 grant select on MakesAppointmentWith to public;
 
 
-
 # ---------------- INSERTION ---------------- #
+
 INSERT INTO Doctor
 VALUES ('1232131241', 'Bob', 'Smith', '1164 Robson St, Vancouver, BC V6E 1B2',
         '6049238292', 'Gynecologist');
@@ -175,24 +174,24 @@ VALUES ('1099282394', 'Jane', 'Doe', '50', '56', '150',
         '868 Rainbow Road, Richmond, BC V6R 2S1', '7782132349');
 
 INSERT INTO Prescription
-VALUES ('1234567890', '2345', '10', '4 pills 2 times per day for 10 days', 
-       '1234456789', 'TRUE', '2012-08-26');
+VALUES ('1232131241', '2345', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-26');
 
 INSERT INTO Prescription
-VALUES ('2345678901', '3456', '0', '1 tbsp 1 time per day for 1 day', 
-       '2345 456 789', 'FALSE', '2014-05-10');
+VALUES ('5483843482', '3456', '0', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '0', '2014-05-10');
 
 INSERT INTO Prescription
-VALUES ('1098233744', '9876', '200', '12 pills 8 times per day for 45 days', 
-       '0987123576', 'FALSE', '2013-12-16');
+VALUES ('3422344543', '9876', '200', '12 pills 8 times per day for 45 days', 
+       '1457629875', '0', '2013-12-16');
 
 INSERT INTO Prescription
-VALUES ('2034765764', '0098', '2', '1 pill 3 times per day for 10 days', 
-       '1987473123', 'TRUE', '2012-12-12');
+VALUES ('2743873823', '0098', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
 
 INSERT INTO Prescription
-VALUES ('0921837515', '0045', '3', '1 pill 12 times per day for 3 days', 
-       '0982173333', 'TRUE', '2012-12-21');
+VALUES ('3409389847', '0045', '3', '1 pill 12 times per day for 3 days', 
+       '1099282394', '1', '2012-12-21');
 
 INSERT INTO Includes
 VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
