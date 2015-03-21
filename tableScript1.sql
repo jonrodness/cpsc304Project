@@ -39,7 +39,7 @@ CREATE TABLE Patient
 grant select on Patient to public;               
 
 CREATE TABLE Prescription 
-    (LicenseNum CHAR (20) NOT NULL,
+    (LicenseNum INT NOT NULL,
     PrescriptID INT,  
     Refills INT,  
     Dosage CHAR (50),
@@ -47,31 +47,31 @@ CREATE TABLE Prescription
    	ReadyForPickUp BOOLEAN,
 	date CHAR (20),
     PRIMARY KEY (PrescriptID),
-    FOREIGN KEY (LicenseNum) REFERENCES Doctor,
-    FOREIGN KEY (CareCardNum) REFERENCES Patient ON DELETE CASCADE,
+    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
+    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE,
     Check (Refills >= 0));
 
 grant select on Prescription to public;
 
-CREATE TABLE Includes
-    (PrescriptID INT,
-    GenericName CHAR (30),
-    CompanyName CHAR (30),
-    PRIMARY KEY (PrescriptID, GenericName, CompanyName),
-    FOREIGN KEY (PrescriptID) REFERENCES Prescription,
-	FOREIGN KEY (GenericName, CompanyName) REFERENCES Drug);
-
-grant select on Includes to public;
-          
 CREATE TABLE Drug
     (BrandName CHAR(30),
     GenericName CHAR(30),
     CompanyName CHAR(30),
     Price INT,
     PRIMARY KEY (GenericName, CompanyName),
-    UNIQUE (BrandName));		
+    UNIQUE (BrandName));        
 
 grant select on Drug to public;
+
+CREATE TABLE Includes
+    (PrescriptID INT,
+    GenericName CHAR (30),
+    CompanyName CHAR (30),
+    PRIMARY KEY (PrescriptID, GenericName, CompanyName),
+    FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID),
+	FOREIGN KEY (GenericName, CompanyName) REFERENCES Drug (GenericName, CompanyName));
+
+grant select on Includes to public;
 
 CREATE TABLE InteractsWith
     (dGenericName CHAR(30),
@@ -79,8 +79,7 @@ CREATE TABLE InteractsWith
     iGenericName CHAR(30),
     iCompanyName CHAR(30),
     PRIMARY KEY (dGenericName, dCompanyName, iGenericName, iCompanyName),
-	FOREIGN KEY (iGenericName) REFERENCES Drug.GenericName ON DELETE CASCADE,
-	FOREIGN KEY (iCompanyName) REFERENCES Drug.CompanyName ON DELETE CASCADE);
+	FOREIGN KEY (iGenericName, iCompanyName) REFERENCES Drug (GenericName, CompanyName) ON DELETE CASCADE);
 
 grant select on InteractsWith to public;
 
