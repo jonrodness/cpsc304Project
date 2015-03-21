@@ -88,8 +88,10 @@ CREATE TABLE Pharmacy
     (Address CHAR (50),
     PhoneNumber CHAR(9),
     Name CHAR(20),   
-    WeekdayHours CHAR (11),
-    WeekendHours CHAR (11),
+    WeekdayHoursOpening TIME,
+    WeekdayHoursClosing TIME,
+    WeekendHoursOpening TIME,
+    WeekendHoursClosing TIME,
     PRIMARY KEY (Address),
     UNIQUE PhoneNumber));
 
@@ -238,27 +240,28 @@ VALUES ('Nicotinic Acid', 'Niacin', 'Atorvastatin', 'Lipitor');
 INSERT INTO InteractsWith
 VALUES ('Sildenafil', 'Viagra', 'Clarithromycin', 'Biaxin');
 
+#Pharmacy(Address, PhoneNumber, Name, WeekdayHoursOpening, .. , .. , .. )
+
+   
 INSERT INTO Pharmacy
 VALUES ('885 Broadway W, Vancouver, BC V5Z 1J9', '604-708-1135', 'Shoppers Drug Mart', 
-        '10:00-18:00', '8:00-22:00', '8:00-22:00', '8:00-22:00', '8:00-22:00', '8:00-22:00', '10:00-18:00');
+        '08:00:00' , '22:00:00', '10:00:00','18:00:00');
 
 INSERT INTO Pharmacy
 VALUES ('3303 Main St, Vancouver, BC V5V 3M8', '778-328-9580', 'Shoppers Drug Mart', 
-        '10:00-19:00', '8:30-22:00', '8:30-22:00', '8:30-22:00', '8:30-22:00', '8:30-22:00', '10:30-18:00');
+        '8:30:00','22:00:00', '10:30:00','18:00:00');
 
 INSERT INTO Pharmacy
 VALUES ('4255 Arbutus St, Vancouver, BC V6J 4R1', 'Safeway Pharmacy', '604 731 6252', 
-        '8:30-22:00', '8:30-22:00', '8:30-22:00', '8:30-22:00','8:30-22:00', '8:30-22:00', '8:30-22:00');
+       '8:30:00','22:00:00','8:30:00','22:00:00');
 
 INSERT INTO Pharmacy
 VALUES ('102-888 8th Ave W, Vancouver, BC V5Z 3Y1', 'Costco Wholesale Pharmacy', 
-        '778 231 3849', '9:00-21:00', '7:00-21:00', '7:00-21:00', '7:00-21:00', '7:00-21:00', 
-        '7:00-21:00', '9:00-21:00');
+        '778 231 3849', '09:00:00', '20:00:00', '10:00:00','18:00:00');
 
 INSERT INTO Pharmacy
 VALUES ('6180 Fraser St, Vancouver, BC V5W 3A1', 'The Medicine Shoppe Pharmacy', 
-        '604 233 3233','11:30-18:00', '8:00-22:30','8:00-22:30', '8:00-22:30', '8:00-22:30', 
-        '8:00-22:30', '11:30-18:00');
+        '604 233 3233','08:00:00','22:30:00','11:00:00','18:00:00');
 
 INSERT INTO OrderedFrom
 VALUES ('2345', '885 Broadway W, Vancouver, BC V5Z 1J9', '03457436534');
