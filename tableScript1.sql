@@ -1,6 +1,7 @@
-create database doctors;
-    use doctors;
-
+#create database doctors;
+#    use doctors;
+#create database tableScript1;
+#    use tableScript1;
 drop table MakesAppointmentWith;
 drop table OrderedFrom;
 drop table InteractsWith;
@@ -62,28 +63,28 @@ CREATE TABLE Drug
     GenericName VARCHAR(30),
     CompanyName VARCHAR(30),
     Price INT,
-    PRIMARY KEY (GenericName, CompanyName),
-    UNIQUE (BrandName));        
+    PRIMARY KEY (BrandName, GenericName));        
 
 grant select on Drug to public;
 
 CREATE TABLE Includes
     (PrescriptID CHAR(4),
+    BrandName VARCHAR(30),    
     GenericName VARCHAR(30),
-    CompanyName VARCHAR(30),
-    PRIMARY KEY (PrescriptID, GenericName, CompanyName),
+    PRIMARY KEY (PrescriptID, BrandName, GenericName),
     FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID),
-    FOREIGN KEY (GenericName, CompanyName) REFERENCES Drug (GenericName, CompanyName));
+    FOREIGN KEY (BrandName, GenericName) REFERENCES Drug (BrandName, GenericName));
 
 grant select on Includes to public;
 
 CREATE TABLE InteractsWith
-    (dGenericName VARCHAR(30),
-    dCompanyName VARCHAR(30),
+    (dBrandName VARCHAR(30),
+    dGenericName VARCHAR(30),
+    iBrandName VARCHAR(30),
     iGenericName VARCHAR(30),
-    iCompanyName VARCHAR(30),
-    PRIMARY KEY (dGenericName, dCompanyName, iGenericName, iCompanyName),
-    FOREIGN KEY (iGenericName, iCompanyName) REFERENCES Drug (GenericName, CompanyName) ON DELETE CASCADE);
+    PRIMARY KEY (dBrandName, dGenericName, iBrandName, iGenericName),
+    FOREIGN KEY (dBrandName, dGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE,
+    FOREIGN KEY (iBrandName, iGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE);
 
 grant select on InteractsWith to public;
 
@@ -213,47 +214,62 @@ VALUES ('Ritalin', 'Methylphenidate', 'Novartis', '50');
 INSERT INTO Drug 
 VALUES ('Plavix', 'Clopidogrel', 'Sanofi', '20');
 
+#drug(BrandName, GenericName, CompanyName, Price)
+#InteractsWith(dBrandName, dGenericName,iBrandName, iGenericName)
 
-INSERT INTO Includes
-VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
+INSERT INTO Drug 
+VALUES ('Coumadin','Warfarin','Bristol-Myers Squibb','40');
 
-INSERT INTO Includes
-VALUES ('3456', 'Ibuprofen', 'Pfizer');
+INSERT INTO Drug 
+VALUES ('Zestril','Lisinopril','Apotex Inc.','50');
 
-INSERT INTO Includes
-VALUES ('9876', 'Clindamycin', 'DatabaseDrugs Inc.');
+INSERT INTO Drug 
+VALUES ('Klor-Con','Potassium Chloride','Upsher-Smith Laboratories','35');
 
-INSERT INTO Includes
-VALUES ('0098', 'Methylphenidate', 'Novartis');
+INSERT INTO Drug 
+VALUES ('Niaspan','Niacin','Abbott Laboratories','45');
 
-INSERT INTO Includes
-VALUES ('0045', 'Clopidogrel', 'Sanofi');
+INSERT INTO Drug 
+VALUES ('Lipitor','Atorvastatin','Pfizer','30');
 
-# INSERT INTO Includes
-# VALUES ('9876', 'Dextromethorphan', 'Robitussin')
-# 
-# INSERT INTO Includes
-# VALUES ('0098', 'Paroxetine', 'Paxil')
-# 
-# INSERT INTO Includes
-# VALUES('0045', 'Escatalopram', 'Lexapro');
+INSERT INTO Drug 
+VALUES ('Viagra', 'Sildenafil','Pfizer','40');
 
+INSERT INTO Drug 
+VALUES ('Biaxin','Clarithromycin','Abbott Laboratories','50');
 
 
 INSERT INTO InteractsWith
-VALUES ('Ibuprofen', 'Advil', 'Coumadin', 'Warfarin');
+VALUES ('Advil', 'Ibuprofen', 'Coumadin', 'Warfarin');
 
 INSERT INTO InteractsWith
-VALUES ('Simvastatin', 'Zocor', 'Coumadin', 'Warfarin');
+VALUES ('Zocor', 'Simvastatin', 'Coumadin', 'Warfarin');
 
 INSERT INTO InteractsWith
-VALUES ('Klor-Con', 'Potassium Chloride', 'Lisinopril', 'Zestril');
+VALUES ('Klor-Con','Potassium Chloride', 'Zestril','Lisinopril');
 
 INSERT INTO InteractsWith
-VALUES ('Nicotinic Acid', 'Niacin', 'Atorvastatin', 'Lipitor');
+VALUES ('Niaspan','Niacin','Lipitor','Atorvastatin');
 
 INSERT INTO InteractsWith
-VALUES ('Sildenafil', 'Viagra', 'Clarithromycin', 'Biaxin');
+VALUES ('Viagra', 'Sildenafil','Biaxin','Clarithromycin');
+
+#Includes(PrescriptID, BrandName, GenericName)
+INSERT INTO Includes
+VALUES('2345', 'Tylenol','Acetaminophen');
+
+INSERT INTO Includes
+VALUES ('3456', 'Advil','Ibuprofen');
+
+INSERT INTO Includes
+VALUES ('9876', 'Ritalin', 'Methylphenidate');
+
+INSERT INTO Includes
+VALUES ('0098', 'Plavix', 'Clopidogrel');
+
+INSERT INTO Includes
+VALUES ('0045', 'Coumadin','Warfarin');
+
 
 #Pharmacy(Address, PhoneNumber, Name, WeekdayHoursOpening, .. , .. , .. )
 
