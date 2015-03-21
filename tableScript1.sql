@@ -32,7 +32,7 @@ CREATE TABLE Patient
     Weight INT,
     Height INT,
     Address CHAR (50),
-    PhoneNumber INT, 
+    PhoneNumber CHAR(9), 
     PRIMARY KEY (CareCardNum),
     UNIQUE (Address, FirstName, LastName));
 
