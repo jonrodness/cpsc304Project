@@ -136,7 +136,8 @@ CREATE TABLE MakesAppointmentWith
 
 grant select on MakesAppointmentWith to public;
 
-INSERT INTO Doctor
+
+    INSERT INTO Doctor
 VALUES ('1232131241', 'Bob', 'Smith', '1164 Robson St, Vancouver, BC V6E 1B2',
         '6049238292', 'Gynecologist');
 
@@ -177,10 +178,24 @@ INSERT INTO Patient
 VALUES ('1099282394', 'Jane', 'Doe', '50', '56', '150', 
         '868 Rainbow Road, Richmond, BC V6R 2S1', '7782132349');
 
-INSERT INTO Prescription
 
+# prescriptions by anny
+INSERT INTO Prescription
 VALUES ('1232131241', '2345', '10', '4 pills 2 times per day for 10 days', 
        '1234567890', '1', '2012-08-26');
+
+INSERT INTO Prescription
+VALUES ('1232131241', '0001', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-22');
+
+INSERT INTO Prescription
+VALUES ('1232131241', '0002', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-23');
+
+INSERT INTO Prescription
+VALUES ('1232131241', '0003', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-24');
+# ^^^ presriptions by anny
 
 INSERT INTO Prescription
 VALUES ('5483843482', '3456', '0', '1 tbsp 1 time per day for 1 day', 
@@ -197,6 +212,7 @@ VALUES ('2743873823', '0098', '2', '1 pill 3 times per day for 10 days',
 INSERT INTO Prescription
 VALUES ('3409389847', '0045', '3', '1 pill 12 times per day for 3 days', 
        '1099282394', '1', '2012-12-21');
+
 
 INSERT INTO Drug 
 VALUES ('Tylenol', 'Acetaminophen', 'Johnson and Johnson', '10');
@@ -272,6 +288,15 @@ VALUES ('0098', 'Plavix', 'Clopidogrel');
 INSERT INTO Includes
 VALUES ('0045', 'Coumadin','Warfarin');
 
+INSERT INTO Includes
+VALUES ('0001', 'Tylenol','Acetaminophen');
+
+INSERT INTO Includes
+VALUES ('0002', 'Coumadin','Warfarin');
+
+INSERT INTO Includes
+VALUES ('0003', 'Coumadin','Warfarin');
+
 
 #Pharmacy(Address, PhoneNumber, Name, WeekdayHoursOpening, .. , .. , .. )
 
@@ -340,3 +365,5 @@ VALUES('14:30:00', '2015-10-24', '3409389847', '2015-10-24', '15:00:00', '16:00:
 
 INSERT INTO MakesAppointmentWith
 VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
+
+

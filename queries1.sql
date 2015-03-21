@@ -107,7 +107,14 @@ where p.
 select *
 from Prescription
 where ReadyForPickup=1;
-#Generate a report about what prescriptions a patient is currently using, when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
+
+#----Generate a report about what prescriptions a patient is currently using, 
+# when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
+# sample patient license num: '1234567890'
+select 
+from Patient P, Prescription Pr, Doctor D, Pharmacy Pm
+where 
+# working on this now - anny
 #second analogous report, but for previous prescriptions (not current)
 
 
@@ -165,7 +172,7 @@ where D.LicenseNum=M.LicenseNum;
 # sample, doctor's license num = '1232131241'
 
 select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
-from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O,
+from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O
 where 	Pr.LicenseNum = D.LicenseNum and
 		Pr.CareCardNum = P.CareCardNum and 
 		O.PrescriptID = Pr.PrescriptID and 
