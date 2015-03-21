@@ -25,14 +25,14 @@ CREATE TABLE Doctor
 grant select on Doctor to public;
 
 CREATE TABLE Patient
-    (CareCardNum CHAR (10),
+    (CareCardNum INT,
     FirstName CHAR (20),    
     LastName CHAR (20), 
     Age INT,
     Weight INT,
     Height INT,
     Address CHAR (50),
-    PhoneNumber CHAR (9), 
+    PhoneNumber INT, 
     PRIMARY KEY CareCardNum,
     UNIQUE (Address, FirstName, LastName));
 
@@ -43,9 +43,9 @@ CREATE TABLE Prescription
     PrescriptID INT,  
     Refills INT,  
     Dosage CHAR (50),
-    CareCardNum CHAR (10),
+    CareCardNum INT,
    	ReadyForPickUp BOOLEAN,
-	date CHAR (20),
+	date DATE,
     PRIMARY KEY (PrescriptID),
     FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
     FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE,
@@ -85,7 +85,7 @@ grant select on InteractsWith to public;
 
 CREATE TABLE Pharmacy
     (Address CHAR (50),
-    PhoneNumber CHAR (9),
+    PhoneNumber INT,
     Name CHAR (20),   
     WeekdayHoursOpening TIME,
     WeekdayHoursClosing TIME,
@@ -108,24 +108,24 @@ CREATE TABLE OrderedFrom
 grant select on OrderedFrom to public;
 
 CREATE TABLE TimeBlock
-    (Date CHAR (20),
-	StartTime INT,
-    EndTime INT,
+    (Date DATE,
+	StartTime TIME,
+    EndTime TIME,
     PRIMARY KEY (Date, StartTime, EndTime));
 
 grant select on TimeBlock to public;
 
 CREATE TABLE MakesAppointmentWith
-    (TimeMade CHAR (20),
-	DateMade CHAR (20),
+    (TimeMade TIME,
+	DateMade DATE,
     LicenseNum INT,
-	Date CHAR (20),
-	StartTime INT,
-	EndTime INT,
-	CareCardNum CHAR(10) NOT NULL,
+	Date DATE,
+	StartTime TIME,
+	EndTime TIME,
+	CareCardNum INT,
 	PRIMARY KEY (LicenseNum, Date, StartTime, EndTime),
 	FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
-	FOREIGN KEY (Date, StartTime, EndTime) REFERENCES Timeblock (Date, StartTime, EndTime),
+	FOREIGN KEY (Date, StartTime, EndTime) REFERENCES TimeBlock (Date, StartTime, EndTime),
 	FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum));
 
 grant select on MakesAppointmentWith to public;
@@ -133,49 +133,49 @@ grant select on MakesAppointmentWith to public;
 
 # ---------------- INSERTION ---------------- #
 INSERT INTO Doctor
-VALUES ('123 213 1241', 'Bob', 'Smith', '1164 Robson St, Vancouver, BC V6E 1B2',
-        '604 923 8292', 'Gynecologist');
+VALUES ('1232131241', 'Bob', 'Smith', '1164 Robson St, Vancouver, BC V6E 1B2',
+        '6049238292', 'Gynecologist');
 
 INSERT INTO Doctor
-VALUES ('548 384 3482', 'Alex', 'Lee', '6139 Battison St, Vancouver, BC V5S 3M7', 
-        '778 231 3223', 'Neonatologist');
+VALUES ('5483843482', 'Alex', 'Lee', '6139 Battison St, Vancouver, BC V5S 3M7', 
+        '7782313223', 'Neonatologist');
 
 INSERT INTO Doctor
-VALUES ('342 234 4543', 'Tau', 'Dubaku', '7547 Cambie St, Vancouver, BC V6P 3H6', 
-        '604 342 1923', 'Obstetrician');
+VALUES ('3422344543', 'Tau', 'Dubaku', '7547 Cambie St, Vancouver, BC V6P 3H6', 
+        '6043421923', 'Obstetrician');
 
 INSERT INTO Doctor
-VALUES ('340 938 9847', 'Eoin', 'Raghnall', '104-350 Kent Ave South E, Vancouver, BC V5X 4N6', 
-        '778 342 2341', 'Oncologist');
+VALUES ('3409389847', 'Eoin', 'Raghnall', '104-350 Kent Ave South E, Vancouver, BC V5X 4N6', 
+        '7783422341', 'Oncologist');
 
 
 INSERT INTO Doctor
-VALUES ('274 387 3823', 'Kaneonuskatew', 'Kawacatoose', '307-1220 Pender St E, Vancouver, BC V6A 1W8', 
-        '778 239 1233', 'Gastroenterologist');
+VALUES ('2743873823', 'Kaneonuskatew', 'Kawacatoose', '307-1220 Pender St E, Vancouver, BC V6A 1W8', 
+        '7782391233', 'Gastroenterologist');
 
 INSERT INTO Patient
-VALUES ('123 456 7890', 'Anny', 'Gakhokidze', '19', '90', '160', 
-        '23 12746 102nd street, Surrey, BC, V3T1V9', '778 333 44 55');
+VALUES ('1234567890', 'Anny', 'Gakhokidze', '19', '90', '160', 
+        '23 12746 102nd street, Surrey, BC, V3T1V9', '7783334455');
 
 INSERT INTO Patient
-VALUES ('234 652 8765', 'Alfred', 'Sin', '54', '90', '178', 
-        '9722 Hazy Highlands, Lick, BC, V2W 9U5', '604 567 87 65');
+VALUES ('2346528765', 'Alfred', 'Sin', '54', '90', '178', 
+        '9722 Hazy Highlands, Lick, BC, V2W 9U5', '6045678765');
 
 INSERT INTO Patient
-VALUES ('145 762 9875', 'Jon', 'Rodness', '20', '90', '175', 
-        '1413 Velvet Path, Richmond, BC, V5S 7D8', '604 879 08 77');
+VALUES ('1457629875', 'Jon', 'Rodness', '20', '90', '175', 
+        '1413 Velvet Path, Richmond, BC, V5S 7D8', '6048790877');
 
 INSERT INTO Patient
-VALUES ('345 343 8890', 'Chris', 'Louie', '21', '90', '187', 
-        '666 Deep Dark Road, Surrey, BC V6X 6H6', '778 392 1833');
+VALUES ('3453438890', 'Chris', 'Louie', '21', '90', '187', 
+        '666 Deep Dark Road, Surrey, BC V6X 6H6', '7783921833');
 
 INSERT INTO Patient
-VALUES ('109 928 2394', 'Jane', 'Doe', '50', '56', '150', 
-        '868 Rainbow Road, Richmond, BC V6R 2S1', '778 213 2349');
+VALUES ('1099282394', 'Jane', 'Doe', '50', '56', '150', 
+        '868 Rainbow Road, Richmond, BC V6R 2S1', '7782132349');
 
 INSERT INTO Prescription
 VALUES ('1234567890', '2345', '10', '4 pills 2 times per day for 10 days', 
-       '1234 456 789', 'TRUE', '26/08/2012');
+       '1234456789', 'TRUE', '26/08/2012');
 
 INSERT INTO Prescription
 VALUES ('2345678901', '3456', '0', '1 tbsp 1 time per day for 1 day', 
@@ -183,15 +183,15 @@ VALUES ('2345678901', '3456', '0', '1 tbsp 1 time per day for 1 day',
 
 INSERT INTO Prescription
 VALUES ('1098233744', '9876', '200', '12 pills 8 times per day for 45 days', 
-       '0987 123 576', 'FALSE', '16/12/2013');
+       '0987123576', 'FALSE', '16/12/2013');
 
 INSERT INTO Prescription
 VALUES ('2034765764', '0098', '2', '1 pill 3 times per day for 10 days', 
-       '1987 473 123', 'TRUE', '12/12/2012');
+       '1987473123', 'TRUE', '12/12/2012');
 
 INSERT INTO Prescription
 VALUES ('0921837515', '0045', '3', '1 pill 12 times per day for 3 days', 
-       '0982 173 333', 'TRUE', '12/21/2012');
+       '0982173333', 'TRUE', '12/21/2012');
 
 INSERT INTO Includes
 VALUES('2345', 'Acetaminophen', 'Johnson and Johnson');
@@ -243,24 +243,24 @@ VALUES ('Sildenafil', 'Viagra', 'Clarithromycin', 'Biaxin');
 
    
 INSERT INTO Pharmacy
-VALUES ('885 Broadway W, Vancouver, BC V5Z 1J9', '604-708-1135', 'Shoppers Drug Mart', 
+VALUES ('885 Broadway W, Vancouver, BC V5Z 1J9', '6047081135', 'Shoppers Drug Mart', 
         '08:00:00' , '22:00:00', '10:00:00','18:00:00');
 
 INSERT INTO Pharmacy
-VALUES ('3303 Main St, Vancouver, BC V5V 3M8', '778-328-9580', 'Shoppers Drug Mart', 
+VALUES ('3303 Main St, Vancouver, BC V5V 3M8', '7783289580', 'Shoppers Drug Mart', 
         '8:30:00','22:00:00', '10:30:00','18:00:00');
 
 INSERT INTO Pharmacy
-VALUES ('4255 Arbutus St, Vancouver, BC V6J 4R1', 'Safeway Pharmacy', '604 731 6252', 
+VALUES ('4255 Arbutus St, Vancouver, BC V6J 4R1', 'Safeway Pharmacy', '6047316252', 
        '8:30:00','22:00:00','8:30:00','22:00:00');
 
 INSERT INTO Pharmacy
 VALUES ('102-888 8th Ave W, Vancouver, BC V5Z 3Y1', 'Costco Wholesale Pharmacy', 
-        '778 231 3849', '09:00:00', '20:00:00', '10:00:00','18:00:00');
+        '7782313849', '09:00:00', '20:00:00', '10:00:00','18:00:00');
 
 INSERT INTO Pharmacy
 VALUES ('6180 Fraser St, Vancouver, BC V5W 3A1', 'The Medicine Shoppe Pharmacy', 
-        '604 233 3233','08:00:00','22:30:00','11:00:00','18:00:00');
+        '6042333233','08:00:00','22:30:00','11:00:00','18:00:00');
 
 INSERT INTO OrderedFrom
 VALUES ('2345', '885 Broadway W, Vancouver, BC V5Z 1J9', '03457436534');
@@ -278,31 +278,31 @@ INSERT INTO OrderedFrom
 VALUES ('6345', '6180 Fraser St, Vancouver, BC V5W 3A1', '42385728055');
 
 INSERT INTO TimeBlock
-VALUES ('04/03/2015', '09:00', '10:00');
+VALUES ('04/03/2015', '09:00:00', '10:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('06/07/2874', '09:00', '12:00');
+VALUES ('06/07/2874', '09:00:00', '12:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('07/14/2015', '13:00', '15:00');
+VALUES ('07/14/2015', '13:00:00', '15:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('10/24/2015', '15:00', '16:00');
+VALUES ('10/24/2015', '15:00:00', '16:00:00');
 
 INSERT INTO TimeBlock
-VALUES ('07/04/2015', '16:00', '16:30');
+VALUES ('07/04/2015', '16:00:00', '16:30:00');
 
 INSERT INTO MakesAppointment_with
-VALUES ('09:00', '04/03/2015','123 213 1241','04/03/2015','09:00','10:00','123 456 7890');
+VALUES ('09:00:00', '04/03/2015','1232131241','04/03/2015','09:00:00','10:00:00','1234567890');
 
 INSERT INTO MakesAppointment_with
-VALUES ('10:00', '06/08/2874', '548 384 3482', '06/07/2874', '09:00', '12:00', '234 652 8765');
+VALUES ('10:00:00', '06/08/2874', '5483843482', '06/07/2874', '09:00:00', '12:00:00', '2346528765');
 
 INSERT INTO MakesAppointment_with
-VALUES ('11:30', '07/14/2015' , '342 234 4543', '07/14/2015', '13:00', '15:00', '145 762 9875');
+VALUES ('11:30:00', '07/14/2015' , '3422344543', '07/14/2015', '13:00:00', '15:00:00', '1457629875');
 
 INSERT INTO MakesAppointment_with
-VALUES('14:30', '10/24/2015', '340 938 9847', '10/24/2015', '15:00', '16:00', '345 343 8890');
+VALUES('14:30:00', '10/24/2015', '3409389847', '10/24/2015', '15:00:00', '16:00:00', '3453438890');
 
 INSERT INTO MakesAppointment_with
-VALUES('8:30', '07/04/2015', '274 387 3823', '07/04/2015', '16:00', '16:30', '109 928 2394');
+VALUES('08:30:00', '07/04/2015', '2743873823', '07/04/2015', '16:00:00', '16:30:00', '1099282394');
