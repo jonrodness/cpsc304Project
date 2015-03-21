@@ -7,3 +7,5 @@ CREATE TABLE Doctor
     Type CHAR (20),
     PRIMARY KEY (LicenseNum),
     UNIQUE 	(Address, FirstName, LastName));
+
+    grant select on Doctor to public;

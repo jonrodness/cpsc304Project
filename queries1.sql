@@ -61,13 +61,17 @@ where PrescriptID=999;
 
 
 #select pharmacies that are currently open
-#chris
+#chris--in one query or 2?
 select *
 from Pharmacy P
 where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing;
 
 
 #select pharmacies that are currently open
+#chris
+select *
+from Pharmacy P
+where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing;
 
 
 #given a date/time, view pharmacies that are open at that date/time
@@ -134,12 +138,14 @@ where P.CareCardNum= '1234 456 789' AND Pr.CareCardNum=P.CareCardNum AND I.Presc
 
 
 #can view a list of drugs that interact with a specific drug  (same as patient)
+#chris
 select I.iGenericName
 from InteractsWith I, Drug D
 where D.GenericName=I.dGenericName AND D.CompanyName=I.dCompanyName;
 
 #notified when patients cancel an appointment
 #can view a list of past appointments by a certain patient
+#chris
 select M.DateMade
 from MakesAppointmentWith M, Doctor D
 where D.LicenseNum=M.LicenseNum;
