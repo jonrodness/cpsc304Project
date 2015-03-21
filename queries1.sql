@@ -51,13 +51,21 @@ where PrescriptID=999;
 
 ########User: Patients
 
-#update personal information about him/herself
+# ----update personal information about him/herself
 #?????? so many possible attributes to update?
+# anny: i will write it in pseudo code
+# 1) we will retrieve all attributes of that patient, save them in local variables
+# 2) we check which fields the patient desires to change (e.g. if textbox1 is not empty, patient wants to change that attr)
+# 3) construct a new query that consists of old and new attributes
+# sample query: patient carecard num = 1234567890
+select *
+from Patient P
+where P.CareCardNum LIKE '1234567890'; 
+# TODOOOOO ^^^
 
-
-#can input an address and a radius and see a list of doctors offices within the indicated radius of the indicated address
-
-#select doctor attributes from doctor tables and filter by attributes
+#----can input an address and a radius and see a list of doctors offices within the indicated radius of the indicated address
+# this is gonna be complicated omg
+#----select doctor attributes from doctor tables and filter by attributes
 
 
 #select pharmacies that are currently open
@@ -98,7 +106,7 @@ where p.
 #can view status of prescription pick up (ready or not for pickup)
 select *
 from Prescription
-where ReadyForPickup=TRUE;
+where ReadyForPickup=1;
 #Generate a report about what prescriptions a patient is currently using, when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
 #second analogous report, but for previous prescriptions (not current)
 
@@ -108,7 +116,7 @@ where ReadyForPickup=TRUE;
 #can prescribe a drug
 #chris--need to put variable names later
 insert into Prescription
-values ('doctorIDvariable','?','?' ,'?' ,'?' , 'FALSE', NOW());
+values ('doctorIDvariable','?','?' ,'?' ,'?' , 0, NOW());
 
 
 #same as the patient ^^^
@@ -137,6 +145,7 @@ where P.CareCardNum= '1234 456 789' AND Pr.CareCardNum=P.CareCardNum AND I.Presc
 #can check if a certain drug was taken in the past by a certain patient
 
 
+
 #can view a list of drugs that interact with a specific drug  (same as patient)
 #chris
 select I.iGenericName
@@ -144,10 +153,25 @@ from InteractsWith I, Drug D
 where D.GenericName=I.dGenericName AND D.CompanyName=I.dCompanyName;
 
 #notified when patients cancel an appointment
+
 #can view a list of past appointments by a certain patient
 #chris
 select M.DateMade
 from MakesAppointmentWith M, Doctor D
 where D.LicenseNum=M.LicenseNum;
 
-#Generate a report about which prescriptions a doctor has previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
+#----Generate a report about which prescriptions a doctor has
+# 	previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
+# sample, doctor's license num = '1232131241'
+
+select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
+from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O,
+where 	Pr.LicenseNum = D.LicenseNum and
+		Pr.CareCardNum = P.CareCardNum and 
+		O.PrescriptID = Pr.PrescriptID and 
+		O.PharmacyAddress = Pm.Address and 
+		D.LicenseNum LIKE '1232131241';
+		# TODO, add a drug name as well!!! to the select clause
+
+
+
