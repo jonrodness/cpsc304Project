@@ -61,10 +61,10 @@ where PrescriptID=999;
 
 
 #select pharmacies that are currently open
-#
+#chris
 select *
-from Pharmacy
-where CAST(Created as time) between '23:00:00' and '06:59:59';
+from Pharmacy P
+where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing;
 
 
 #select pharmacies that are currently open
