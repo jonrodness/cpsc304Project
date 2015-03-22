@@ -338,6 +338,20 @@ VALUES ('6180 Fraser St, Vancouver, BC V5W 3A1', 'The Medicine Shoppe Pharmacy',
         '6042333233','08:00:00','22:30:00','11:00:00','18:00:00');
 
 #OrderedFrom(PrescriptID,PharmacyAddress, OrderNo )
+INSERT INTO OrderedFrom
+VALUES ('2345', '885 Broadway W, Vancouver, BC V5Z 1J9', '03457436534');
+
+INSERT INTO OrderedFrom
+VALUES ('3456', '3303 Main St, Vancouver, BC V5V 3M8', '54362785237');
+
+INSERT INTO OrderedFrom
+VALUES ('9876', '4255 Arbutus St, Vancouver, BC V6J 4R1', '41327584378');
+
+INSERT INTO OrderedFrom
+VALUES ('0098', '102-888 8th Ave W, Vancouver, BC V5Z 3Y1', '64389564389');
+
+INSERT INTO OrderedFrom
+VALUES ('0003', '102-888 8th Ave W, Vancouver, BC V5Z 3Y1', '64389564390');
 
 #TimeBlock(TimeBlockDate,StartTime,EndTime )
 INSERT INTO TimeBlock
