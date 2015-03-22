@@ -10,13 +10,14 @@ where Pr.LicenseNum=D.LicenseNum;
 #chris
 update Prescription
     set ReadyForPickUp=1
-    where PresciptID ='3456';
+    where PrescriptID ='3456' AND ReadyForPickup=0;
 
 #can view past prescriptions for patient
 #chris
-select I.GenericName, Pr.Dosage
+select Pr.date_prescribed,I.GenericName,Pr.Refills,Pr.Dosage
 from Prescription Pr, Patient P, Includes I
-where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
+where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum=1234567890
+Order By Pr.date_prescribed;
 
 #can print out a list of prescriptions filled that day
 #chris
