@@ -302,24 +302,24 @@ VALUES ('0003', 'Coumadin','Warfarin');
 
    
 INSERT INTO Pharmacy
-VALUES ('885 Broadway W, Vancouver, BC V5Z 1J9', '6047081135', 'Shoppers Drug Mart', 
+VALUES ('885 Broadway W, Vancouver, BC V5Z 1J9','6047081135', 'Shoppers Drug Mart',  
         '08:00:00' , '22:00:00', '10:00:00','18:00:00');
 
 INSERT INTO Pharmacy
-VALUES ('3303 Main St, Vancouver, BC V5V 3M8', '7783289580', 'Shoppers Drug Mart', 
+VALUES ('3303 Main St, Vancouver, BC V5V 3M8', '7783289580', 'Shoppers Drug Mart',  
         '8:30:00','22:00:00', '10:30:00','18:00:00');
 
 INSERT INTO Pharmacy
-VALUES ('4255 Arbutus St, Vancouver, BC V6J 4R1', 'Safeway Pharmacy', '6047316252', 
+VALUES ('4255 Arbutus St, Vancouver, BC V6J 4R1', '6047316252','Safeway Pharmacy',  
        '8:30:00','22:00:00','8:30:00','22:00:00');
 
 INSERT INTO Pharmacy
-VALUES ('102-888 8th Ave W, Vancouver, BC V5Z 3Y1', 'Costco Wholesale Pharmacy', 
-        '7782313849', '09:00:00', '20:00:00', '10:00:00','18:00:00');
+VALUES ('102-888 8th Ave W, Vancouver, BC V5Z 3Y1', '7782313849', 'Costco Wholesale Pharmacy', 
+         '09:00:00', '20:00:00', '10:00:00','18:00:00');
 
 INSERT INTO Pharmacy
-VALUES ('6180 Fraser St, Vancouver, BC V5W 3A1', 'The Medicine Shoppe Pharmacy', 
-        '6042333233','08:00:00','22:30:00','11:00:00','18:00:00');
+VALUES ('6180 Fraser St, Vancouver, BC V5W 3A1', '6042333233','The Medicine Shoppe Pharmacy', 
+        '08:00:00','22:30:00','11:00:00','18:00:00');
 
 INSERT INTO OrderedFrom
 VALUES ('2345', '885 Broadway W, Vancouver, BC V5Z 1J9', '03457436534');
@@ -333,8 +333,17 @@ VALUES ('9876', '4255 Arbutus St, Vancouver, BC V6J 4R1', '41327584378');
 INSERT INTO OrderedFrom
 VALUES ('0098', '102-888 8th Ave W, Vancouver, BC V5Z 3Y1', '64389564389');
 
+# ordered by anny
 INSERT INTO OrderedFrom
-VALUES ('0045', '6180 Fraser St, Vancouver, BC V5W 3A1', '42385728055');
+VALUES ('0001', '6180 Fraser St, Vancouver, BC V5W 3A1', '41327584379');
+
+INSERT INTO OrderedFrom
+VALUES ('0002', '6180 Fraser St, Vancouver, BC V5W 3A1', '41327584321');
+
+INSERT INTO OrderedFrom
+VALUES ('0003', '6180 Fraser St, Vancouver, BC V5W 3A1', '41327584123');
+
+# ^^^ ordered by anny
 
 INSERT INTO TimeBlock
 VALUES ('2015-04-03', '09:00:00', '10:00:00');

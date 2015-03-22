@@ -110,11 +110,18 @@ where ReadyForPickup=1;
 
 #----Generate a report about what prescriptions a patient is currently using, 
 # when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
+# the last part is impossible, we dont have that kind of info
 # sample patient license num: '1234567890'
-select 
+select Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
+		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by" 
 from Patient P, Prescription Pr, Doctor D, Pharmacy Pm
-where 
+where 	P.CareCardNum LIKE '1234567890' and
+		P.CareCardNum = Pr.CareCardNum and 
+		Pr.LicenseNum = D.LicenseNum and 
+		
+
 # working on this now - anny
+
 #second analogous report, but for previous prescriptions (not current)
 
 
@@ -171,14 +178,16 @@ where D.LicenseNum=M.LicenseNum;
 # 	previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
 # sample, doctor's license num = '1232131241'
 
-select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
-from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O
+select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
+from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, Includes I, Drug Dr
 where 	Pr.LicenseNum = D.LicenseNum and
 		Pr.CareCardNum = P.CareCardNum and 
 		O.PrescriptID = Pr.PrescriptID and 
 		O.PharmacyAddress = Pm.Address and 
+		I.PrescriptID = Pr.PrescriptID and
+		I.BrandName = Dr.BrandName and
+		I.GenericName = Dr.GenericName and
 		D.LicenseNum LIKE '1232131241';
-		# TODO, add a drug name as well!!! to the select clause
 
 
 
