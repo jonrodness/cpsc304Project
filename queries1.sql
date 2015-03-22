@@ -344,5 +344,22 @@ group by Dr.BrandName, Dr.GenericName
 order by AVG(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
 
+# select patients who ordered all products by company name = Pfizer
+
+
+select Pa.CareCardNum, Pa.FirstName
+from Patient Pa
+Where NOT EXISTS
+     (Select *
+      from Drug D
+      Where D.CompanyName LIKE 'Pfizer'
+      AND NOT EXISTS
+      (Select * 
+            From Prescription P, Includes I
+            WHERE P.PrescriptID = I.prescriptID and 
+            		I.BrandName = D.BrandName and
+            		P.CareCardNum = Pa.CareCardNum));
+
+
 
 

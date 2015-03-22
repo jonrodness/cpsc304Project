@@ -212,6 +212,27 @@ VALUES ('1232131241', '0002', '10', '4 pills 2 times per day for 10 days',
 INSERT INTO Prescription
 VALUES ('1232131241', '0003', '10', '4 pills 2 times per day for 10 days', 
        '1234567890', '1', '2012-08-24');
+
+INSERT INTO Prescription
+VALUES ('5483843482', '0004', '0', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '0', '2014-05-10');
+
+INSERT INTO Prescription
+VALUES ('5483843482', '0005', '0', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '0', '2014-05-10');
+
+INSERT INTO Prescription
+VALUES ('5483843482', '0006', '0', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '0', '2014-05-10');
+
+INSERT INTO Prescription
+VALUES ('5483843482', '0007', '0', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '0', '2014-05-10');
+
+INSERT INTO Prescription
+VALUES ('5483843482', '0008', '0', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '0', '2014-05-10');
+
 # ^^^ presriptions by anny
 
 INSERT INTO Prescription
@@ -313,6 +334,18 @@ VALUES ('0002', 'Coumadin','Warfarin');
 
 INSERT INTO Includes
 VALUES ('0003', 'Coumadin','Warfarin');
+
+INSERT INTO Includes
+VALUES ('0004', 'Advil','Ibuprofen');
+
+INSERT INTO Includes
+VALUES ('0005', 'Lipitor','Atorvastatin');
+
+INSERT INTO Includes
+VALUES ('0006', 'Zocor','Simvastatin');
+
+INSERT INTO Includes
+VALUES ('0007', 'Viagra','Sildenafil');
 
 #Pharmacy(Address,Name,PhoneNumber,WeekdayHoursOpening,WeekdayHoursClosing, WeekendHoursOpening,WeekendHoursClosing)
 
