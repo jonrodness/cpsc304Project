@@ -57,8 +57,7 @@ CREATE TABLE Prescription
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
     FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
-    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE,
-    Check (Refills >= 0));
+    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE);
 
 grant select on Prescription to public;
 
@@ -196,7 +195,7 @@ VALUES ('1099282394', 'Jane', 'Doe', '50', '56', '150',
 
 INSERT INTO Prescription
 VALUES ('1232131241', '2345', '10', '4 pills 2 times per day for 10 days', 
-       '1234567890', '1', '2012-08-26');
+       '1234567890', '1', '2015-03-21');
 
 INSERT INTO Prescription
 VALUES ('1232131241', '2959', '5', '2 pills 4 times per day for 5 days', 

@@ -23,32 +23,13 @@ Order By Pr.date_prescribed;
 #chris
 select I.GenericName, Pr.Dosage
 from Prescription Pr, Patient P, Includes I
-where Pr.date_prescribed=curdate();
+where Pr.PrescriptID=I.PrescriptID AND Pr.CareCardNum=P.CareCardNum AND Pr.date_prescribed=curdate();
 
 #can reduce the refill number of a patient’s prescription
 #chris
 update Prescription
-    set Refills=Refills-1;
-    where PresciptID='1234 456 789';
-
-# sampel query: select all past prescriptions for patient number 999
-# alfredo
-select
-from Prescription pr
-where pr.CareCardNum=999 and pr.date < DATE(NOW());
-
-#can print out a list of prescriptions filled that day
-#alfredo
-select PrescriptID
-from Prescription
-where date = DATE(NOW());
-
-#can reduce the refill number of a patient’s prescription
-# sampel query: reduce the refill number of prescription id 999 from 6 to 5
-#alfredo
-update Prescription
-set Refills=5
-where PrescriptID=999;
+    set Refills=Refills-1
+    where PrescriptID='3456' AND Refills > 0;
 
 ########User: Patients
 
