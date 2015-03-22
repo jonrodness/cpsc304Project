@@ -9,14 +9,15 @@ where Pr.LicenseNum=D.LicenseNum;
 # Q2 change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
 #chris
 update Prescription
-    set ReadyForPickUp=TRUE;
-    where PresciptID ='1234 456 789';
+    set ReadyForPickUp=1
+    where PrescriptID ='3456' AND ReadyForPickup=0;
 
 #can view past prescriptions for patient
 #chris
-select I.GenericName, Pr.Dosage
+select Pr.date_prescribed,I.GenericName,Pr.Refills,Pr.Dosage
 from Prescription Pr, Patient P, Includes I
-where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
+where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum=1234567890
+Order By Pr.date_prescribed;
 
 #can print out a list of prescriptions filled that day
 #chris

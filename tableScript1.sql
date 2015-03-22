@@ -397,4 +397,15 @@ INSERT INTO MakesAppointmentWith
 VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
 
 
+#Doctor(LicenseNum, FirstName, LastName,Address, PhoneNumber, Type)
+#Patient(CareCardNum,FirstName,LastName,Age,Weight,Height,Address,PhoneNumber )
+#Prescription (LicenseNum, PrescriptID,Refills,Dosage,CareCardNum,ReadyForPickUp,date_prescribed)
+#Drug(BrandName, GenericName, CompanyName,Price)
+#Includes(PrescriptID, BrandName, GenericName)
+#InteractsWith(dBrandName, dGenericName, iBrandName,iGenericName)
+#Pharmacy(Address,Name,PhoneNumber,WeekdayHoursOpening,WeekdayHoursClosing, WeekendHoursOpening,WeekendHoursClosing)
+#OrderedFrom(PrescriptID,PharmacyAddress, OrderNo )
+#TimeBlock(TimeBlockDate,StartTime,EndTime )
+#MakesAppointmentWith(TimeMade, DateMade,LicenseNum,TimeBlockDate, StartTime, EndTime, CareCardNum)
+
 
