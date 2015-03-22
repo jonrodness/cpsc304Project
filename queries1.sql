@@ -23,7 +23,7 @@ Order By Pr.date_prescribed;
 #chris
 select I.GenericName, Pr.Dosage
 from Prescription Pr, Patient P, Includes I
-where Pr.date=curdate();
+where Pr.date_prescribed=curdate();
 
 #can reduce the refill number of a patient’s prescription
 #chris
