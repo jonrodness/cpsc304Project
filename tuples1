@@ -66,3 +66,24 @@ Includes
 | 0001        | Tylenol   | Acetaminophen   |
 | 2345        | Tylenol   | Acetaminophen   |
 +-------------+-----------+-----------------+
+
+InteractsWith
++------------+--------------------+------------+----------------+
+| dBrandName | dGenericName       | iBrandName | iGenericName   |
++------------+--------------------+------------+----------------+
+| Viagra     | Sildenafil         | Biaxin     | Clarithromycin |
+| Advil      | Ibuprofen          | Coumadin   | Warfarin       |
+| Zocor      | Simvastatin        | Coumadin   | Warfarin       |
+| Niaspan    | Niacin             | Lipitor    | Atorvastatin   |
+| Klor-Con   | Potassium Chloride | Zestril    | Lisinopril     |
++------------+--------------------+------------+----------------+
+
++------------------------------------------+------------------------------+-------------+---------------------+---------------------+---------------------+---------------------+
+| Address                                  | Name                         | PhoneNumber | WeekdayHoursOpening | WeekdayHoursClosing | WeekendHoursOpening | WeekendHoursClosing |
++------------------------------------------+------------------------------+-------------+---------------------+---------------------+---------------------+---------------------+
+| 102-888 8th Ave W, Vancouver, BC V5Z 3Y1 | Costco Wholesale Pharmacy    | 7782313849  | 09:00:00            | 20:00:00            | 10:00:00            | 18:00:00            |
+| 3303 Main St, Vancouver, BC V5V 3M8      | Shoppers Drug Mart           | 7783289580  | 08:30:00            | 22:00:00            | 10:30:00            | 18:00:00            |
+| 4255 Arbutus St, Vancouver, BC V6J 4R1   | Safeway Pharmacy             | 6047316252  | 08:30:00            | 22:00:00            | 08:30:00            | 22:00:00            |
+| 6180 Fraser St, Vancouver, BC V5W 3A1    | The Medicine Shoppe Pharmacy | 6042333233  | 08:00:00            | 22:30:00            | 11:00:00            | 18:00:00            |
+| 885 Broadway W, Vancouver, BC V5Z 1J9    | Shoppers Drug Mart           | 6047081135  | 08:00:00            | 22:00:00            | 10:00:00            | 18:00:00            |
++------------------------------------------+------------------------------+-------------+---------------------+---------------------+---------------------+---------------------+
