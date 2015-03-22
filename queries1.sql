@@ -9,8 +9,8 @@ where Pr.LicenseNum=D.LicenseNum;
 # Q2 change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
 #chris
 update Prescription
-    set ReadyForPickUp=TRUE;
-    where PresciptID ='1234 456 789';
+    set ReadyForPickUp=1
+    where PresciptID ='3456';
 
 #can view past prescriptions for patient
 #chris
