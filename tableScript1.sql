@@ -307,7 +307,7 @@ INSERT INTO Includes
 VALUES ('0045', 'Coumadin','Warfarin');
 
 INSERT INTO Includes
-VALUES ('0001', 'Tylenol','Acetaminophen');
+VALUES ('0001', 'Advil','Ibuprofen');
 
 INSERT INTO Includes
 VALUES ('0002', 'Coumadin','Warfarin');
@@ -365,7 +365,16 @@ VALUES ('0003', '6180 Fraser St, Vancouver, BC V5W 3A1', '41327584123');
 
 #TimeBlock(TimeBlockDate,StartTime,EndTime )
 INSERT INTO TimeBlock
+VALUES ('2015-04-03', '11:30:00', '12:00:00');
+
+INSERT INTO TimeBlock
 VALUES ('2015-04-03', '09:00:00', '10:00:00');
+
+INSERT INTO TimeBlock
+VALUES ('2015-04-03', '10:30:00', '11:00:00');
+
+
+
 
 INSERT INTO TimeBlock
 VALUES ('2874-06-07', '09:00:00', '12:00:00');
@@ -380,9 +389,15 @@ INSERT INTO TimeBlock
 VALUES ('2015-07-04', '16:00:00', '16:30:00');
 
 #MakesAppointmentWith(TimeMade, DateMade,LicenseNum,TimeBlockDate, StartTime, EndTime, CareCardNum)
-
+INSERT INTO MakesAppointmentWith
+VALUES ('09:0:00', '2015-04-01','1232131241','2015-04-03','11:30:00','12:00:00','1234567890');
 INSERT INTO MakesAppointmentWith
 VALUES ('09:00:00', '2015-04-03','1232131241','2015-04-03','09:00:00','10:00:00','1234567890');
+
+INSERT INTO MakesAppointmentWith
+VALUES ('9:30:00', '2015-04-02','1232131241','2015-04-03','10:30:00','11:00:00','1234567890');
+
+
 
 INSERT INTO MakesAppointmentWith
 VALUES ('10:00:00', '2874-06-08', '5483843482', '2874-06-07', '09:00:00', '12:00:00', '2346528765');
@@ -396,16 +411,5 @@ VALUES('14:30:00', '2015-10-24', '3409389847', '2015-10-24', '15:00:00', '16:00:
 INSERT INTO MakesAppointmentWith
 VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
 
-
-#Doctor(LicenseNum, FirstName, LastName,Address, PhoneNumber, Type)
-#Patient(CareCardNum,FirstName,LastName,Age,Weight,Height,Address,PhoneNumber )
-#Prescription (LicenseNum, PrescriptID,Refills,Dosage,CareCardNum,ReadyForPickUp,date_prescribed)
-#Drug(BrandName, GenericName, CompanyName,Price)
-#Includes(PrescriptID, BrandName, GenericName)
-#InteractsWith(dBrandName, dGenericName, iBrandName,iGenericName)
-#Pharmacy(Address,Name,PhoneNumber,WeekdayHoursOpening,WeekdayHoursClosing, WeekendHoursOpening,WeekendHoursClosing)
-#OrderedFrom(PrescriptID,PharmacyAddress, OrderNo )
-#TimeBlock(TimeBlockDate,StartTime,EndTime )
-#MakesAppointmentWith(TimeMade, DateMade,LicenseNum,TimeBlockDate, StartTime, EndTime, CareCardNum)
 
 
