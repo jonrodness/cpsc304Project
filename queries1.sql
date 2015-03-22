@@ -1,32 +1,32 @@
 ########User: Pharmacists
 
 # Q1 view prescriptions prescribed by doctor
-#chris
+#chris-checked
 select Pr.PrescriptID
 from Prescription Pr, Doctor D
 where Pr.LicenseNum=D.LicenseNum;
 
 # Q2 change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
-#chris
+#chris-checked
 update Prescription
     set ReadyForPickUp=1
     where PrescriptID ='3456' AND ReadyForPickup=0;
 
 #can view past prescriptions for patient
-#chris
+#chris-checked
 select Pr.date_prescribed,I.GenericName,Pr.Refills,Pr.Dosage
 from Prescription Pr, Patient P, Includes I
 where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum=1234567890
 Order By Pr.date_prescribed;
 
 #can print out a list of prescriptions filled that day
-#chris
+#chris-checked
 select I.GenericName, Pr.Dosage
 from Prescription Pr, Patient P, Includes I
 where Pr.PrescriptID=I.PrescriptID AND Pr.CareCardNum=P.CareCardNum AND Pr.date_prescribed=curdate();
 
 #can reduce the refill number of a patient’s prescription
-#chris
+#chris-checked
 update Prescription
     set Refills=Refills-1
     where PrescriptID='3456' AND Refills > 0;
@@ -40,12 +40,12 @@ update Prescription
 # in our query, either set the attribute to a new value that the user entered, or the old value that we stored in variables 
 update Patient
 set FirstName = 'blabla',
-	LastName = 'blabla',
-	Age = 'blabla',
-	Weight = 'blabla',
-	Height = 'blabla',
-	Address = 'blabla',
-	PhoneNumber = 'blabla'
+    LastName = 'blabla',
+    Age = 'blabla',
+    Weight = 'blabla',
+    Height = 'blabla',
+    Address = 'blabla',
+    PhoneNumber = 'blabla'
 where P.CareCardNum LIKE '1234567890'; 
 
 
@@ -69,14 +69,53 @@ where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing;
 
 
 #given a date/time, view pharmacies that are open at that date/time
+
+
 #can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
+
 #request permission to add a doctor to their personal list of doctors
+
 #can select a personal doctor by name and last name and view a list of time blocks when the doctor is available
-#can create an appointment with any doctor at any given time, as long as the doctor is available during that time and the appointment is within business hours
+
+#can create an appointment with any doctor at any given time, as long
+#    as the doctor is available during that time and the appointment is within business hours
+
 #can cancel an appointment they made, by looking at the list of self booked appointments
-#can view upcoming appointments, on a certain date(optional) and during a certain time(optional)
+
+#----can view upcoming appointments, on a certain date(optional) and during a certain time(optional)
+# 3 queries
+# 1) view upcoming appts
+select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
+        CONCAT(D.FirstName, " ", D.LastName) as "Doctor",  
+    CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P
+where MakeApptW.LicenseNum = D.LicenseNum and
+        MakeApptW.CareCardNum = P.CareCardNum and
+        P.CareCardNum = '1234567890';
+
+# 2) view appts on a certain date(optional), sample date = '2015-04-03'
+select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
+        CONCAT(D.FirstName, " ", D.LastName) as "Doctor",  
+    CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P
+where MakeApptW.LicenseNum = D.LicenseNum and
+        MakeApptW.CareCardNum = P.CareCardNum and
+        P.CareCardNum = '1234567890' and
+        MakeApptW.TimeBlockDate = '2015-04-03';
+# 3) view appts during a certain time(optional)
+select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
+        CONCAT(D.FirstName, " ", D.LastName) as "Doctor",  
+    CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P
+where MakeApptW.LicenseNum = D.LicenseNum and
+        MakeApptW.CareCardNum = P.CareCardNum and
+        P.CareCardNum = '1234567890' and
+        MakeApptW.StartTime >=  '09:00:00'  and
+        MakeApptW.StartTime <=  '11:00:00';
+
+
 #can (quickly)check if he/she took a certain drug before
-#can view a list of drugs that interact with a specific drug
+#----can view a list of drugs that interact with a specific drug
 # example query: select the generic name of all drugs that interact with Ibuprofen
 select dGenericName
 from InteractsWith
@@ -104,18 +143,18 @@ where ReadyForPickup=1;
 # sample patient license num: '1234567890'
 
 select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
-		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
-		Pr.dosage as "Drug dosage",  Pr.refills as "Refills"
+        CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
+        Pr.dosage as "Drug dosage",  Pr.refills as "Refills"
 from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
-where 	P.CareCardNum LIKE '1234567890' and
-		P.CareCardNum = Pr.CareCardNum and 
-		Pr.LicenseNum = D.LicenseNum and 
-		I.PrescriptID = Pr.PrescriptID and
-		I.BrandName = Dr.BrandName and
-		I.GenericName = Dr.GenericName
+where   P.CareCardNum LIKE '1234567890' and
+        P.CareCardNum = Pr.CareCardNum and 
+        Pr.LicenseNum = D.LicenseNum and 
+        I.PrescriptID = Pr.PrescriptID and
+        I.BrandName = Dr.BrandName and
+        I.GenericName = Dr.GenericName
 order by Pr.date_prescribed desc;
 
-		
+        
 
 
 # --- second analogous report, but for previous prescriptions (not current)
@@ -135,6 +174,7 @@ values ('doctorIDvariable','?','?' ,'?' ,'?' , 0, NOW());
 #can view a list of pharmacies that are open on a certain date and time(optional)
 #can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
 #can view a list of all appointments for any picked date and any picked time
+
 #can register a patient who requested his/her services
 
 #can view personal information about a patient 
@@ -177,19 +217,23 @@ where D.LicenseNum=M.LicenseNum;
 
 select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
 from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, Includes I, Drug Dr
-where 	Pr.LicenseNum = D.LicenseNum and
-		Pr.CareCardNum = P.CareCardNum and 
-		O.PrescriptID = Pr.PrescriptID and 
-		O.PharmacyAddress = Pm.Address and 
-		I.PrescriptID = Pr.PrescriptID and
-		I.BrandName = Dr.BrandName and
-		I.GenericName = Dr.GenericName and
-		D.LicenseNum LIKE '1232131241';
+where   Pr.LicenseNum = D.LicenseNum and
+        Pr.CareCardNum = P.CareCardNum and 
+        O.PrescriptID = Pr.PrescriptID and 
+        O.PharmacyAddress = Pm.Address and 
+        I.PrescriptID = Pr.PrescriptID and
+        I.BrandName = Dr.BrandName and
+        I.GenericName = Dr.GenericName and
+        D.LicenseNum LIKE '1232131241';
 
-# show the average number of refills for a certain 
-select
-from
-where
+# show the average number of refills for a certain drug
+select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", AVG(P.Refills) as "Average number of refills"
+from Prescription P, Drug Dr, Includes I
+where P.PrescriptID = I.PrescriptID and 
+        I.BrandName = Dr.BrandName and 
+        I.GenericName = Dr.GenericName
+group by Dr.BrandName, Dr.GenericName
+order by AVG(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 # working on this atm
 
 
