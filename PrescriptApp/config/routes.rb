@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   get 'select' => 'drugs#select'
 
+  get 'phQ1' => 'drugs#phQ1'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

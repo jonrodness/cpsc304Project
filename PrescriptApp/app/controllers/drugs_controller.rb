@@ -5,8 +5,8 @@ class DrugsController < ApplicationController
 	def index
 		@drugs = Drug.all
 		#@drugs = Drug.find_by_sql("SELECT * FROM Drug")
-		#@result = Drug.connection.select_all("SELECT * FROM Drug")
-		@result = Drug.connection.select_all("SELECT * FROM prescription")
+		@result = Drug.connection.select_all("SELECT * FROM Drug")
+		#@result = Drug.connection.select_all("SELECT * FROM prescription")
 		
 
 		#Drug.find_by_sql "SELECT d.generic_name, d.price FROM Drug d;"
@@ -14,8 +14,13 @@ class DrugsController < ApplicationController
 
 	def select
 		@drugs = Drug.all
+		@result = Drug.connection.select_all("SELECT * FROM Drug")
+		#@result = Drug.connection.select_all("SELECT D.generic_name, p.id FROM Drug D, prescription p WHERE D.generic_name = p.generic_name")
+		render "index"
+	end
 
-		@result = Drug.connection.select_all("SELECT D.generic_name, p.id FROM Drug D, prescription p WHERE D.generic_name = p.generic_name")
+	def phQ1
+		@result = Drug.connection.select_all("select Pr.PrescriptID from Prescription Pr, Doctor D where Pr.LicenseNum=D.LicenseNum")
 		render "index"
 	end
 
