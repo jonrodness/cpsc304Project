@@ -175,7 +175,7 @@ from MakesAppointmentWith M, Doctor D
 where D.LicenseNum=M.LicenseNum;
 
 #----Generate a report about which prescriptions a doctor has
-# 	previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
+#   previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
 # sample, doctor's license num = '1232131241'
 
 select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
@@ -188,6 +188,7 @@ where 	Pr.LicenseNum = D.LicenseNum and
 		I.BrandName = Dr.BrandName and
 		I.GenericName = Dr.GenericName and
 		D.LicenseNum LIKE '1232131241';
+
 
 
 

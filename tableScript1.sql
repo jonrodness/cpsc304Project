@@ -1,7 +1,7 @@
 
-drop database doctors;
-create database doctors;
-    use doctors;
+#drop database doctors;
+#create database doctors;
+#    use doctors;
 
 drop table MakesAppointmentWith;
 drop table OrderedFrom;
@@ -43,14 +43,14 @@ grant select on Doctor to public;
 
 grant select on Patient to public;               
 
-#bit 0 false, 1 true
+#tinyint 0 false, 1 true
 CREATE TABLE Prescription 
     (LicenseNum CHAR(10),
     PrescriptID CHAR(10),  
     Refills INT,  
     Dosage VARCHAR(50),
     CareCardNum CHAR(10),
-    ReadyForPickUp bit,
+    ReadyForPickUp tinyint(1),
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
     FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
@@ -91,8 +91,8 @@ grant select on InteractsWith to public;
 
 CREATE TABLE Pharmacy
     (Address VARCHAR(50),
+    Name VARCHAR(40),  
     PhoneNumber CHAR(10),
-    Name VARCHAR(20),   
     WeekdayHoursOpening TIME,
     WeekdayHoursClosing TIME,
     WeekendHoursOpening TIME,
@@ -137,7 +137,7 @@ CREATE TABLE MakesAppointmentWith
 grant select on MakesAppointmentWith to public;
 
 
-    INSERT INTO Doctor
+INSERT INTO Doctor
 VALUES ('1232131241', 'Bob', 'Smith', '1164 Robson St, Vancouver, BC V6E 1B2',
         '6049238292', 'Gynecologist');
 
@@ -185,6 +185,10 @@ VALUES ('1232131241', '2345', '10', '4 pills 2 times per day for 10 days',
        '1234567890', '1', '2012-08-26');
 
 INSERT INTO Prescription
+VALUES ('1232131241', '2959', '5', '2 pills 4 times per day for 5 days', 
+       '1234567890', '1', '2012-10-26');
+
+INSERT INTO Prescription
 VALUES ('1232131241', '0001', '10', '4 pills 2 times per day for 10 days', 
        '1234567890', '1', '2012-08-22');
 
@@ -213,7 +217,6 @@ INSERT INTO Prescription
 VALUES ('3409389847', '0045', '3', '1 pill 12 times per day for 3 days', 
        '1099282394', '1', '2012-12-21');
 
-
 INSERT INTO Drug 
 VALUES ('Tylenol', 'Acetaminophen', 'Johnson and Johnson', '10');
 
@@ -228,9 +231,6 @@ VALUES ('Ritalin', 'Methylphenidate', 'Novartis', '50');
 
 INSERT INTO Drug 
 VALUES ('Plavix', 'Clopidogrel', 'Sanofi', '20');
-
-#drug(BrandName, GenericName, CompanyName, Price)
-#InteractsWith(dBrandName, dGenericName,iBrandName, iGenericName)
 
 INSERT INTO Drug 
 VALUES ('Coumadin','Warfarin','Bristol-Myers Squibb','40');
@@ -256,7 +256,6 @@ VALUES ('Biaxin','Clarithromycin','Abbott Laboratories','50');
 INSERT INTO Drug 
 VALUES ('Zocor', 'Simvastatin','Pfizer','99');
 
-
 INSERT INTO InteractsWith
 VALUES ('Advil', 'Ibuprofen', 'Coumadin', 'Warfarin');
 
@@ -272,7 +271,6 @@ VALUES ('Niaspan','Niacin','Lipitor','Atorvastatin');
 INSERT INTO InteractsWith
 VALUES ('Viagra', 'Sildenafil','Biaxin','Clarithromycin');
 
-#Includes(PrescriptID, BrandName, GenericName)
 INSERT INTO Includes
 VALUES('2345', 'Tylenol','Acetaminophen');
 
@@ -298,15 +296,12 @@ INSERT INTO Includes
 VALUES ('0003', 'Coumadin','Warfarin');
 
 
-#Pharmacy(Address, PhoneNumber, Name, WeekdayHoursOpening, .. , .. , .. )
-
-   
 INSERT INTO Pharmacy
-VALUES ('885 Broadway W, Vancouver, BC V5Z 1J9','6047081135', 'Shoppers Drug Mart',  
+VALUES ('885 Broadway W, Vancouver, BC V5Z 1J9','Shoppers Drug Mart', '6047081135', 
         '08:00:00' , '22:00:00', '10:00:00','18:00:00');
 
 INSERT INTO Pharmacy
-VALUES ('3303 Main St, Vancouver, BC V5V 3M8', '7783289580', 'Shoppers Drug Mart',  
+VALUES ('3303 Main St, Vancouver, BC V5V 3M8', 'Shoppers Drug Mart', '7783289580', 
         '8:30:00','22:00:00', '10:30:00','18:00:00');
 
 INSERT INTO Pharmacy
@@ -374,5 +369,6 @@ VALUES('14:30:00', '2015-10-24', '3409389847', '2015-10-24', '15:00:00', '16:00:
 
 INSERT INTO MakesAppointmentWith
 VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
+
 
 

@@ -1,0 +1,68 @@
+Doctor
++------------+---------------+-------------+-------------------------------------------------+-------------+--------------------+
+| LicenseNum | FirstName     | LastName    | Address                                         | PhoneNumber | Type               |
++------------+---------------+-------------+-------------------------------------------------+-------------+--------------------+
+| 1232131241 | Bob           | Smith       | 1164 Robson St, Vancouver, BC V6E 1B2           | 6049238292  | Gynecologist       |
+| 2743873823 | Kaneonuskatew | Kawacatoose | 307-1220 Pender St E, Vancouver, BC V6A 1W8     | 7782391233  | Gastroenterologist |
+| 3409389847 | Eoin          | Raghnall    | 104-350 Kent Ave South E, Vancouver, BC V5X 4N6 | 7783422341  | Oncologist         |
+| 3422344543 | Tau           | Dubaku      | 7547 Cambie St, Vancouver, BC V6P 3H6           | 6043421923  | Obstetrician       |
+| 5483843482 | Alex          | Lee         | 6139 Battison St, Vancouver, BC V5S 3M7         | 7782313223  | Neonatologist      |
++------------+---------------+-------------+-------------------------------------------------+-------------+--------------------+
+
+Patient
++-------------+-----------+------------+------+--------+--------+-------------------------------------------+-------------+
+| CareCardNum | FirstName | LastName   | Age  | Weight | Height | Address                                   | PhoneNumber |
++-------------+-----------+------------+------+--------+--------+-------------------------------------------+-------------+
+| 1099282394  | Jane      | Doe        |   50 |     56 |    150 | 868 Rainbow Road, Richmond, BC V6R 2S1    | 7782132349  |
+| 1234567890  | Anny      | Gakhokidze |   19 |     90 |    160 | 23 12746 102nd street, Surrey, BC, V3T1V9 | 7783334455  |
+| 1457629875  | Jon       | Rodness    |   20 |     90 |    175 | 1413 Velvet Path, Richmond, BC, V5S 7D8   | 6048790877  |
+| 2346528765  | Alfred    | Sin        |   54 |     90 |    178 | 9722 Hazy Highlands, Lick, BC, V2W 9U5    | 6045678765  |
+| 3453438890  | Chris     | Louie      |   21 |     90 |    187 | 666 Deep Dark Road, Surrey, BC V6X 6H6    | 7783921833  |
++-------------+-----------+------------+------+--------+--------+-------------------------------------------+-------------+
+
+Prescription
++------------+-------------+---------+--------------------------------------+-------------+----------------+-----------------+
+| LicenseNum | PrescriptID | Refills | Dosage                               | CareCardNum | ReadyForPickUp | date_prescribed |
++------------+-------------+---------+--------------------------------------+-------------+----------------+-----------------+
+| 1232131241 | 0001        |      10 | 4 pills 2 times per day for 10 days  | 1234567890  |              1 | 2012-08-22      |
+| 1232131241 | 0002        |      10 | 4 pills 2 times per day for 10 days  | 1234567890  |              1 | 2012-08-23      |
+| 1232131241 | 0003        |      10 | 4 pills 2 times per day for 10 days  | 1234567890  |              1 | 2012-08-24      |
+| 3409389847 | 0045        |       3 | 1 pill 12 times per day for 3 days   | 1099282394  |              1 | 2012-12-21      |
+| 2743873823 | 0098        |       2 | 1 pill 3 times per day for 10 days   | 3453438890  |              1 | 2012-12-12      |
+| 1232131241 | 2345        |      10 | 4 pills 2 times per day for 10 days  | 1234567890  |              1 | 2012-08-26      |
+| 5483843482 | 3456        |       0 | 1 tbsp 1 time per day for 1 day      | 2346528765  |              0 | 2014-05-10      |
+| 3422344543 | 9876        |     200 | 12 pills 8 times per day for 45 days | 1457629875  |              0 | 2013-12-16      |
++------------+-------------+---------+--------------------------------------+-------------+----------------+-----------------+
+
+Drug
++-----------+--------------------+---------------------------+-------+
+| BrandName | GenericName        | CompanyName               | Price |
++-----------+--------------------+---------------------------+-------+
+| Advil     | Ibuprofen          | Pfizer                    |    11 |
+| Biaxin    | Clarithromycin     | Abbott Laboratories       |    50 |
+| Coumadin  | Warfarin           | Bristol-Myers Squibb      |    40 |
+| Klor-Con  | Potassium Chloride | Upsher-Smith Laboratories |    35 |
+| Lipitor   | Atorvastatin       | Pfizer                    |    30 |
+| MagicDrug | Clindamycin        | DatabaseDrugs Inc.        |    60 |
+| Niaspan   | Niacin             | Abbott Laboratories       |    45 |
+| Plavix    | Clopidogrel        | Sanofi                    |    20 |
+| Ritalin   | Methylphenidate    | Novartis                  |    50 |
+| Tylenol   | Acetaminophen      | Johnson and Johnson       |    10 |
+| Viagra    | Sildenafil         | Pfizer                    |    40 |
+| Zestril   | Lisinopril         | Apotex Inc.               |    50 |
+| Zocor     | Simvastatin        | Pfizer                    |    99 |
++-----------+--------------------+---------------------------+-------+
+
+Includes
++-------------+-----------+-----------------+
+| PrescriptID | BrandName | GenericName     |
++-------------+-----------+-----------------+
+| 3456        | Advil     | Ibuprofen       |
+| 0002        | Coumadin  | Warfarin        |
+| 0003        | Coumadin  | Warfarin        |
+| 0045        | Coumadin  | Warfarin        |
+| 0098        | Plavix    | Clopidogrel     |
+| 9876        | Ritalin   | Methylphenidate |
+| 0001        | Tylenol   | Acetaminophen   |
+| 2345        | Tylenol   | Acetaminophen   |
++-------------+-----------+-----------------+
