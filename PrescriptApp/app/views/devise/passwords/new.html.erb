@@ -8,6 +8,21 @@
     <%= f.email_field :email, autofocus: true %>
   </div>
 
+    <div class="field">
+    <%= f.label :licenseNum %><br />
+    <%= f.text_field :licenseNum %>
+  </div>
+
+   <div class="field">
+    <%= f.label :CareCardNum %><br />
+    <%= f.text_field :CareCardNum %>
+  </div>
+
+   <div class="field">
+    <%= f.label :PharmacyAddress %><br />
+    <%= f.text_field :PharmacyAddress %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Send me reset password instructions" %>
   </div>

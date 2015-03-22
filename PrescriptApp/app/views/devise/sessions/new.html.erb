@@ -7,6 +7,26 @@
   </div>
 
   <div class="field">
+    <%= f.label :user_type %><br />
+    <%= f.text_field :user_type, autofocus: true %>
+  </div>
+
+    <div class="field">
+    <%= f.label :license_num %><br />
+    <%= f.text_field :license_num %>
+  </div>
+
+   <div class="field">
+    <%= f.label :care_card_num %><br />
+    <%= f.text_field :care_card_num %>
+  </div>
+
+   <div class="field">
+    <%= f.label :pharmacy_address %><br />
+    <%= f.text_field :pharmacy_address %>
+  </div>
+
+  <div class="field">
     <%= f.label :password %><br />
     <%= f.password_field :password, autocomplete: "off" %>
   </div>

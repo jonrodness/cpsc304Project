@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150322003721) do
+ActiveRecord::Schema.define(version: 20150322035441) do
 
   create_table "Drug", id: false, force: :cascade do |t|
     t.string  "brand_name",   limit: 30
@@ -40,6 +40,10 @@ ActiveRecord::Schema.define(version: 20150322003721) do
     t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "license_num",            limit: 255
+    t.string   "care_card_num",          limit: 255
+    t.string   "pharmacy_address",       limit: 255
+    t.string   "user_type",              limit: 255
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

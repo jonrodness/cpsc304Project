@@ -1,53 +1,6 @@
 <h1>Drugs</h1>
 
-<div><h2>Less Dynamic:</h2></div>
-<table>
-	<thead>
-		<tr>
-			<th>Brand Name</th>
-			<th>Generic Name</th>
-			<th>Company Name</th>
-			<th>Price</th>
-		</tr>
-	</thead>
-
-	<tbody>
-		<% @drugs.each do |drug| %>
-		<tr>
-			<td><%= drug.brand_name %></td>
-			<td><%= drug.generic_name %></td>
-			<td><%= drug.company_name %></td>
-			<td><%= drug.price %></td>
-		</tr>
-		<% end %>
-	</tbody>
-</table>
-
-<div><h2>More Dynamic (very messy, but will look like above):</h2></div>
-
-<table>
-	<thead>
-		<tr>
-		<% @drugs.attribute_names.each do |title| %>
-			<th><%= title %></th>
-		<% end %>
-		</tr>
-	</thead>
-
- 	<tbody>
-		<% @drugs.each do |drug| %>
-		<tr>
-		<% drug.attributes.each do |key, value| %>
-			<td><%= value %></td>
-		<% end %>
-		</tr>
-		<% end %>
-	</tbody> -->
-</table>
-
-
-
-<div><h2>TEST3</h2></div>
+<div><h2>Results</h2></div>
 
 <table>
 	<thead>
@@ -69,7 +22,9 @@
 	</tbody>
 </table>
 
-<%= link_to "prescriptMatch", controller: "drugs", action: "select" %>
+<%= render 'doctor' %>
+<%= render 'patient' %>
+<%= render 'pharmacist' %>
 
 <%= link_to "Home", root_path %>
 

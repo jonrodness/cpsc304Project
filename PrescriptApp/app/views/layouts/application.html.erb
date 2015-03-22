@@ -8,7 +8,19 @@
 <body>
 
 <% if user_signed_in? %>
-  Signed in as<strong><%= current_user.email %></strong>.
+	 <%= :user_type %> 
+	<% if (current_user.user_type == "Pharmacist") %>
+  		Signed in as Pharmacist
+  	<% end %>
+
+  	<% if (current_user.user_type == "Doctor") %>
+  		Signed in as Doctor
+  	<% end %>
+
+  	<% if (current_user.user_type == "Patient") %>
+  		Signed in as Patient
+  	<% end %>
+
   <%= link_to 'Edit profile', edit_user_registration_path %>
   <%= link_to "Logout", destroy_user_session_path, method: :delete %>
 <% else %>
