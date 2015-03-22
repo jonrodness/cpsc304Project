@@ -1,54 +1,35 @@
 ########User: Pharmacists
 
 # Q1 view prescriptions prescribed by doctor
-#chris
+#chris-checked
 select Pr.PrescriptID
 from Prescription Pr, Doctor D
 where Pr.LicenseNum=D.LicenseNum;
 
 # Q2 change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
-#chris
+#chris-checked
 update Prescription
     set ReadyForPickUp=1
     where PrescriptID ='3456' AND ReadyForPickup=0;
 
 #can view past prescriptions for patient
-#chris
+#chris-checked
 select Pr.date_prescribed,I.GenericName,Pr.Refills,Pr.Dosage
 from Prescription Pr, Patient P, Includes I
 where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum=1234567890
 Order By Pr.date_prescribed;
 
 #can print out a list of prescriptions filled that day
-#chris
+#chris-checked
 select I.GenericName, Pr.Dosage
 from Prescription Pr, Patient P, Includes I
-where Pr.date=curdate();
+where Pr.PrescriptID=I.PrescriptID AND Pr.CareCardNum=P.CareCardNum AND Pr.date_prescribed=curdate();
 
 #can reduce the refill number of a patient’s prescription
-#chris
+#chris-checked
 update Prescription
-    set Refills=Refills-1;
-    where PresciptID='1234 456 789';
-
-# sampel query: select all past prescriptions for patient number 999
-# alfredo
-select
-from Prescription pr
-where pr.CareCardNum=999 and pr.date < DATE(NOW());
-
-#can print out a list of prescriptions filled that day
-#alfredo
-select PrescriptID
-from Prescription
-where date = DATE(NOW());
-
-#can reduce the refill number of a patient’s prescription
-# sampel query: reduce the refill number of prescription id 999 from 6 to 5
-#alfredo
-update Prescription
-set Refills=5
-where PrescriptID=999;
+    set Refills=Refills-1
+    where PrescriptID='3456' AND Refills > 0;
 
 ########User: Patients
 
@@ -59,12 +40,12 @@ where PrescriptID=999;
 #	 in our query, either set the attribute to a new value that the user entered, or the old value that we stored in variables 
 update Patient
 set FirstName = 'blabla',
-	LastName = 'blabla',
-	Age = 'blabla',
-	Weight = 'blabla',
-	Height = 'blabla',
-	Address = 'blabla',
-	PhoneNumber = 'blabla'
+    LastName = 'blabla',
+    Age = 'blabla',
+    Weight = 'blabla',
+    Height = 'blabla',
+    Address = 'blabla',
+    PhoneNumber = 'blabla'
 where P.CareCardNum LIKE '1234567890'; 
 
 
@@ -126,6 +107,7 @@ where
 	TimeBlockDate = '2015-04-03' and
 	StartTime = '09:00:00';
 
+
 #----can view upcoming appointments, on a certain date(optional) and during a certain time(optional)
 # 3 queries
 # 1) view upcoming appts
@@ -156,6 +138,7 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 		P.CareCardNum = '1234567890' and
 		MakeApptW.StartTime >=  '09:00:00'  and
 		MakeApptW.StartTime <=  '11:00:00';
+
 
 
 #can (quickly)check if he/she took a certain drug before
@@ -201,8 +184,8 @@ where ReadyForPickup=1;
 # 	sample patient license num: '1234567890'
 
 select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
-		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
-		Pr.dosage as "Drug dosage",  Pr.refills as "Refills"
+        CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
+        Pr.dosage as "Drug dosage",  Pr.refills as "Refills"
 from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
 where 	P.CareCardNum LIKE '1234567890' and
 		P.CareCardNum = Pr.CareCardNum and 
@@ -211,9 +194,10 @@ where 	P.CareCardNum LIKE '1234567890' and
 		I.BrandName = Dr.BrandName and
 		I.GenericName = Dr.GenericName and
 		Pr.refills > 0
+
 order by Pr.date_prescribed desc;
 
-		
+        
 
 
 # --- second analogous report, but for previous prescriptions (not current)
@@ -285,6 +269,7 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 		D.LicenseNum  = '1232131241' and
 		MakeApptW.StartTime >=  '09:00:00'  and
 		MakeApptW.StartTime <=  '11:00:00';
+
 #can register a patient who requested his/her services
 	# nope
 
@@ -348,6 +333,7 @@ where 	Pr.LicenseNum = D.LicenseNum and
 		I.GenericName = Dr.GenericName and
 		D.LicenseNum LIKE '1232131241';
 
+
 # show the average number of refills for a certain drug
 select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", AVG(P.Refills) as "Average number of refills"
 from Prescription P, Drug Dr, Includes I
@@ -356,6 +342,7 @@ where P.PrescriptID = I.PrescriptID and
 		I.GenericName = Dr.GenericName
 group by Dr.BrandName, Dr.GenericName
 order by AVG(P.Refills) desc, Dr.BrandName, Dr.GenericName;
+
 
 
 
