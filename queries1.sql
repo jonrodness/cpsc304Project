@@ -54,15 +54,19 @@ where PrescriptID=999;
 
 # ----update personal information about him/herself
 #?????? so many possible attributes to update?
-# anny: i will write it in pseudo code
-# 1) we will retrieve all attributes of that patient, save them in local variables
-# 2) we check which fields the patient desires to change (e.g. if textbox1 is not empty, patient wants to change that attr)
-# 3) construct a new query that consists of old and new attributes
 # sample query: patient carecard num = 1234567890
-select *
-from Patient P
+# store all attrs of the patient in some variables
+# in our query, either set the attribute to a new value that the user entered, or the old value that we stored in variables 
+update Patient
+set FirstName = 'blabla',
+	LastName = 'blabla',
+	Age = 'blabla',
+	Weight = 'blabla',
+	Height = 'blabla',
+	Address = 'blabla',
+	PhoneNumber = 'blabla'
 where P.CareCardNum LIKE '1234567890'; 
-# TODOOOOO ^^^
+
 
 #----can input an address and a radius and see a list of doctors offices within the indicated radius of the indicated address
 # this is gonna be complicated omg
@@ -111,12 +115,30 @@ where ReadyForPickup=1;
 
 #----Generate a report about what prescriptions a patient is currently using, 
 # when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
+# the last part is impossible, we dont have that kind of info
+# and we cant differentiate between prescriptions patient took vs taking now
+# generate a report about prescriptions for a patient, when they were prescribed, which doctor prescribed them
+# the most recent on the top
+
 # sample patient license num: '1234567890'
-select 
-from Patient P, Prescription Pr, Doctor D, Pharmacy Pm
-where 
-# working on this now - anny
-#second analogous report, but for previous prescriptions (not current)
+
+select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
+		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
+		Pr.dosage as "Drug dosage",  Pr.refills as "Refills"
+from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
+where 	P.CareCardNum LIKE '1234567890' and
+		P.CareCardNum = Pr.CareCardNum and 
+		Pr.LicenseNum = D.LicenseNum and 
+		I.PrescriptID = Pr.PrescriptID and
+		I.BrandName = Dr.BrandName and
+		I.GenericName = Dr.GenericName
+order by Pr.date_prescribed desc;
+
+		
+
+
+# --- second analogous report, but for previous prescriptions (not current)
+#anny: like i said, its impossible, see above query
 
 
 ########User: Doctors
@@ -128,7 +150,7 @@ values ('doctorIDvariable','?','?' ,'?' ,'?' , 0, NOW());
 
 
 #same as the patient ^^^
-#can view a list of pharmacies that are open at the moment
+#can view a list of pharmacies that are open at the moment 
 #can view a list of pharmacies that are open on a certain date and time(optional)
 #can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
 #can view a list of all appointments for any picked date and any picked time
@@ -172,14 +194,22 @@ where D.LicenseNum=M.LicenseNum;
 #   previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
 # sample, doctor's license num = '1232131241'
 
-select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
-from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O
-where   Pr.LicenseNum = D.LicenseNum and
-        Pr.CareCardNum = P.CareCardNum and 
-        O.PrescriptID = Pr.PrescriptID and 
-        O.PharmacyAddress = Pm.Address and 
-        D.LicenseNum LIKE '1232131241';
-        # TODO, add a drug name as well!!! to the select clause
+select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
+from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, Includes I, Drug Dr
+where 	Pr.LicenseNum = D.LicenseNum and
+		Pr.CareCardNum = P.CareCardNum and 
+		O.PrescriptID = Pr.PrescriptID and 
+		O.PharmacyAddress = Pm.Address and 
+		I.PrescriptID = Pr.PrescriptID and
+		I.BrandName = Dr.BrandName and
+		I.GenericName = Dr.GenericName and
+		D.LicenseNum LIKE '1232131241';
+
+# show the average number of refills for a certain 
+select
+from
+where
+# working on this atm
 
 
 
