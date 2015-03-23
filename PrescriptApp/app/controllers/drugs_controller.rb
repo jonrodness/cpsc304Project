@@ -19,6 +19,7 @@ class DrugsController < ApplicationController
 		render "index"
 	end
 
+
 	def show
 	end
 

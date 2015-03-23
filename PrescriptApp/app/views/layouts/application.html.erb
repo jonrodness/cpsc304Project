@@ -1,31 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PrescriptApp | <%= content_for?(:title) ? yield(:title) : "For all your prescription needs" %></title>  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+<title>PrescriptApp | <%= content_for?(:title) ? yield(:title) : "For all your prescription needs" %></title>  
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
+
 <% if user_signed_in? %>
-	 <%= :user_type %> 
-	<% if (current_user.user_type == "Pharmacist") %>
+<div class='col-md-8'>
+Signed in as: 
+      <%= current_user.email %>
+      <%= current_user.user_type %>
+      |
+
+	  <% if (current_user.user_type = 'Pharmacist') %>
   		Signed in as Pharmacist
   	<% end %>
 
-  	<% if (current_user.user_type == "Doctor") %>
+  	<% if (current_user.user_type = 'Doctor') %>
   		Signed in as Doctor
   	<% end %>
 
-  	<% if (current_user.user_type == "Patient") %>
+  	<% if (current_user.user_type = 'Patient') %>
   		Signed in as Patient
   	<% end %>
-
-  <%= link_to 'Edit profile', edit_user_registration_path %>
-  <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+</div>
+<div class='col-md-4' style='text-align: right'>
+  <button class='btn btn-default'>
+    <%= link_to 'Edit profile', edit_user_registration_path %>
+  </button>
+  <button class='btn btn-default'>
+    <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+    </button>
+</div>
 <% else %>
-  <%= link_to "Sign up", new_user_registration_path %> |
-  <%= link_to "Login", new_user_session_path %>
+<div class='col-md-4'>
+  <button class='btn btn-default'>
+    <%= link_to "Sign up", new_user_registration_path %>
+  </button>
+  <button class='btn btn-default'>
+    <%= link_to "Login", new_user_session_path %>
+  </button>
+</div>
 <% end %>
 
 <% if notice %>

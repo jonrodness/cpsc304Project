@@ -8,10 +8,15 @@
     <%= f.email_field :email, autofocus: true %>
   </div>
 
+
   <div class="field">
     <%= f.label :user_type %><br />
-    <%= f.text_field :user_type, autofocus: true %>
+    <%= f.select :user_type, 
+    options_for_select([['Doctor','Doctor'],['Patient','Patient'],['Pharmacist','Pharmacist']], params[:user_type]),
+    {}, { :class => 'span3 controls controls-row' } %>
   </div>
+
+
 
   <div class="field">
     <%= f.label :license_num %><br />

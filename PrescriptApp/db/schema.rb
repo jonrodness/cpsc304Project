@@ -13,14 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20150322035441) do
 
-  create_table "Drug", id: false, force: :cascade do |t|
+  create_table "drug", id: false, force: :cascade do |t|
     t.string  "brand_name",   limit: 30
-    t.string  "generic_name", limit: 30, default: "", null: false
-    t.string  "company_name", limit: 30, default: "", null: false
+    t.string  "generic_name", limit: 30
+    t.string  "company_name", limit: 30
     t.integer "price",        limit: 4
   end
-
-  add_index "Drug", ["brand_name"], name: "brand_name", unique: true, using: :btree
 
   create_table "prescription", id: false, force: :cascade do |t|
     t.integer "id",           limit: 4
