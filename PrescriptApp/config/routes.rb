@@ -9,9 +9,42 @@ Rails.application.routes.draw do
 
   resources :drugs
 
-  get 'select' => 'drugs#select'
+  get 'qPh1' => 'drugs#qPh1'
+  get 'qPh2' => 'drugs#qPh2'
+  get 'qPh3' => 'drugs#qPh3'
+  get 'qPh4' => 'drugs#qPh4'
+  get 'qPh5' => 'drugs#qPh5'
 
-  get 'phQ1' => 'drugs#phQ1'
+  get 'qPa1' => 'drugs#qPa1'
+  get 'qPa2' => 'drugs#qPa2'
+  get 'qPa3' => 'drugs#qPa3'
+  get 'qPa4' => 'drugs#qPa4'
+  get 'qPa5' => 'drugs#qPa5'
+  get 'qPa6' => 'drugs#qPa6'
+  get 'qPa7' => 'drugs#qPa7'
+  get 'qPa8' => 'drugs#qPa8'
+  get 'qPa9' => 'drugs#qPa9'
+  get 'qPa10' => 'drugs#qPa10'
+  get 'qPa11' => 'drugs#qPa11'
+
+  get 'qD1' => 'drugs#qD1'
+  get 'qD2' => 'drugs#qD2'
+  get 'qD3' => 'drugs#qD3'
+  get 'qD4' => 'drugs#qD4'
+  get 'qD5' => 'drugs#qD5'
+  get 'qD6' => 'drugs#qD6'
+  get 'qD7' => 'drugs#qD7'
+  get 'qD8' => 'drugs#qD8'
+  get 'qD9' => 'drugs#qD9'
+  get 'qD10' => 'drugs#qD10'
+  get 'qD11' => 'drugs#qD11'
+  get 'qD12' => 'drugs#qD12'
+  get 'qD13' => 'drugs#qD13'
+  get 'qD14' => 'drugs#qD14'
+  get 'qD15' => 'drugs#qD15'
+  get 'qD16' => 'drugs#qD16'
+
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
