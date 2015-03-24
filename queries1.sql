@@ -39,11 +39,13 @@ update Prescription
 ########User: Patients
 
 # qPa1----update personal information about him/herself
+# anny-checked
 #	?????? so many possible attributes to update?
 #	 sample query: patient carecard num = 1234567890
 #	 store all attrs of the patient in some variables
-#	 in our query, either set the attribute to a new value that the user entered, or the old value that we stored in variables 
-#jon-checked: entered, need to add VARIABLES for firstname, lastname, age, weight, height, address, phonenumber, CareCardNum
+#	 in our query, either set the attribute to a new value that the user entered, or the old value that we stored in variables
+#jon-checked: entered, need to add VARIABLES for firstname, lastname, age, weight, height, address, phonenumber, CareCardNum, ADD SECOND QUERY
+
 update Patient
 set FirstName = 'blabla',
     LastName = 'blabla',
@@ -54,6 +56,10 @@ set FirstName = 'blabla',
     PhoneNumber = 'blabla'
 where P.CareCardNum LIKE '1234567890'; 
 
+select*
+from Patient P 
+where P.CareCardNum LIKE '1234567890'
+
 
 #----can input an address and a radius and see a list of doctors offices within the indicated radius of the indicated address
 	# this is gonna be complicated omg
@@ -61,6 +67,7 @@ where P.CareCardNum LIKE '1234567890';
 	# what does this even mean 
 
 # qPa2------select pharmacies that are currently open
+#select pharmacies that are currently open
 #chris--in one query or 2?
 #jon -checked: entered, working, reformat
 select *
@@ -69,6 +76,8 @@ where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing;
 
 
 # qPa3------select pharmacies that are currently open
+# based on the day of the week, use one or the other query 
+#select pharmacies that are currently open
 #chris
 #jon -checked: entered, working, reformat
 select *
@@ -89,7 +98,9 @@ where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing;
 
 # qPa4
 #jon -checked: entered, add variables
+
 #can create an appointment with any doctor at any given time, as long
+# anny-checked
 # 	 as the doctor is available during that time and the appointment is within business hours
 # 	first, we gotta create a timeblock tuple 
 # 	second, recall MakesAppointmentWith(TimeMade, DateMade,LicenseNum,TimeBlockDate, StartTime, EndTime, CareCardNum)
@@ -112,6 +123,8 @@ values (
 
 # qPa5 - can cancel an appointment they made, by looking at the list of self booked appointments
 #jon - checked: entered, add variables
+#can cancel an appointment they made, by looking at the list of self booked appointments
+# checked
 delete from MakesAppointmentWith 
 where
 	CareCardNum = '1234567890' and
@@ -155,11 +168,16 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 
 # qPa7 - can (quickly)check if he/she took a certain drug before
 #----can view a list of drugs that interact with a specific drug
+# chris-checked
 # example query: select the generic name of all drugs that interact with Ibuprofen
 # jon - checked: entered,  add variables
 select dGenericName
 from InteractsWith
-where iGenericName like '%Ibuprofen%';
+where iGenericName like '%Ibuprofen%'
+UNION
+select iGenericName
+from InteractsWith
+where dGenericName like '%Ibuprofen%';
 
 # qPa8 - can input a prescription ID and view a list of drugs that interact with this prescription
 	/*
@@ -169,6 +187,8 @@ where iGenericName like '%Ibuprofen%';
 	where p.
 	*/ -- ^Don't think this query is possible given our schema -Alfred
 	# jon - checked: entered, add variables
+#can input a prescription ID and view a list of drugs that interact with this prescription
+#checked and doneeee
 select distinct IW.iBrandName as "Brand name" , IW.iGenericName as "Generic name"
 from Prescription P, InteractsWith IW, Includes I, Drug D1, Drug D2
 where 	P.PrescriptID LIKE '0001' and
@@ -184,18 +204,26 @@ where 	P.PrescriptID LIKE '0001' and
 
 
 # qPa9 - can view status of prescription pick up (ready or not for pickup)
-#jon: checked: entered, works
-select *
-from Prescription
-where ReadyForPickup=1;
+#jon: checked: - CHANGE TO FIRST QUERY
+#----can view all prescriptions that are ready for pickup
+#checked
+select Pr.PrescriptID as "Prescription ID" , O.PharmacyAddress
+from Prescription Pr, Patient P, OrderedFrom O
+where Pr.ReadyForPickup=1 and 
+	O.PrescriptID = Pr.PrescriptID and 
+	P.CareCardNum LIKE '1234567890';
+-- select *
+-- from Prescription
+-- where ReadyForPickup=1;
+
 
 # qPa10----Generate a report about what prescriptions a patient is currently using, 
 # 	when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
 # 	the last part is impossible, we dont have that kind of info
 # 	and we cant differentiate between prescriptions patient took vs taking now
+# anny:checked
 # 	generate a report about prescriptions for a patient, when they were prescribed, which doctor prescribed them
-# 	the most recent on the top
-	
+# 	the most recent on the top	
 # 	sample patient license num: '1234567890'
 # jon: checked: entered, add variables
 
@@ -233,8 +261,13 @@ order by Pr.date_prescribed desc;
 
 
 ########User: Doctors
+
 # qD1 - can update personal information about him/herself
-# jon: checked: entered, add variables
+# jon: checked: entered, add variables, ADD SECOND QUERY?
+#-----can update personal information about him/herself
+#checked
+
+
 update Doctor
 set
 	FirstName = 'bla',
@@ -245,12 +278,23 @@ set
 where
 	LicenseNum = '1232131241';
 
+select *
+from Doctor
+where
+	LicenseNum = '1232131241';
+
 
 # qD2 can prescribe a drug
 #chris--need to put variable names later
-# jon: checked: entered, add variables
+# jon: checked: entered, add variables -LOOK AT AGAIN, MAY NEED TO CHANGE
+#-----can prescribe a drug
+#chris--checked
+#licensenum= 1232131241
+#carecardnum = 1234567890
+# Prescription (LicenseNum, PrescriptID,Refills,Dosage,CareCardNum,ReadyForPickUp,date_prescribed)
+
 insert into Prescription
-values ('doctorIDvariable','?','?' ,'?' ,'?' , 0, NOW());
+values ('1232131241','0000','10' ,'Erdday allday for 50 days' ,'1234567890' , 0, NOW());
 
 
 #same as the patient ^^^
@@ -269,6 +313,7 @@ values ('doctorIDvariable','?','?' ,'?' ,'?' , 0, NOW());
 #can view a list of all appointments for any picked date and any picked time
 # qD5
 # jon -checked: entered, add variables
+#----can view a list of all appointments for any picked date and any picked time
 select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 		CONCAT(P.FirstName, " ", P.LastName) as "Patient",  
 	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
@@ -277,11 +322,12 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 		MakeApptW.CareCardNum = P.CareCardNum and
 		D.LicenseNum  = '1232131241'
 order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate; 
-# the order by seems to be unnecessary, but ill leave it here just in case
+
 
 # qD6
 # jon -checked: entered, add variables
 # 2) view appts on a certain date(optional), sample date = '2015-04-03'
+#---- 2) view appts on a certain date(optional), sample date = '2015-04-03'
 select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 		CONCAT(P.FirstName, " ", P.LastName) as "Patient",  
 	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
@@ -294,6 +340,7 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 # qD7
 # jon -checked: entered, add variables
 # 3) view appts during a certain time(optional)
+#---- 3) view appts during a certain time(optional)
 select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 		CONCAT(P.FirstName, " ", P.LastName) as "Patient",  
 	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
@@ -304,15 +351,19 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 		MakeApptW.StartTime >=  '09:00:00'  and
 		MakeApptW.StartTime <=  '11:00:00';
 
+
 #can register a patient who requested his/her services
 	# nope
 
 # qD8 - can view personal information about a patient 
 # jon -checked: entered, add variables
+#-----can view personal information about a patient 
 # example query: view all data about patient number 999
 select *
 from Patient
 where CareCardNum=999;
+# doctor should be able to see a list of previous/current prescriptions for a patient
+#	the query is already implemented above
 
 # qD9 -can view a list of previous prescriptions for a certain patient
 # jon - checked: entered, ensure only for this doctor's patients
@@ -320,46 +371,87 @@ where CareCardNum=999;
 
 
 # qD10 - can view a list of previous drugs taken by a certain patient
+#-----can view a list of previous drugs taken by a certain patient
 #chris
 # jon - checked: entered, ensure only for this doctor's patients
 select I.GenericName
 from Prescription Pr, Patient P, Includes I
-where P.CareCardNum= '1234 456 789' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
+where P.CareCardNum= '1234567890' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
 
 
-# qD11 - can check if a certain drug was taken in the past by a certain patient
-# jon - checked: entered, ensure only for this doctor's patients
-select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
-		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
-		Pr.dosage as "Drug dosage"
-from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
-where 	P.CareCardNum LIKE '1234567890' and
-		P.CareCardNum = Pr.CareCardNum and 
-		Pr.LicenseNum = D.LicenseNum and 
-		I.PrescriptID = Pr.PrescriptID and
-		I.BrandName = Dr.BrandName and
-		I.GenericName = Dr.GenericName and
-		Pr.refills = 0
-order by Pr.date_prescribed desc;
+#old NEED TO UPDATE TO NEXT ONE
+-- # qD11 - can check if a certain drug was taken in the past by a certain patient
+-- # jon - checked: entered, ensure only for this doctor's patients
+-- select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
+-- 		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
+-- 		Pr.dosage as "Drug dosage"
+-- from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
+-- where 	P.CareCardNum LIKE '1234567890' and
+-- 		P.CareCardNum = Pr.CareCardNum and 
+-- 		Pr.LicenseNum = D.LicenseNum and 
+-- 		I.PrescriptID = Pr.PrescriptID and
+-- 		I.BrandName = Dr.BrandName and
+-- 		I.GenericName = Dr.GenericName and
+-- 		Pr.refills = 0
+-- order by Pr.date_prescribed desc;
 
 
-# qD12 - can view a list of drugs that interact with a specific drug  (same as patient)
-#chris
-# jon - checked: entered, column names are not working
-select I.iGenericName
+-- # qD12 - can view a list of drugs that interact with a specific drug  (same as patient)
+-- #chris
+-- # jon - checked: entered, column names are not working
+-- select I.iGenericName
+
+
+#can check if a certain drug was taken in the past by a certain patient
+# 	anny:checked
+# jon - change!
+select Pr.LicenseNum as "Prescribed by", Pr.PrescriptID as "Prescription ID", Pr.Dosage, Pr.date_prescribed
+from Patient P, Prescription Pr, Includes I
+where P.CareCardNum = Pr.CareCardNum and
+	P.CareCardNum = '1234567890' and
+	Pr.PrescriptID = I.PrescriptID and
+	I.BrandName LIKE 'BLABLA' or
+	I.GenericName LIKE 'blabla';
+		
+
+
+
+#can view a list of drugs that interact with a specific drug  (same as patient)
+#chris-checked
+#jon -change!!
+select D.GenericName, D.BrandName
 from InteractsWith I, Drug D
-where D.GenericName=I.dGenericName AND D.CompanyName=I.dCompanyName;
+where (I.dBrandName = 'Coumadin' and
+		I.dGenericName = 'Warfarin' and
+		I.iGenericName = D.GenericName and
+		I.iBrandName = D.BrandName) or
+		(I.iBrandName = 'Coumadin' and
+		I.iGenericName = 'Warfarin' and
+		I.dBrandName = D.BrandName and
+		I.dGenericName = D.GenericName);
 
-#notified when patients cancel an appointment
-	# hmmm? probs we can just do this at the application level, idk
 
-# qD13
+#old NEED TO CHANGE TO NEXT ONE
+-- #notified when patients cancel an appointment
+-- 	# hmmm? probs we can just do this at the application level, idk
+
+-- # qD13
+-- #can view a list of past appointments by a certain patient
+-- #chris
+-- # jon - checked: entered, works, but need to select more attributes?
+-- select M.DateMade
+-- from MakesAppointmentWith M, Doctor D
+-- where D.LicenseNum=M.LicenseNum;
+
 #can view a list of past appointments by a certain patient
-#chris
-# jon - checked: entered, works, but need to select more attributes?
-select M.DateMade
-from MakesAppointmentWith M, Doctor D
-where D.LicenseNum=M.LicenseNum;
+#chris-checked
+# jon - change!!
+select *
+from MakesAppointmentWith M, Doctor D, Patient p
+where D.LicenseNum=M.LicenseNum and
+	M.CareCardNum = P.CareCardNum and
+	TimeBlockDate < curdate();
+
 
 # qD14----Generate a report about which prescriptions a doctor has
 #   previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
@@ -379,6 +471,8 @@ where 	Pr.LicenseNum = D.LicenseNum and
 
 # qD15 - show the average number of refills for a certain drug
 # jon - checked: entered, works
+# show the average number of refills for a certain drug
+#checked - need this query to pass the "aggregation query" check
 select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", AVG(P.Refills) as "Average number of refills"
 from Prescription P, Drug Dr, Includes I
 where P.PrescriptID = I.PrescriptID and 
@@ -390,6 +484,8 @@ order by AVG(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
 # qD16 - select patients who ordered all products by company name = Pfizer
 # jon - checked: entered, add variables
+# select patients who ordered all products by company name = Pfizer
+#checked - need this query to pass the "division query" check
 select Pa.CareCardNum, Pa.FirstName
 from Patient Pa
 Where NOT EXISTS

@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20150323152414) do
 
   add_index "Doctor", ["Address", "FirstName", "LastName"], name: "Address", unique: true, using: :btree
 
+<<<<<<< HEAD
   create_table "Drug", id: false, force: :cascade do |t|
     t.string  "BrandName",   limit: 30, default: "", null: false
     t.string  "GenericName", limit: 30, default: "", null: false
@@ -115,6 +116,18 @@ ActiveRecord::Schema.define(version: 20150323152414) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "identity",   limit: 4
+=======
+  create_table "drug", id: false, force: :cascade do |t|
+    t.string  "brand_name",   limit: 30
+    t.string  "generic_name", limit: 30
+    t.string  "company_name", limit: 30
+    t.integer "price",        limit: 4
+  end
+
+  create_table "prescription", id: false, force: :cascade do |t|
+    t.integer "id",           limit: 4
+    t.string  "generic_name", limit: 30
+>>>>>>> d7350094fe538c2d1e368a7eae759bdadb9ef22e
   end
 
   create_table "users", force: :cascade do |t|
