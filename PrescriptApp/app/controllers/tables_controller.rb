@@ -1,5 +1,5 @@
 class TablesController < ApplicationController
-	#before_action :find_table, :only ["qPa1"]
+	before_action :get_user_attributes
 
 	def index
 		@table = Table.new
@@ -189,6 +189,7 @@ class TablesController < ApplicationController
 
  	# Update personal information
 	 	# ADD VARIABLES
+	 	# DOES NOT WORK YET
 	 	# USE EXECUTE, NOT CONNECTION!
 	 def qD1
 	 	dFName = params[:dFName]
@@ -196,12 +197,26 @@ class TablesController < ApplicationController
 	 	dAddress = params[:dAddress]
 	 	dPhoneNum = params[:dPhoneNum]
 	 	dSpecialty =  params[:dSpecialty]
-	 	#Table.connection.select_all("update Doctor set FirstName = 'bla', LastName = 'bla', Address = 'bla', PhoneNumber = 7789877680, Type = "Super cool doctor type" where LicenseNum = '1232131241'")
+	 	dLicenseNum = current_user.license_num
+	 	Table.connection.select_all("update Doctor
+						 			set
+										FirstName = '" + dFName + "',
+										LastName = '" + dLName + "',
+										Address = '" + dAddress + "',
+										PhoneNumber = " + dPhoneNum +",
+										Type = '" + dSpecialty = "'
+									where
+										LicenseNum = '" + dLicenseNum + "'")
+	 	@result = Table.connection.select_all("select *
+									from Doctor
+									where
+										LicenseNum = '" + dLicenseNum + "'")
 		render "index"
 	 end
 
 	 # Prescribe a Drug
 	 	# USE VARIABLES
+	 	# DOES NOT WORK YET
 	 	# ARE THESE THE CORRECT VARIABLES?
 	 	# USE EXECUTE, NOT CONNECTION!
 	 def qD2
@@ -209,7 +224,8 @@ class TablesController < ApplicationController
 	 	refills = params[:refills]
 	 	dosage = params[:dosage]
 	 	ccNum = params[:ccNum]
-	 	# @result = Table.connection.select_all("insert into Prescription values ('doctorIDvariable','?','?' ,'?' ,'?' , 0, NOW())")
+	 	dLicenseNum = current_user.license_num
+	 	@result = Table.connection.select_all("insert into Prescription values ('" + dLicenseNum + "','" + prescription + "','" + refills + "' ,'" + dosage + "' ,'" + ccNum + "' , 0, NOW())")
 		render "index"
 	 end
 
@@ -231,15 +247,30 @@ class TablesController < ApplicationController
 	 	# ADD DOCTOR LICENSE VARIABLE
 	 	# DOES THIS NEED MORE PARAMS?
 	 def qD5
-	 	#@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(P.FirstName, " ", P.LastName) as "Patient", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and D.LicenseNum  = '1232131241' order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate")
+	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
+														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
+													CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
+												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
+												where MakeApptW.LicenseNum = D.LicenseNum and
+														MakeApptW.CareCardNum = P.CareCardNum and
+														D.LicenseNum  = '1232131241'
+												order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate")
 		render "index"
 	 end
 
 	 # View Appointments on a certain date
 	 	# USE VARIABLES
 	 def qD6
+
 	 	date = params[:date]
-	 	#@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(P.FirstName, " ", P.LastName) as "Patient", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and D.LicenseNum  = '1232131241' and MakeApptW.TimeBlockDate = '2015-04-03'")
+	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
+														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
+													CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
+												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
+												where MakeApptW.LicenseNum = D.LicenseNum and
+														MakeApptW.CareCardNum = P.CareCardNum and
+														D.LicenseNum  = '1232131241'
+														MakeApptW.TimeBlockDate = '2015-04-03'")
 		render "index"
 	 end
 
@@ -359,8 +390,13 @@ class TablesController < ApplicationController
 
 private 
 
-def find_table
-	@table = Table.find(params[:id])
+def get_user_attributes
+	@userlicense = current_user.license_num
+	@userCCNum = current_user.care_card_num
+	@userPharmAddr = current_user.pharmacy_address
+	Rails.logger.info ">>>>>>>>> #{@userlicense} <<<<<<<"
+	Rails.logger.info ">>>>>>>>> #{@userCCNum} <<<<<<<"
+	Rails.logger.info ">>>>>>>>> #{@userPharmAddr} <<<<<<<"
 end
 
 
