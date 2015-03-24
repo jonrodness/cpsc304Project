@@ -25,25 +25,26 @@ Rails.application.routes.draw do
 
 
   get 'qPh1' => 'tables#qPh1'
-  get 'qPh2' => 'tables#qPh2'
-  get 'qPh3' => 'tables#qPh3'
+  post '/tables/qPh2' => 'tables#qPh2', :as => 'qPh2'
+  post '/tables/qPh3' => 'tables#qPh3', :as => 'qPh3'
   get 'qPh4' => 'tables#qPh4'
-  get 'qPh5' => 'tables#qPh5'
+  post '/tables/qPh5' => 'tables#qPh5', :as => 'qPh5'
 
   #get '/qPa1' => 'tables#index'
   #match 'qPa1' => 'tables#qPa1', via: [:patch]
+   #post '/qPa1p' => 'tables#qPa1p'
+  #get 'qPa1' => 'tables#qPa1'
 
-  post '/tables/qPa1p' => 'tables#qPa1p', :as => 'test_link'
-  post '/qPa1p' => 'tables#qPa1p'
-
-  get 'qPa1' => 'tables#qPa1'
+  post '/tables/qPa1' => 'tables#qPa1', :as => 'qPa1'
   get 'qPa2' => 'tables#qPa2'
   get 'qPa3' => 'tables#qPa3'
-  get 'qPa4' => 'tables#qPa4'
-  get 'qPa5' => 'tables#qPa5'
-  get 'qPa6' => 'tables#qPa6'
-  get 'qPa7' => 'tables#qPa7'
-  get 'qPa8' => 'tables#qPa8'
+  post '/tables/qPa4' => 'tables#qPa4', :as => 'qPa4'
+  post '/tables/qPa5' => 'tables#qPa5', :as => 'qPa5'
+  get 'qPa6a' => 'tables#qPa6a'
+  post '/tables/qPa6b' => 'tables#qPa6b', :as => 'qPa6b'
+  post '/tables/qPa6c' => 'tables#qPa6c', :as => 'qPa6c'
+  post '/tables/qPa7' => 'tables#qPa7', :as => 'qPa7'
+  post '/tables/qPa8' => 'tables#qPa8', :as => 'qPa8'
   get 'qPa9' => 'tables#qPa9'
   get 'qPa10' => 'tables#qPa10'
   get 'qPa11' => 'tables#qPa11'

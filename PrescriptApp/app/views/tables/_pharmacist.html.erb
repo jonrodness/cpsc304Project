@@ -4,18 +4,37 @@
 
 <br>
 
-<%= link_to "Change status of prescription", action: "qPh2" %>
+<%= form_tag(qPh2_path, :method=>'post') do %>
+ <h3>Update prescription status:</h3>
+  <%= label_tag("prescription", "Prescription number:") %> 
+  <%= text_field_tag "prescription" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-
-
-<br>
-
-<%= link_to "View past prescriptions", action: "qPh3" %>
+<%= form_tag(qPh3_path, :method=>'post') do %>
+ <h3>View past prescriptions:</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
 <br>
 
 <%= link_to "Print out a list of prescriptions filled that day", action: "qPh4" %>
 
 <br>
+
+<%= form_tag(qPh5_path, :method=>'post') do %>
+ <h3>Reduce the refill number of a patient’s prescription:</h3>
+  <%= label_tag("prescription", "Prescription number:") %> 
+  <%= text_field_tag "prescription" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
 <%= link_to "Reduce the refill number of a patient’s prescription", action: "qPh5" %>

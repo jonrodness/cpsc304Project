@@ -1,65 +1,101 @@
 <h1>Patient</h1>
 
-
-
-
-<%= form_tag(test_link_path, :method=>'post') do %>
+<%= form_tag(qPa1_path, :method=>'post') do %>
+ <h3>Update personal information:</h3>
+  <%= label_tag("pFName", "First Name:") %> 
+  <%= text_field_tag "pFName" %> </br>
+  <%= label_tag("pLName", "Last Name:") %> 
+  <%= text_field_tag "pLName" %> </br>
+  <%= label_tag("pAge", "Age:") %> 
+  <%= text_field_tag "pAge" %> </br>
+  <%= label_tag("pWeight", "Weight:") %> 
+  <%= text_field_tag "pWeight" %> </br>
+  <%= label_tag("pHeight", "Height:") %> 
+  <%= text_field_tag "pHeight" %> </br>
+  <%= label_tag("pAddress", "Address:") %> 
+  <%= text_field_tag "pAddress" %> </br>
+  <%= label_tag("pPhoneNum", "Phone Number:") %> 
+  <%= text_field_tag "pPhoneNum" %> </br>
+  <%= label_tag("pCCNum", "Care Card Number:") %> 
+  <%= text_field_tag "pCCNum" %>
  <p>
-  Add an attachment:<br />
-  <%= text_field_tag "var1" %>
+  <%= submit_tag 'Submit' %>
  </p>
+<% end %>
+<br>
+
+<%= link_to "Pharmacies that are currently open: Weekday", action: "qPa2" %>
+<br>
+
+<%= link_to "Pharmacies that are currently open: Weekend", action: "qPa3" %>
+
+<%= form_tag(qPa4_path, :method=>'post') do %>
+ <h3>Make an Appointment:</h3>
+  <%= label_tag("date", "Date:") %> 
+  <%= text_field_tag "date" %> </br>
+  <%= label_tag("sTime", "Start Time:") %> 
+  <%= text_field_tag "sTime" %> </br>
+  <%= label_tag("eTime", "End Time:") %> 
+  <%= text_field_tag "eTime" %> </br>
+  <%= label_tag("license", "Doctor License:") %> 
+  <%= text_field_tag "license" %>
  <p>
   <%= submit_tag 'Submit' %>
  </p>
 <% end %>
 
+<%= form_tag(qPa5_path, :method=>'post') do %>
+ <h3>Cancel an Appointment:</h3>
+  <%= label_tag("date", "Date:") %> 
+  <%= text_field_tag "date" %> </br>
+  <%= label_tag("sTime", "Start Time:") %> 
+  <%= text_field_tag "sTime" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
+<%= link_to "View all upcoming appointments", action: "qPa6a" %>
+<br>
 
+<%= form_tag(qPa6b_path, :method=>'post') do %>
+ <h3>View upcoming appointments by date:</h3>
+  <%= label_tag("date", "Date:") %> 
+  <%= text_field_tag "date" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
+<%= form_tag(qPa6c_path, :method=>'post') do %>
+ <h3>View upcoming appointments by time:</h3>
+  <%= label_tag("sTime", "Start Time:") %> 
+  <%= text_field_tag "sTime" %> </br>
+  <%= label_tag("eTime", "End Time:") %> 
+  <%= text_field_tag "eTime" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-	<%= link_to "update personal information", test_link_path(@table, :var1 => "Pharmacy"), method: :patch %>
+<%= form_tag(qPa7_path, :method=>'post') do %>
+ <h3>Check Drug Interactions:</h3>
+  <%= label_tag("drug", "Drug generic name:") %> 
+  <%= text_field_tag "drug" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
+<%= form_tag(qPa8_path, :method=>'post') do %>
+ <h3>Check Interactions for this Prescription:</h3>
+  <%= label_tag("prescription", "Prescription number:") %> 
+  <%= text_field_tag "prescription" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-
-
-  	<%= form_tag({:controller => "tables", :action => "qPa1p"}, :method => "post") do %> 
-  		<%= label_tag(:var1, "variable:") %> 
-  		<%= text_field_tag(:var1) %> <%= submit_tag("Submit") %> 
-  	<% end %>
-
-
-
-
-
-
-
-	<br>
-
-	<%= link_to "Pharmacies that are currently open: Weekday", action: "qPa2" %>
-
-	<br>
-
-	<%= link_to "Pharmacies that are currently open: Weekend", action: "qPa3" %>
-
-	<br>
-
-	<%= link_to "Make an Appointment", action: "qPa4" %>
-
-	<br>
-
-	<%= link_to "Cancel an Appointment", action: "qPa5" %>
-
-	<br>
-
-	<%= link_to "View Upcoming Appointments", action: "qPa6" %>
-
-	<br>
-
-	<%= link_to "Check Drug Interactions", action: "qPa7" %>
-
-	<br>
-
-	<%= link_to "Check Interactions for this Prescription", action: "qPa8" %>
 
 	<br>
 
