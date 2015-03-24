@@ -285,7 +285,7 @@ where
 
 
 # qD2 can prescribe a drug
-#chris--need to put variable names later
+#chris--need to put variable names laters
 # jon: checked: entered, add variables -LOOK AT AGAIN, MAY NEED TO CHANGE
 #-----can prescribe a drug
 #chris--checked
@@ -394,14 +394,6 @@ where P.CareCardNum= '1234567890' AND Pr.CareCardNum=P.CareCardNum AND I.Prescri
 -- 		I.GenericName = Dr.GenericName and
 -- 		Pr.refills = 0
 -- order by Pr.date_prescribed desc;
-
-
--- # qD12 - can view a list of drugs that interact with a specific drug  (same as patient)
--- #chris
--- # jon - checked: entered, column names are not working
--- select I.iGenericName
-
-
 #can check if a certain drug was taken in the past by a certain patient
 # 	anny:checked
 # jon - change!
@@ -412,8 +404,12 @@ where P.CareCardNum = Pr.CareCardNum and
 	Pr.PrescriptID = I.PrescriptID and
 	I.BrandName LIKE 'BLABLA' or
 	I.GenericName LIKE 'blabla';
-		
 
+
+-- # qD12 - can view a list of drugs that interact with a specific drug  (same as patient)
+-- #chris
+-- # jon - checked: entered, column names are not working
+-- select I.iGenericName
 
 
 #can view a list of drugs that interact with a specific drug  (same as patient)
@@ -431,10 +427,10 @@ where (I.dBrandName = 'Coumadin' and
 		I.dGenericName = D.GenericName);
 
 
-#old NEED TO CHANGE TO NEXT ONE
 -- #notified when patients cancel an appointment
 -- 	# hmmm? probs we can just do this at the application level, idk
 
+#old NEED TO CHANGE TO NEXT ONE
 -- # qD13
 -- #can view a list of past appointments by a certain patient
 -- #chris

@@ -73,7 +73,6 @@ class TablesController < ApplicationController
 		 # USE VARIABLES FOR firstname, lastname, age, weight, height, address, phonenumber, CareCardNum
 		 # USE EXECUTE, NOT CONNECTION!
 	 def qPa1
-	 	var1 = params[:var1]
 	 	pFName = params[:pFName]
 	 	pLName = params[:pLName]
 	 	pAge = params[:pAge]
@@ -188,16 +187,28 @@ class TablesController < ApplicationController
 
  	############################# Doctor Queries ################################
 
- 	# ADD VARIABLES
- 	# USE EXECUTE, NOT CONNECTION!
+ 	# Update personal information
+	 	# ADD VARIABLES
+	 	# USE EXECUTE, NOT CONNECTION!
 	 def qD1
+	 	dFName = params[:dFName]
+	 	dLName = params[:dLName]
+	 	dAddress = params[:dAddress]
+	 	dPhoneNum = params[:dPhoneNum]
+	 	dSpecialty =  params[:dSpecialty]
 	 	#Table.connection.select_all("update Doctor set FirstName = 'bla', LastName = 'bla', Address = 'bla', PhoneNumber = 7789877680, Type = "Super cool doctor type" where LicenseNum = '1232131241'")
 		render "index"
 	 end
 
- 	# ADD VARIABLES
- 	# USE EXECUTE, NOT CONNECTION!
+	 # Prescribe a Drug
+	 	# USE VARIABLES
+	 	# ARE THESE THE CORRECT VARIABLES?
+	 	# USE EXECUTE, NOT CONNECTION!
 	 def qD2
+	 	prescription  = params[:prescription]
+	 	refills = params[:refills]
+	 	dosage = params[:dosage]
+	 	ccNum = params[:ccNum]
 	 	# @result = Table.connection.select_all("insert into Prescription values ('doctorIDvariable','?','?' ,'?' ,'?' , 0, NOW())")
 		render "index"
 	 end
@@ -216,62 +227,89 @@ class TablesController < ApplicationController
 		render "index"
 	 end
 
- 	# ADD VARIABLES
+	# View Appointments for picked date and time
+	 	# ADD DOCTOR LICENSE VARIABLE
+	 	# DOES THIS NEED MORE PARAMS?
 	 def qD5
 	 	#@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(P.FirstName, " ", P.LastName) as "Patient", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and D.LicenseNum  = '1232131241' order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate")
 		render "index"
 	 end
 
-	# ADD VARIABLES
+	 # View Appointments on a certain date
+	 	# USE VARIABLES
 	 def qD6
+	 	date = params[:date]
 	 	#@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(P.FirstName, " ", P.LastName) as "Patient", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and D.LicenseNum  = '1232131241' and MakeApptW.TimeBlockDate = '2015-04-03'")
 		render "index"
 	 end
 
-	 # ADD VARIABLES
+	 # View Appointments during a certain time
+	 	# USE VARIABLES
 	 def qD7
+	 	sTime = params[:sTime]
+	 	eTime = params[:eTime]
 	 	#@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(P.FirstName, " ", P.LastName) as "Patient", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and D.LicenseNum  = '1232131241' and MakeApptW.StartTime >=  '09:00:00'  and MakeApptW.StartTime <=  '11:00:00'")
 		render "index"
 	 end
 
-	 # ADD VARIABLES
+	 # View patient information
+	 	# USE VARIABLES
+	 	# DO WE WANT TO LIMIT THIS TO ONLY THE PATIENTS THIS DOCTOR SEES?
 	 def qD8
+	 	ccNum = params[:ccNum]
 	 	#@result = Table.connection.select_all("select * from Patient where CareCardNum=999")
 		render "index"
 	 end
 
-	 # MUST MAKE SURE CAN ONLY ACCESS OWN PATIENTS
- 	 # ADD VARIABLES
+	 # View a list of previous prescriptions for a certain patient
+		 # MUST MAKE SURE CAN ONLY ACCESS OWN PATIENTS
+	 	 # USE VARIABLES
 	 def qD9
+	 	ccNum = params[:ccNum]
 	 	#@result = Table.connection.select_all("select Pr.PrescriptID from Prescription Pr, Doctor D where Pr.LicenseNum=D.LicenseNum")
 		render "index"
 	 end
 
-	 # MUST MAKE SURE CAN ONLY ACCESS OWN PATIENTS
-	 # ADD VARIABLES
+	 # View a list of previous drugs prescribed to a certain patient
+		 # MUST MAKE SURE CAN ONLY ACCESS OWN PATIENTS
+		 # USE VARIABLES
 	 def qD10
+	 	ccNum = params[:ccNum]
 	 	#@result = Table.connection.select_all("select I.GenericName from Prescription Pr, Patient P, Includes I where P.CareCardNum= '1234 456 789' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID")
 		render "index"
 	 end
 
-	 # ADD VARIABLES
+	 # Check if a certain drug was taken in the past by a certain patient
+	 	# USE VARIABLES
 	 def qD11
+	 	ccNum = params[:ccNum]
+	 	brandName = params[:brandName]
+	 	genericName = params[:genericName]
 	 	#@result = Table.connection.select_all("select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, Pr.dosage as "Drug dosage" from Patient P, Prescription Pr, Doctor D, Pharmacy Pm, Includes I, Drug Dr where P.CareCardNum LIKE '1234567890' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
 		render "index"
 	 end
 
-	 # ATTRIBUTE NAMES DO NOT WORK
+	 # View possible drug interactions
+	 	# NOT SURE ABOUT THESE ATTRIBUTES...
 	 def qD12
+	 	iBrandName = params[:iBrandName]
+	 	iGenericName = params[:iGenericName]
+	 	dBrandName = params[:dBrandName]
+	 	dGenericName = params[:dGenericName]
 	 	#@result = Table.connection.select_all("select I.iGenericName from InteractsWith I, Drug D where D.GenericName=I.dGenericName AND D.CompanyName=I.dCompanyName")
 		render "index"
 	 end
 
+	 # View patient's past appointments
+	 	# DON'T WE NEED THE CARE CARD NUMBER AS A PARAMETER?
 	 def qD13
+	 	ccNum = params[:ccNum]
 	 	@result = Table.connection.select_all("select M.DateMade from MakesAppointmentWith M, Doctor D where D.LicenseNum=M.LicenseNum")
 		render "index"
 	 end
 
-	# ADD VARIABLES
+	 # Generate a report about which prescriptions a doctor has previously prescribed...
+	 	# ADD Doctorlicense VARIABLE from current_user
 	 def qD14
 	 	# @result = Table.connection.select_all("select Pr.PrescriptID, CONCAT(P.FirstName, ' ', P.LastName) as PatientName, CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, CONCAT(Pm.Address, ', ', Pm.Name) as PharmacyDescription 
 			# 								from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, Includes I, Drug Dr
@@ -286,6 +324,8 @@ class TablesController < ApplicationController
 		render "index"
 	 end
 
+	 # Show the average number of refills for a certain drug
+	 	# DONT WE NEED A DRUG VARIABLE?
 	 def qD15
 	 	@result = Table.connection.select_all("select CONCAT(Dr.BrandName, ' ', Dr.GenericName) as 'Drug', AVG(P.Refills) as 'Average number of refills'
 											from Prescription P, Drug Dr, Includes I
@@ -297,8 +337,10 @@ class TablesController < ApplicationController
 		render "index"
 	 end
 
-	 #ADD VARIABLES
+ 	# View patients who have been prescribed a drug from a specific company
+		 #USE VARIABLES
 	def qD16
+		cName = params[:cName]
 	 	# @result = Table.connection.select_all("select Pa.CareCardNum, Pa.FirstName
 			# 								from Patient Pa
 			# 								Where NOT EXISTS

@@ -1,10 +1,36 @@
 <h1>Doctor</h1>
 
-<%= link_to "Update Personal Information", action: "qD1" %>
+<%= form_tag(qD1_path, :method=>'post') do %>
+ <h3>Update personal information:</h3>
+  <%= label_tag("dFName", "First Name:") %> 
+  <%= text_field_tag "dFName" %> </br>
+  <%= label_tag("dLName", "Last Name:") %> 
+  <%= text_field_tag "dLName" %> </br>
+  <%= label_tag("dAddress", "Address:") %> 
+  <%= text_field_tag "dAddress" %> </br>
+  <%= label_tag("dPhoneNum", "Phone Number:") %> 
+  <%= text_field_tag "dPhoneNum" %> </br>
+  <%= label_tag("dSpecialty", "Specialty:") %> 
+  <%= text_field_tag "dSpecialty" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<br>
-
-<%= link_to "Prescribe a Drug", action: "qD2" %>
+<%= form_tag(qD2_path, :method=>'post') do %>
+ <h3>Prescribe a Drug:</h3>
+  <%= label_tag("prescription", "Prescription number:") %> 
+  <%= text_field_tag "prescription" %> </br>
+  <%= label_tag("refills", "Number of refills:") %> 
+  <%= text_field_tag "refills" %> </br>
+  <%= label_tag("dosage", "Dosage:") %> 
+  <%= text_field_tag "dosage" %> </br>
+  <%= label_tag("ccNum", "Patient Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
 <br>
 
@@ -20,46 +46,102 @@
 
 <br>
 
-<%= link_to "View Appointments on a certain date", action: "qD6" %>
+<%= form_tag(qD6_path, :method=>'post') do %>
+ <h3>View Appointments on a certain date:</h3>
+  <%= label_tag("date", "Date:") %> 
+  <%= text_field_tag "date" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<br>
 
 <%= link_to "View Appointments during a certain time", action: "qD7" %>
 
 <br>
 
-<%= link_to "view personal information about a patient", action: "qD8" %>
+<%= form_tag(qD8_path, :method=>'post') do %>
+ <h3>View patient's information:</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<br>
 
-<%= link_to "View Appointments during a certain time", action: "qD9" %>
+<%= form_tag(qD9_path, :method=>'post') do %>
+ <h3>View patient's prescriptions:</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<br>
+<%= form_tag(qD10_path, :method=>'post') do %>
+ <h3>View patient's prescribed drugs:</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<%= link_to "view a list of previous prescriptions for a certain patient", action: "qD10" %>
+<%= form_tag(qD11_path, :method=>'post') do %>
+ <h3>View patient's prescribed drugs:</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+  <%= label_tag("brandName", "Brand name:") %> 
+  <%= text_field_tag "brandName" %> </br>
+  <%= label_tag("genericName", "Generic name:") %> 
+  <%= text_field_tag "brandName" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<br>
+<%= form_tag(qD12_path, :method=>'post') do %>
+ <h3>View possible drug interactions:</h3>
+  <%= label_tag("iBrandName", "iBrand name:") %> 
+  <%= text_field_tag "iBrandName" %> </br>
+  <%= label_tag("iGenericName", "iGeneric name:") %> 
+  <%= text_field_tag "iBrandName" %> </br>
+  <%= label_tag("dBrandName", "dBrand name:") %> 
+  <%= text_field_tag "dBrandName" %> </br>
+  <%= label_tag("dGenericName", "dGeneric name:") %> 
+  <%= text_field_tag "dBrandName" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<%= link_to "check if a certain drug was taken in the past by a certain patient", action: "qD11" %>
+<%= form_tag(qD13_path, :method=>'post') do %>
+ <h3>View patient's past appointments:</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
-<br>
 
-<%= link_to "view a list of drugs that interact with a specific drug", action: "qD12" %>
-
-<br>
-
-<%= link_to "view a list of past appointments by a certain patient", action: "qD13" %>
-
-<br>
-
-<%= link_to "Generate a report about which prescriptions a doctor has
-#   previously prescribed...", action: "qD14" %>
+<%= link_to "Generate a report about which prescriptions a doctor has previously prescribed...", action: "qD14" %>
 
 <br>
 
 <%= link_to "show the average number of refills for a certain drug", action: "qD15" %>
 
 <br>
+
+<%= form_tag(qD16_path, :method=>'post') do %>
+ <h3>View patients who have been prescribed a drug from a specific company:</h3>
+  <%= label_tag("cName", "Company name:") %> 
+  <%= text_field_tag "cName" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
 
 <%= link_to "select patients who ordered all products by company name", action: "qD16" %>
 
