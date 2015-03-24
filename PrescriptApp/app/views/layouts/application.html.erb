@@ -12,29 +12,24 @@
 <% if user_signed_in? %>
 <div class='col-md-8'>
 Signed in as: 
-      <%= current_user.email %>
       <%= current_user.user_type %>
-      |
-
-	  <% if (current_user.user_type = 'Pharmacist') %>
-  		Signed in as Pharmacist
-  	<% end %>
-
-  	<% if (current_user.user_type = 'Doctor') %>
-  		Signed in as Doctor
-  	<% end %>
-
-  	<% if (current_user.user_type = 'Patient') %>
-  		Signed in as Patient
-  	<% end %>
+|
+Email:
+      <%= current_user.email %>
 </div>
 <div class='col-md-4' style='text-align: right'>
   <button class='btn btn-default'>
-    <%= link_to 'Edit profile', edit_user_registration_path %>
-  </button>
+     <%= link_to "Home", root_path %>
+      </button>
   <button class='btn btn-default'>
     <%= link_to "Logout", destroy_user_session_path, method: :delete %>
     </button>
+    
+    <%= link_to "Home", root_path %>
+    <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+
+
+
 </div>
 <% else %>
 <div class='col-md-4'>
@@ -45,6 +40,10 @@ Signed in as:
     <%= link_to "Login", new_user_session_path %>
   </button>
 </div>
+
+    <%= link_to "Sign up", new_user_registration_path %>
+    <%= link_to "Login", new_user_session_path %>
+
 <% end %>
 
 <% if notice %>

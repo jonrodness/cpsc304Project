@@ -1,6 +1,4 @@
-<h1>Drugs</h1>
-
-<div><h2>Results</h2></div>
+<div><h2>Records:</h2></div>
 
 <table>
 	<thead>
@@ -22,9 +20,13 @@
 	</tbody>
 </table>
 
-<%= render 'doctor' %>
-<%= render 'patient' %>
-<%= render 'pharmacist' %>
+<% if (current_user.user_type == 'Doctor') %>
+	<%= render 'doctor' %>
+<% elsif (current_user.user_type == 'Patient') %>
+	<%= render 'patient' %>
+<% elsif (current_user.user_type == 'Pharmacist') %>
+	<%= render 'pharmacist' %>
+<% end %>
 
 <%= link_to "Home", root_path %>
 
