@@ -1,7 +1,7 @@
-<h1>Patient Options</h1>
+<h2>Patient Options:</h2>
 
 <%= form_tag(qPa1_path, :method=>'post') do %>
- <h3>Update personal information:</h3>
+ <h3>Update personal information</h3>
   <%= label_tag("pFName", "First Name:") %> 
   <%= text_field_tag "pFName" %> </br>
   <%= label_tag("pLName", "Last Name:") %> 
@@ -22,10 +22,13 @@
 <% end %>
 <br>
 
-<%= link_to "Pharmacies that are currently open: Weekday", action: "qPa2" %>
+<h3>Find pharmacies that are currently open (Weekday)</h3>
+<%= button_to "Go!", qPa2_path, :class => "button", :method => :get %>
 <br>
 
-<%= link_to "Pharmacies that are currently open: Weekend", action: "qPa3" %>
+<h3>Find pharmacies that are currently open (Weekend)</h3>
+<%= button_to "Go!", qPa3_path, :class => "button", :method => :get %>
+<br>
 
 <%= form_tag(qPa4_path, :method=>'post') do %>
  <h3>Make an Appointment:</h3>
@@ -53,8 +56,10 @@
  </p>
 <% end %>
 
-<%= link_to "View all upcoming appointments", action: "qPa6a" %>
+<h3>View all upcoming appointments</h3>
+<%= button_to "Go!", qPa6a_path, :class => "button", :method => :get %>
 <br>
+
 
 <%= form_tag(qPa6b_path, :method=>'post') do %>
  <h3>View upcoming appointments by date:</h3>
@@ -94,18 +99,17 @@
  </p>
 <% end %>
 
+<h3>View Prescription Status</h3>
+<%= button_to "Go!", qPa9_path, :class => "button", :method => :get %>
+<br>
 
-	<br>
+<h3>Generate Report: Current Prescriptions</h3>
+<%= button_to "Go!", qPa10_path, :class => "button", :method => :get %>
+<br>
 
-	<%= link_to "View Prescription Status", action: "qPa9" %>
-
-	<br>
-
-	<%= link_to "Generate Report: Current Prescription", action: "qPa10" %>
-
-	<br>
-
-	<%= link_to "Generate Report: Previous Prescription", action: "qPa11" %>
+<h3>Generate Report: Previous Prescriptions</h3>
+<%= button_to "Go!", qPa11_path, :class => "button", :method => :get %>
+<br>
 
 
 

@@ -1,7 +1,7 @@
-<h1>Pharmacist Options</h1>
+<h2>Pharmacist Options</h2>
 
-<%= link_to "View prescriptions prescribed by doctor", action: "qPh1" %>
-
+<h3>View prescriptions prescribed by doctor</h3>
+<%= button_to "Go!", qPh1_path, :class => "button", :method => :get %>
 <br>
 
 <%= form_tag(qPh2_path, :method=>'post') do %>
@@ -22,11 +22,10 @@
  </p>
 <% end %>
 
+<h3>Print out a list of prescriptions filled that day</h3>
+<%= button_to "Go!", qPh4_path, :class => "button", :method => :get %>
 <br>
 
-<%= link_to "Print out a list of prescriptions filled that day", action: "qPh4" %>
-
-<br>
 
 <%= form_tag(qPh5_path, :method=>'post') do %>
  <h3>Reduce the refill number of a patient’s prescription:</h3>
@@ -37,4 +36,3 @@
  </p>
 <% end %>
 
-<%= link_to "Reduce the refill number of a patient’s prescription", action: "qPh5" %>
