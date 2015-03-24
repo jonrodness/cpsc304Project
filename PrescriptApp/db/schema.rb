@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150322035441) do
+ActiveRecord::Schema.define(version: 20150323152414) do
 
   create_table "Doctor", primary_key: "LicenseNum", force: :cascade do |t|
     t.string "FirstName",   limit: 20
@@ -108,6 +108,13 @@ ActiveRecord::Schema.define(version: 20150322035441) do
     t.date "TimeBlockDate",                                 null: false
     t.time "StartTime",     default: '2000-01-01 00:00:00', null: false
     t.time "EndTime",       default: '2000-01-01 00:00:00', null: false
+  end
+
+  create_table "tables", force: :cascade do |t|
+    t.string   "var1",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "identity",   limit: 4
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,13 +1,37 @@
 <h1>Patient</h1>
 
-<%= form_for @drug do |form| %>
 
 
-	<%= link_to "update personal information", action: "qPa1" %>
 
-	<div class="field">
-	    <%= form.label "test"  %><br />
-  	</div>
+<%= form_tag(test_link_path, :method=>'post') do %>
+ <p>
+  Add an attachment:<br />
+  <%= text_field_tag "var1" %>
+ </p>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
+
+
+
+
+
+	<%= link_to "update personal information", test_link_path(@table, :var1 => "Pharmacy"), method: :patch %>
+
+
+
+
+  	<%= form_tag({:controller => "tables", :action => "qPa1p"}, :method => "post") do %> 
+  		<%= label_tag(:var1, "variable:") %> 
+  		<%= text_field_tag(:var1) %> <%= submit_tag("Submit") %> 
+  	<% end %>
+
+
+
+
+
+
 
 	<br>
 
@@ -50,7 +74,6 @@
 	<%= link_to "Generate Report: Previous Prescription", action: "qPa11" %>
 
 
-<% end %>
 
 
 
