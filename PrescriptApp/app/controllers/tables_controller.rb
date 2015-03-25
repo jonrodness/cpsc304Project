@@ -102,13 +102,33 @@ class TablesController < ApplicationController
 		 # ADD VARIABLE FOR ccNum (from current_user)
 		 # USE EXECUTE, NOT CONNECTION!
 	 def qPa4
-	 	date = params[:date]
-	 	sTime = params[:sTime]
-	 	eTime = params[:eTime]
-	 	license = params[:license]
-	 	# Table.connection.select_all("insert into TimeBlock values ('2874-06-07', '12:30:00', '15:30:00')")
-	 	# Table.connection.select_all("insert into MakesAppointmentWith values (curdate(), curtime(), '1232131241', '2874-06-07', '12:30:00', '15:30:00', '1234567890')")
-		render "index"
+	 # 	date = params[:date]
+	 # 	sTime = params[:sTime]
+	 # 	eTime = params[:eTime]
+	 # 	license = params[:license]
+	 # 	# Table.connection.select_all("insert into TimeBlock values ('2874-06-07', '12:30:00', '15:30:00')")
+	 # 	# Table.connection.select_all("insert into MakesAppointmentWith values (curdate(), curtime(), '1232131241', '2874-06-07', '12:30:00', '15:30:00', '1234567890')")
+		# render "index"
+		date = params[:date]
+        sTime = params[:sTime]
+        eTime = params[:eTime]
+        license = params[:license]
+        
+        Table.connection.execute("insert into TimeBlock values ('#{date}',
+        													    '#{sTime}',
+        													    '#{eTime}')")
+
+        # this line causing problems maybe
+        Table.connection.execute("insert into MakesAppointmentWith values (curtime(),
+        																   curdate(),
+        																   '#{license}', 
+        																   '#{date}', 
+        																   '#{sTime}', 
+        																   '#{eTime}', 
+        																   '#{@userCCNum}')")
+       
+        @result = Table.connection.select_all("SELECT * FROM Drug")
+        render "index"
 	 end
 
 	 # Cancel an Appointment
