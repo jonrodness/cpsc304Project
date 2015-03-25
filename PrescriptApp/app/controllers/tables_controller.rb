@@ -20,54 +20,56 @@ class TablesController < ApplicationController
 
 	# View prescriptions prescribed by doctor
 	def qPh1
-		@result = Table.connection.select_all("select Pr.PrescriptID from Prescription Pr, Doctor D where Pr.LicenseNum=D.LicenseNum")
+		# TESTED - WORKS
+		@result = Table.connection.select_all("select Pr.PrescriptID 
+											   from Prescription Pr, Doctor D 
+											   where Pr.LicenseNum=D.LicenseNum")
 		render "index"
 	end
 
 	# Update prescription status
-		# USE VARIABLE FOR PRESCRIPT ID
-		# USE EXECUTE, NOT CONNECTION!
+		# TESTED - WORKS
 	 def qPh2
-		# Table.connection.select_all("update Prescription set ReadyForPickUp=1 where PrescriptID ='3456' AND ReadyForPickup=0")
+	 	prescription = params[:prescription]
+		Table.connection.execute("update Prescription set ReadyForPickUp=1 
+								  where PrescriptID ='#{prescription}' and ReadyForPickup=0")
+		@result = Table.connection.select_all("SELECT * FROM Drug")
 	 	render "index"
 	 end
 
 	 # View past prescriptions
-		 # ADD VARIABLE FOR CARECARDNUM
+		 # TESTED - WORKS
 	 def qPh3
 	 	ccNum = params[:ccNum]
-		#@result = Table.connection.select_all("select Pr.date_prescribed,I.GenericName,Pr.Refills,Pr.Dosage from Prescription Pr, Patient P, Includes I where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum=1234567890 Order By Pr.date_prescribed")
+		@result = Table.connection.select_all("select Pr.date_prescribed,I.GenericName,Pr.Refills,Pr.Dosage
+												from Prescription Pr, Patient P, Includes I
+												where Pr.CareCardNum = P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum = '#{ccNum}'
+												Order By Pr.date_prescribed")
 		render "index"
 	 end
 
 	 # Print out a list of prescriptions filled that day
+	 	# CAN'T TEST WITHOUT PRESCRIPTIONS FOR THE CURRENT DAY
 	 def qPh4
-	 	@result = Table.connection.select_all("select I.GenericName, Pr.Dosage from Prescription Pr, Patient P, Includes I where Pr.PrescriptID=I.PrescriptID AND Pr.CareCardNum=P.CareCardNum AND Pr.date_prescribed=curdate()")
+	 	@result = Table.connection.select_all("select I.GenericName, Pr.Dosage 
+	 											from Prescription Pr, Patient P, Includes I 
+	 											where Pr.PrescriptID=I.PrescriptID and 
+	 											Pr.CareCardNum = P.CareCardNum and 
+	 											Pr.date_prescribed = curdate()")
 	 	render "index"
 	 end
 
 	 # Reduce the refill number of a patient’s prescription
-		 # USE VARIABLE FOR PRESCRIPT id
-		 # USE EXECUTE, NOT CONNECTION!
+		 # TESTED - WORKS
 	 def qPh5
 	 	prescription = params[:prescription]
-		# Table.connection.select_all("update Prescription set Refills=Refills-1 where PrescriptID='3456' AND Refills > 0")
+		Table.connection.execute("update Prescription set Refills=Refills-1 
+								  where PrescriptID = '#{prescription}' and Refills > 0")
+		@result = Table.connection.select_all("SELECT * FROM Drug")
 		render "index"
 	 end
 
 	 ############################# Patient Queries ################################
-
-	 # ADD VARIABLES FOR firstname, lastname, age, weight, height, address, phonenumber, CareCardNum
-	 # USE EXECUTE, NOT CONNECTION!
-	 # def qPa1
-	 # 	#@table = Table.find_by identity: 1
-	 # 	var1 = params[:var1]
-	 # 	@table = Table.new
-	 # 	#@table.update(table_params)
-	 # 	@result = Table.connection.select_all("select * from " + var1)
-		# # Table.connection.select_all("update Patient set FirstName = 'blabla', LastName = 'blabla', Age = 'blabla', Weight = 'blabla', Height = 'blabla', Address = 'blabla', PhoneNumber = 'blabla' where P.CareCardNum LIKE '1234567890'")
-		# render "index"
-	 # end
 
 	 # Update personal information
 		 # USE VARIABLES FOR firstname, lastname, age, weight, height, address, phonenumber, CareCardNum
