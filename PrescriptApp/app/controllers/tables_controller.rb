@@ -21,9 +21,11 @@ class TablesController < ApplicationController
 	# View prescriptions prescribed by doctor
 	def qPh1
 		# TESTED - WORKS
-		@result = Table.connection.select_all("select Pr.PrescriptID 
-											   from Prescription Pr, Doctor D 
-											   where Pr.LicenseNum=D.LicenseNum")
+		# modified this to return a more useful result -Alfred
+		@result = Table.connection.select_all("select CONCAT(D.FirstName, ' ', D.LastName) as DoctorName, D.Type, P.Dosage, P.date_prescribed from Doctor D, Prescription P where D.LicenseNum=P.LicenseNum group by D.LastName")
+		# @result = Table.connection.select_all("select Pr.PrescriptID, 
+		# 									   from Prescription Pr, Doctor D 
+		# 									   where Pr.LicenseNum=D.LicenseNum")
 		render "index"
 	end
 
@@ -65,7 +67,7 @@ class TablesController < ApplicationController
 	 	prescription = params[:prescription]
 		Table.connection.execute("update Prescription set Refills=Refills-1 
 								  where PrescriptID = '#{prescription}' and Refills > 0")
-		@result = Table.connection.select_all("SELECT * FROM Drug")
+		@result = Table.connection.select_all("SELECT Refills, PrescriptID, Dosage FROM Prescription WHERE PrescriptID=#{prescription}")
 		render "index"
 	 end
 
@@ -74,6 +76,7 @@ class TablesController < ApplicationController
 	 # Update personal information
 		 # USE VARIABLES FOR firstname, lastname, age, weight, height, address, phonenumber, CareCardNum
 		 # USE EXECUTE, NOT CONNECTION!
+     # TESTED - WORKS
 	 def qPa1
 	 	pFName = params[:pFName]
 	 	pLName = params[:pLName]
@@ -83,7 +86,15 @@ class TablesController < ApplicationController
 	 	pAddress = params[:pAddress]
 	 	pPhoneNum = params[:pPhoneNum]
 	 	pCCNum = params[:pCCNum]
-	 	# Table.connection.select_all("update Patient set FirstName = 'blabla', LastName = 'blabla', Age = 'blabla', Weight = 'blabla', Height = 'blabla', Address = 'blabla', PhoneNumber = 'blabla' where P.CareCardNum LIKE '1234567890'")
+	 	Table.connection.execute("update Patient set FirstName = '#{pFName}', 
+                                                    LastName = '#{pLName}', 
+                                                    Age = #{pAge}, 
+                                                    Weight = #{pWeight}, 
+                                                    Height = #{pHeight}, 
+                                                    Address = '#{pAddress}', 
+                                                    PhoneNumber = '#{pPhoneNum}' 
+                                where CareCardNum LIKE '#{@userCCNum}'")
+    @result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
 	 	render "index"
 	 end
 
@@ -105,6 +116,7 @@ class TablesController < ApplicationController
 		 # USE VARIABLES FOR start and end time, doctorid
 		 # ADD VARIABLE FOR ccNum (from current_user)
 		 # USE EXECUTE, NOT CONNECTION!
+     # TESTED - WORKS
 	 def qPa4
 	 # 	date = params[:date]
 	 # 	sTime = params[:sTime]
@@ -114,9 +126,9 @@ class TablesController < ApplicationController
 	 # 	# Table.connection.select_all("insert into MakesAppointmentWith values (curdate(), curtime(), '1232131241', '2874-06-07', '12:30:00', '15:30:00', '1234567890')")
 		# render "index"
 		date = params[:date]
-        sTime = params[:sTime]
-        eTime = params[:eTime]
-        license = params[:license]
+    sTime = params[:sTime]
+    eTime = params[:eTime]
+    license = params[:license]
         
         Table.connection.execute("insert into TimeBlock values ('#{date}',
         													    '#{sTime}',
@@ -223,7 +235,7 @@ class TablesController < ApplicationController
 
  	# Update personal information
 	 	# ADD VARIABLES
-	 	# DOES NOT WORK YET
+	 	# TESTED - WORKS
 	 	# USE EXECUTE, NOT CONNECTION!
 	 def qD1
 	 	dFName = params[:dFName]
@@ -232,19 +244,10 @@ class TablesController < ApplicationController
 	 	dPhoneNum = params[:dPhoneNum]
 	 	dSpecialty =  params[:dSpecialty]
 	 	dLicenseNum = current_user.license_num
-	 	Table.connection.execute("update Doctor
-						 			set
-										FirstName = '" + dFName + "',
-										LastName = '" + dLName + "',
-										Address = '" + dAddress + "',
-										PhoneNumber = " + dPhoneNum +",
-										Type = '" + dSpecialty = "'
-									where
-										LicenseNum = '" + dLicenseNum + "'")
-	 	@result = Table.connection.execute("select *
-									from Doctor
-									where
-										LicenseNum = '" + dLicenseNum + "'")
+	 	Table.connection.execute("update Doctor set FirstName = '#{dFName}', LastName = '#{dLName}',
+										Address = '#{dAddress}', PhoneNumber = '#{dPhoneNum}', Type = '#{dSpecialty}'
+									     where LicenseNum = '#{dLicenseNum}'")
+	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{dLicenseNum}'")
 		render "index"
 	 end
 
