@@ -103,7 +103,7 @@
   <%= label_tag("brandName", "Brand name:") %> 
   <%= text_field_tag "brandName" %> </br>
   <%= label_tag("genericName", "Generic name:") %> 
-  <%= text_field_tag "brandName" %> </br>
+  <%= text_field_tag "genericName" %> </br>
  <p>
   <%= submit_tag 'Submit' %>
  </p>
@@ -111,14 +111,10 @@
 
 <%= form_tag(qD12_path, :method=>'post') do %>
  <h3>View possible drug interactions:</h3>
-  <%= label_tag("iBrandName", "iBrand name:") %> 
+  <%= label_tag("iBrandName", "Brand name:") %> 
   <%= text_field_tag "iBrandName" %> </br>
-  <%= label_tag("iGenericName", "iGeneric name:") %> 
-  <%= text_field_tag "iBrandName" %> </br>
-  <%= label_tag("dBrandName", "dBrand name:") %> 
-  <%= text_field_tag "dBrandName" %> </br>
-  <%= label_tag("dGenericName", "dGeneric name:") %> 
-  <%= text_field_tag "dBrandName" %> </br>
+  <%= label_tag("iGenericName", "Generic name:") %> 
+  <%= text_field_tag "iGenericName" %> </br>
  <p>
   <%= submit_tag 'Submit' %>
  </p>

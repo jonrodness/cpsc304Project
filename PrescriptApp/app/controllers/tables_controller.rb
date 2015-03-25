@@ -230,6 +230,7 @@ class TablesController < ApplicationController
 	 end
 
  	# Pharmacies that are currently open: Weekday
+ 		# TESTED - WORKS
 	 def qD3
 	 	@table = Table.new
 	 	@result = Table.connection.select_all("select * from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
@@ -237,6 +238,7 @@ class TablesController < ApplicationController
 	 end
  	
  	# Pharmacies that are currently open: Weekend
+ 		# TESTED - WORKS
 	 def qD4
 	 	@table = Table.new
 	 	@result = Table.connection.select_all("select * from Pharmacy P where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing")
@@ -300,8 +302,7 @@ class TablesController < ApplicationController
 	 end
 
 	 # View a list of previous prescriptions for a certain patient
-		 # MUST MAKE SURE CAN ONLY ACCESS OWN PATIENTS
-	 	 # USE VARIABLES
+	 	 # TESTED - WORKS
 	 def qD9
 	 	ccNum = params[:ccNum]
 	 	@result = Table.connection.select_all("select Pr.PrescriptID 
@@ -312,61 +313,83 @@ class TablesController < ApplicationController
 	 end
 
 	 # View a list of previous drugs prescribed to a certain patient
-		 # MUST MAKE SURE CAN ONLY ACCESS OWN PATIENTS
-		 # USE VARIABLES
+	 	# TESTED - WORKS
+	 	# DO WE WANT TO LIMIT THIS TO ONLY THE PATIENTS THIS DOCTOR SEES?
 	 def qD10
 	 	ccNum = params[:ccNum]
-	 	#@result = Table.connection.select_all("select I.GenericName from Prescription Pr, Patient P, Includes I where P.CareCardNum= '1234 456 789' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID")
+	 	@result = Table.connection.select_all("select I.GenericName
+												from Prescription Pr, Patient P, Includes I
+												where P.CareCardNum = '#{ccNum}' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;")
 		render "index"
 	 end
 
 	 # Check if a certain drug was taken in the past by a certain patient
-	 	# USE VARIABLES
+	 	# TESTED - WORKS, BUT SEARCHING BY GENERIC NAME YIELDS MULTIPLE ROWS FOR EACH RECORD
 	 def qD11
 	 	ccNum = params[:ccNum]
 	 	brandName = params[:brandName]
 	 	genericName = params[:genericName]
-	 	#@result = Table.connection.select_all("select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, Pr.dosage as "Drug dosage" from Patient P, Prescription Pr, Doctor D, Pharmacy Pm, Includes I, Drug Dr where P.CareCardNum LIKE '1234567890' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
+	 	@result = Table.connection.select_all("select Pr.LicenseNum as 'Prescribed by', Pr.PrescriptID as 'Prescription ID', Pr.Dosage, Pr.date_prescribed
+												from Patient P, Prescription Pr, Includes I
+												where P.CareCardNum = Pr.CareCardNum and
+													P.CareCardNum = '#{ccNum}' and
+													Pr.PrescriptID = I.PrescriptID and
+													I.BrandName LIKE '#{brandName}' or
+													I.GenericName LIKE '#{genericName}'")
 		render "index"
 	 end
 
 	 # View possible drug interactions
-	 	# NOT SURE ABOUT THESE ATTRIBUTES...
+	 	# TESTED - WORKS, BUT SHOULDN'T HAVE TO ADD BOTH GENERIC AND BRAND NAMES
 	 def qD12
 	 	iBrandName = params[:iBrandName]
 	 	iGenericName = params[:iGenericName]
-	 	dBrandName = params[:dBrandName]
-	 	dGenericName = params[:dGenericName]
-	 	#@result = Table.connection.select_all("select I.iGenericName from InteractsWith I, Drug D where D.GenericName=I.dGenericName AND D.CompanyName=I.dCompanyName")
+	 	@result = Table.connection.select_all("select D.GenericName, D.BrandName
+												from InteractsWith I, Drug D
+												where (I.dBrandName = '#{iBrandName}' and
+														I.dGenericName = '#{iGenericName}' and
+														I.iGenericName = D.GenericName and
+														I.iBrandName = D.BrandName) or
+														(I.iBrandName = '#{iBrandName}' and
+														I.iGenericName = '#{iGenericName}' and
+														I.dBrandName = D.BrandName and
+														I.dGenericName = D.GenericName)")
 		render "index"
 	 end
 
 	 # View patient's past appointments
-	 	# DON'T WE NEED THE CARE CARD NUMBER AS A PARAMETER?
+	 	# CANNOT TEST BECAUSE ALL POPULATIONS IN SCRIPT FOR MAKESAPPOINTMENT ARE IN FUTURE
 	 def qD13
 	 	ccNum = params[:ccNum]
-	 	@result = Table.connection.select_all("select M.DateMade from MakesAppointmentWith M, Doctor D where D.LicenseNum=M.LicenseNum")
+	 	@result = Table.connection.select_all("select *
+												from MakesAppointmentWith M, Doctor D, Patient P
+												where D.LicenseNum = M.LicenseNum and
+													M.CareCardNum = P.CareCardNum and
+													P.CareCardNum = '#{ccNum}' and
+													D.LicenseNum = '#{@userlicense}' and
+													TimeBlockDate < curdate()")
 		render "index"
 	 end
 
 	 # Generate a report about which prescriptions a doctor has previously prescribed...
-	 	# ADD Doctorlicense VARIABLE from current_user
+	 	# TESTED - WORKS WITH STATIC LICENSE NUMBER
 	 def qD14
-	 	# @result = Table.connection.select_all("select Pr.PrescriptID, CONCAT(P.FirstName, ' ', P.LastName) as PatientName, CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, CONCAT(Pm.Address, ', ', Pm.Name) as PharmacyDescription 
-			# 								from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, Includes I, Drug Dr
-			# 								where 	Pr.LicenseNum = D.LicenseNum and
-			# 										Pr.CareCardNum = P.CareCardNum and 
-			# 										O.PrescriptID = Pr.PrescriptID and 
-			# 										O.PharmacyAddress = Pm.Address and 
-			# 										I.PrescriptID = Pr.PrescriptID and
-			# 										I.BrandName = Dr.BrandName and
-			# 										I.GenericName = Dr.GenericName and
-			# 										D.LicenseNum LIKE '1232131241'")
+	 	@result = Table.connection.select_all("select Pr.PrescriptID, CONCAT(P.FirstName, ' ', P.LastName) as PatientName, CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, CONCAT(Pm.Address, ', ', Pm.Name) as PharmacyDescription 
+											from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, Includes I, Drug Dr
+											where 	Pr.LicenseNum = D.LicenseNum and
+													Pr.CareCardNum = P.CareCardNum and 
+													O.PrescriptID = Pr.PrescriptID and 
+													O.PharmacyAddress = Pm.Address and 
+													I.PrescriptID = Pr.PrescriptID and
+													I.BrandName = Dr.BrandName and
+													I.GenericName = Dr.GenericName and
+													D.LicenseNum LIKE '#{@userlicense}'")
 		render "index"
 	 end
 
 	 # Show the average number of refills for a certain drug
-	 	# DONT WE NEED A DRUG VARIABLE?
+	 		 # TESTED - WORKS
+	 		 # NOT FOR SPECIFIC DRUG?
 	 def qD15
 	 	@result = Table.connection.select_all("select CONCAT(Dr.BrandName, ' ', Dr.GenericName) as 'Drug', AVG(P.Refills) as 'Average number of refills'
 											from Prescription P, Drug Dr, Includes I
@@ -379,21 +402,21 @@ class TablesController < ApplicationController
 	 end
 
  	# View patients who have been prescribed a drug from a specific company
-		 #USE VARIABLES
+		 # TESTED - WORKS
 	def qD16
 		cName = params[:cName]
-	 	# @result = Table.connection.select_all("select Pa.CareCardNum, Pa.FirstName
-			# 								from Patient Pa
-			# 								Where NOT EXISTS
-			# 								     (Select *
-			# 								      from Drug D
-			# 								      Where D.CompanyName LIKE 'Pfizer'
-			# 								      AND NOT EXISTS
-			# 								      (Select * 
-			# 								            From Prescription P, Includes I
-			# 								            WHERE P.PrescriptID = I.prescriptID and 
-			# 								            		I.BrandName = D.BrandName and
-			# 								            		P.CareCardNum = Pa.CareCardNum))")
+	 	@result = Table.connection.select_all("select Pa.CareCardNum, Pa.FirstName
+											from Patient Pa
+											Where NOT EXISTS
+											     (Select *
+											      from Drug D
+											      Where D.CompanyName LIKE '#{cName}'
+											      AND NOT EXISTS
+											      (Select * 
+											            From Prescription P, Includes I
+											            WHERE P.PrescriptID = I.prescriptID and 
+											            		I.BrandName = D.BrandName and
+											            		P.CareCardNum = Pa.CareCardNum))")
 		render "index"
 	 end
 
