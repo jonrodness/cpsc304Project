@@ -281,7 +281,7 @@ where
 select *
 from Doctor
 where
-	LicenseNum = '1232131241';
+	LicenseNum = '1232131241'	;
 
 
 # qD2 can prescribe a drug
@@ -368,6 +368,10 @@ where CareCardNum=999;
 # qD9 -can view a list of previous prescriptions for a certain patient
 # jon - checked: entered, ensure only for this doctor's patients
 #	same as Q1
+select Pr.PrescriptID 
+from Prescription Pr, Doctor D, Patient P 
+where Pr.LicenseNum = D.LicenseNum and
+P.CareCardNum = '#{ccNum}'
 
 
 # qD10 - can view a list of previous drugs taken by a certain patient

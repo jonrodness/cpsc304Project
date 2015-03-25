@@ -253,15 +253,13 @@ class TablesController < ApplicationController
 												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
 												where MakeApptW.LicenseNum = D.LicenseNum and
 														MakeApptW.CareCardNum = P.CareCardNum and
-														D.LicenseNum  = '1232131241'
+														D.LicenseNum  = '#{@userlicense}'
 												order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate")
 		render "index"
 	 end
 
 	 # View Appointments on a certain date
-	 	# USE VARIABLES
 	 def qD6
-
 	 	date = params[:date]
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
@@ -269,26 +267,35 @@ class TablesController < ApplicationController
 												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
 												where MakeApptW.LicenseNum = D.LicenseNum and
 														MakeApptW.CareCardNum = P.CareCardNum and
-														D.LicenseNum  = '1232131241'
-														MakeApptW.TimeBlockDate = '2015-04-03'")
+														D.LicenseNum  = '#{@userlicense}' and
+														MakeApptW.TimeBlockDate = '#{date}'")
 		render "index"
 	 end
 
 	 # View Appointments during a certain time
-	 	# USE VARIABLES
 	 def qD7
 	 	sTime = params[:sTime]
 	 	eTime = params[:eTime]
-	 	#@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(P.FirstName, " ", P.LastName) as "Patient", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and D.LicenseNum  = '1232131241' and MakeApptW.StartTime >=  '09:00:00'  and MakeApptW.StartTime <=  '11:00:00'")
+	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
+														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
+													CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
+												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
+												where MakeApptW.LicenseNum = D.LicenseNum and
+														MakeApptW.CareCardNum = P.CareCardNum and
+														D.LicenseNum  = '#{@userlicense}' and
+														MakeApptW.StartTime >=  '#{sTime}'  and
+														MakeApptW.StartTime <=  '#{eTime}'")
 		render "index"
 	 end
 
 	 # View patient information
-	 	# USE VARIABLES
+	 	# TESTED - WORKS
 	 	# DO WE WANT TO LIMIT THIS TO ONLY THE PATIENTS THIS DOCTOR SEES?
 	 def qD8
 	 	ccNum = params[:ccNum]
-	 	#@result = Table.connection.select_all("select * from Patient where CareCardNum=999")
+	 	@result = Table.connection.select_all("select *
+												from Patient
+												where CareCardNum = '#{ccNum}'")
 		render "index"
 	 end
 
@@ -297,7 +304,10 @@ class TablesController < ApplicationController
 	 	 # USE VARIABLES
 	 def qD9
 	 	ccNum = params[:ccNum]
-	 	#@result = Table.connection.select_all("select Pr.PrescriptID from Prescription Pr, Doctor D where Pr.LicenseNum=D.LicenseNum")
+	 	@result = Table.connection.select_all("select Pr.PrescriptID 
+										 		from Prescription Pr, Doctor D, Patient P 
+										 		where Pr.LicenseNum = D.LicenseNum and
+										 		P.CareCardNum = '#{ccNum}'")
 		render "index"
 	 end
 
