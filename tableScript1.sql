@@ -53,7 +53,6 @@ CREATE TABLE Prescription
     Refills INT,  
     Dosage VARCHAR(50),
     CareCardNum CHAR(10),
-`
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
     FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
