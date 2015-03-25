@@ -1,3 +1,4 @@
+<div class = "panel container">
 <h2>Records:</h2>
 
 <table>
@@ -20,6 +21,9 @@
 	</tbody>
 </table>
 
+</div>
+
+
 <% if (current_user.user_type == 'Doctor') %>
 	<%= render 'doctor' %>
 <% elsif (current_user.user_type == 'Patient') %>
@@ -27,5 +31,4 @@
 <% elsif (current_user.user_type == 'Pharmacist') %>
 	<%= render 'pharmacist' %>
 <% end %>
-
 			
