@@ -18,12 +18,12 @@ Email:
       <%= current_user.email %>
 </div>
 <div class='col-md-4' style='text-align: right'>
-  <button class='btn btn-default'>
+  <div class='btn btn-default'>
      <%= link_to "Home", root_path %>
-      </button>
-  <button class='btn btn-default'>
+      </div>
+  <div class='btn btn-default'>
     <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-    </button>
+    </div>
     
     <%= link_to "Home", root_path %>
     <%= link_to "Logout", destroy_user_session_path, method: :delete %>
@@ -33,16 +33,13 @@ Email:
 </div>
 <% else %>
 <div class='col-md-4'>
-  <button class='btn btn-default'>
+  <div class='btn btn-default'>
     <%= link_to "Sign up", new_user_registration_path %>
-  </button>
-  <button class='btn btn-default'>
+  </div>
+  <div class='btn btn-default'>
     <%= link_to "Login", new_user_session_path %>
-  </button>
+  </div>
 </div>
-
-    <%= link_to "Sign up", new_user_registration_path %>
-    <%= link_to "Login", new_user_session_path %>
 
 <% end %>
 

@@ -88,12 +88,14 @@ class TablesController < ApplicationController
 	 end
 
 	 # Pharmacies that are currently open: Weekday
+	 # TESTED - WORKS
 	 def qPa2
 	 	@result = Table.connection.select_all("select * from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
 		render "index"
 	 end
 
 	 # Pharmacies that are currently open: Weekend
+	 # TESTED - WORKS
 	 def qPa3
 	 	@result = Table.connection.select_all("select * from Pharmacy P where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing")
 		render "index"
@@ -137,57 +139,65 @@ class TablesController < ApplicationController
 		 # USE VARIABLES FOR start and end time
 		 # ADD VARIABLE FOR ccNum (from current_user)
 		 # USE EXECUTE, NOT CONNECTION!
+		 # TESTED - WORKS
 	 def qPa5
 	 	date = params[:date]
 	 	sTime = params[:sTime]
-	 	# Table.connection.select_all("delete from MakesAppointmentWith where CareCardNum = '1234567890' and TimeBlockDate = '2015-04-03' and StartTime = '09:00:00'")
+	 	@result = Table.connection.select_all("SELECT * FROM Drug")
+	 	Table.connection.execute("delete from MakesAppointmentWith where CareCardNum = '#{@userCCNum}' and TimeBlockDate = '#{date}' and StartTime = '#{sTime}'")
 		render "index"
 	 end
 
 	# View all upcoming appointments
 		# ADD VARIABLE for ccNum
+		# TESTED - WORKS
 	 def qPa6a
-	 	# @result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, " ", D.LastName) as "Doctor", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '1234567890'")
+	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}'")
 		render "index"
 	 end
 
 	# View upcoming appointments by date
 		# USE VARIABLE FOR date
 	 	# ADD VARIABLE for ccNum
+	 	# TESTED - WORKS
 	 def qPa6b
 	 	date = params[:date]
-	 	# @result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, " ", D.LastName) as "Doctor", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '1234567890' and MakeApptW.TimeBlockDate = '2015-04-03'")
+	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.TimeBlockDate = '#{date}'")
 		render "index"
 	 end
 	
 	# View upcoming appointments by time	
 		# USE VARIABLES FOR start and end time
 		# ADD VARIABLE for ccNum
+		# TESTED - WORKS
 	 def qPa6c
 	 	sTime = params[:sTime]
 	 	eTime = params[:eTime]
-	 	# @result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, " ", D.LastName) as "Doctor", CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on " from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '1234567890' and MakeApptW.StartTime >=  '09:00:00'  and MakeApptW.StartTime <=  '11:00:00'")
+	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.StartTime >=  '#{sTime}'  and MakeApptW.EndTime <=  '#{eTime}'")
 		render "index"
 	 end
 
 	 # Check Drug Interactions
 	 	# USE VARIABLE FOR drug
+	 	# TESTED - WORKS
 	 def qPa7
 	 	drug = params[:drug]
-	 	# Table.connection.select_all("select dGenericName from InteractsWith where iGenericName like '%Ibuprofen%'")
+	 	@result = Table.connection.select_all("select iGenericName from InteractsWith where LCASE(dGenericName) like '%#{drug}%'")
 		render "index"
 	 end
 
 	 # Check Interactions for this prescriptionID
 	 	# USE VARIABLES FOR prescription
 	 	# do we need variable for patientID?
+	 	# TESTED - WORKS
 	 def qPa8
 	 	prescription = params[:prescription]
-	 	# Table.connection.select_all("select distinct IW.iBrandName as "Brand name" , IW.iGenericName as "Generic name" from Prescription P, InteractsWith IW, Includes I, Drug D1, Drug D2 where 	P.PrescriptID LIKE '0001' and P.PrescriptID = I.PrescriptID and I.BrandName = D1.BrandName and I.GenericName = D1.GenericName and IW.dBrandName = D1.BrandName and IW.dGenericName = D1.GenericName and IW.iBrandName != D1.BrandName and IW.iGenericName != D1.GenericName")
+	 	@result = Table.connection.select_all("select distinct IW.iBrandName as 'Brand name', IW.iGenericName as 'Generic name' from Prescription P, InteractsWith IW, Includes I, Drug D1, Drug D2 where P.PrescriptID LIKE '#{prescription}' and P.PrescriptID = I.PrescriptID and I.BrandName = D1.BrandName and I.GenericName = D1.GenericName and IW.dBrandName = D1.BrandName and IW.dGenericName = D1.GenericName and IW.iBrandName != D1.BrandName and IW.iGenericName != D1.GenericName")
 		render "index"
 	 end
 
 	 # View Prescription Status
+	 # TESTED - WORKS
 	 def qPa9
 	 	@result = Table.connection.select_all("select * from Prescription where ReadyForPickup=1")
 		render "index"
@@ -195,15 +205,17 @@ class TablesController < ApplicationController
 
 	 # Generate Report: Current Prescription
 	 	# ADD VARIABLE FOR CCNum
+	 	# TESTED - WORKS
 	 def qPa10
-	 	# @result = Table.connection.select_all("select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, Pr.dosage as "Drug dosage",  Pr.refills as "Refills" from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where 	P.CareCardNum LIKE '1234567890' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills > 0 order by Pr.date_prescribed desc")
+	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills > 0 order by Pr.date_prescribed desc")
 		render "index"
 	 end
 
 	 # Generate Report: Previous Prescription
 	 	# ADD VARIABLE FOR CCNum
+	 	# TESTED - WORKS
 	 def qPa11
-	 	# @result = Table.connection.select_all("select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, Pr.dosage as "Drug dosage",  Pr.refills as "Refills" from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where 	P.CareCardNum LIKE '1234567890' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
+	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
 		render "index"
 	 end
 
@@ -220,7 +232,7 @@ class TablesController < ApplicationController
 	 	dPhoneNum = params[:dPhoneNum]
 	 	dSpecialty =  params[:dSpecialty]
 	 	dLicenseNum = current_user.license_num
-	 	Table.connection.select_all("update Doctor
+	 	Table.connection.execute("update Doctor
 						 			set
 										FirstName = '" + dFName + "',
 										LastName = '" + dLName + "',
@@ -229,7 +241,7 @@ class TablesController < ApplicationController
 										Type = '" + dSpecialty = "'
 									where
 										LicenseNum = '" + dLicenseNum + "'")
-	 	@result = Table.connection.select_all("select *
+	 	@result = Table.connection.execute("select *
 									from Doctor
 									where
 										LicenseNum = '" + dLicenseNum + "'")
@@ -238,7 +250,7 @@ class TablesController < ApplicationController
 
 	 # Prescribe a Drug
 	 	# USE VARIABLES
-	 	# DOES NOT WORK YET
+	 	# TESTED - WORKS
 	 	# ARE THESE THE CORRECT VARIABLES?
 	 	# USE EXECUTE, NOT CONNECTION!
 	 def qD2
@@ -247,7 +259,8 @@ class TablesController < ApplicationController
 	 	dosage = params[:dosage]
 	 	ccNum = params[:ccNum]
 	 	dLicenseNum = current_user.license_num
-	 	@result = Table.connection.select_all("insert into Prescription values ('" + dLicenseNum + "','" + prescription + "','" + refills + "' ,'" + dosage + "' ,'" + ccNum + "' , 0, NOW())")
+	 	Table.connection.execute("insert into Prescription values ('#{dLicenseNum}', '#{prescription}', #{refills}, '#{dosage}', '#{ccNum}', 0, NOW())")
+	 	@result = Table.connection.select_all("SELECT * FROM Prescription WHERE Prescription.PrescriptID = #{prescription}")
 		render "index"
 	 end
 
@@ -273,7 +286,7 @@ class TablesController < ApplicationController
 	 def qD5
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
-													CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
+														CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
 												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
 												where MakeApptW.LicenseNum = D.LicenseNum and
 														MakeApptW.CareCardNum = P.CareCardNum and
@@ -287,7 +300,7 @@ class TablesController < ApplicationController
 	 	date = params[:date]
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
-													CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
+														CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
 												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
 												where MakeApptW.LicenseNum = D.LicenseNum and
 														MakeApptW.CareCardNum = P.CareCardNum and
@@ -302,7 +315,7 @@ class TablesController < ApplicationController
 	 	eTime = params[:eTime]
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
-													CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
+														CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
 												from MakesAppointmentWith MakeApptW, Doctor D, Patient P
 												where MakeApptW.LicenseNum = D.LicenseNum and
 														MakeApptW.CareCardNum = P.CareCardNum and

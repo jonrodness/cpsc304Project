@@ -236,8 +236,8 @@ VALUES ('5483843482', '0008', '0', '1 tbsp 1 time per day for 1 day',
 # ^^^ presriptions by anny
 
 INSERT INTO Prescription
-VALUES ('5483843482', '3456', '0', '1 tbsp 1 time per day for 1 day', 
-       '2346528765', '0', '2014-05-10');
+VALUES ('5483843482', '3456', '10', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '1', '2014-05-10');
 
 INSERT INTO Prescription
 VALUES ('3422344543', '9876', '200', '12 pills 8 times per day for 45 days', 
