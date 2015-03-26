@@ -269,6 +269,11 @@ where 	P.CareCardNum LIKE '1234567890' and
 		Pr.refills = 0
 order by Pr.date_prescribed desc;
 
+# qPa12
+# deleting the patient will delete the appts and includes and prescription
+delete from Patient 
+	where CareCardNum='1099282394';
+
 
 ########User: Doctors
 
