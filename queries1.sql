@@ -3,9 +3,10 @@
 # qPh1 view prescriptions prescribed by doctor
 #chris-checked
 #jon-checked: entered and working
-select Pr.PrescriptID
-from Prescription Pr, Doctor D
-where Pr.LicenseNum=D.LicenseNum;
+select CONCAT(D.FirstName, ' ', D.LastName) as DoctorName, D.Type, P.Dosage, P.date_prescribed 
+from Doctor D, Prescription P 
+where D.LicenseNum=P.LicenseNum 
+group by D.LastName;
 
 # qPh2 change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
 #chris-checked

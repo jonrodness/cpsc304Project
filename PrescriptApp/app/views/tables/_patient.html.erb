@@ -1,4 +1,9 @@
-  <h2>Patient Options:</h2>
+<div class = "panel container">
+<div class='text-center'>
+
+<h2 class='text-center'>Patient Options</h2>
+
+  <div class='row-line'></div>
 
 <%= form_tag(qPa1_path, :method=>'post') do %>
  <h3>Update personal information</h3>
@@ -33,11 +38,11 @@
 <%= form_tag(qPa4_path, :method=>'post') do %>
  <h3>Make an Appointment:</h3>
   <%= label_tag("date", "Date:") %> 
-  <%= text_field_tag "date" %> </br>
+  <%= date_field_tag "date" %> </br>
   <%= label_tag("sTime", "Start Time:") %> 
-  <%= text_field_tag "sTime" %> </br>
+  <%= time_select "sTime", "test", {minute_step: 30, ampm: true} %> </br>
   <%= label_tag("eTime", "End Time:") %> 
-  <%= text_field_tag "eTime" %> </br>
+  <%= time_select "eTime", "test", {minute_step: 30, ampm: true} %> </br>
   <%= label_tag("license", "Doctor License:") %> 
   <%= text_field_tag "license" %>
  <p>
@@ -48,9 +53,9 @@
 <%= form_tag(qPa5_path, :method=>'post') do %>
  <h3>Cancel an Appointment:</h3>
   <%= label_tag("date", "Date:") %> 
-  <%= text_field_tag "date" %> </br>
+  <%= date_field_tag "date" %> </br>
   <%= label_tag("sTime", "Start Time:") %> 
-  <%= text_field_tag "sTime" %> </br>
+  <%= time_select "sTime", "test", {minute_step: 30, ampm: true} %> </br>
  <p>
   <%= submit_tag 'Submit' %>
  </p>
@@ -64,7 +69,7 @@
 <%= form_tag(qPa6b_path, :method=>'post') do %>
  <h3>View upcoming appointments by date:</h3>
   <%= label_tag("date", "Date:") %> 
-  <%= text_field_tag "date" %> </br>
+  <%= date_field_tag "date" %> </br>
  <p>
   <%= submit_tag 'Submit' %>
  </p>
@@ -73,9 +78,9 @@
 <%= form_tag(qPa6c_path, :method=>'post') do %>
  <h3>View upcoming appointments by time:</h3>
   <%= label_tag("sTime", "Start Time:") %> 
-  <%= text_field_tag "sTime" %> </br>
+  <%= time_select "sTime", "test", {minute_step: 30, ampm: true} %> </br>
   <%= label_tag("eTime", "End Time:") %> 
-  <%= text_field_tag "eTime" %> </br>
+  <%= time_select "eTime", "test", {minute_step: 30, ampm: true} %> </br>
  <p>
   <%= submit_tag 'Submit' %>
  </p>
@@ -111,7 +116,7 @@
 <%= button_to "Go!", qPa11_path, :class => "button", :method => :get %>
 <br>
 
+</div>
 
 
-
-
+</div>

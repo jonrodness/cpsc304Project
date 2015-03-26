@@ -128,6 +128,7 @@ class TablesController < ApplicationController
     sTime = params[:sTime]
     eTime = params[:eTime]
     license = params[:license]
+    
         
         Table.connection.execute("insert into TimeBlock values ('#{date}',
         													    '#{sTime}',
