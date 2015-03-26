@@ -229,47 +229,46 @@ class TablesController < ApplicationController
  	############################# Doctor Queries ################################
 
  	# Update doctor address
-	 	# UPDATE VIEW
 	 	# TESTED - WORKS
 	 def qD1a
 	 	dAddress = params[:dAddress]
-	 	dPhoneNum = params[:dPhoneNum]
 	 	Table.connection.execute("update Doctor set Address = '#{dAddress}'")
-	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{dLicenseNum}'")
+	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{@userlicense}'")
 		render "index"
 	 end
 
-	 # Update doctor address
-	 	# UPDATE VIEW
+	 # Update doctor phone number
+	 	# TESTED - WORKS
 	 def qD1b
-	 	dAddress = params[:dAddress]
 	 	dPhoneNum = params[:dPhoneNum]
 	 	Table.connection.execute("update Doctor set PhoneNumber = '#{dPhoneNum}'")
-	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{dLicenseNum}'")
+	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{@userlicense}'")
 		render "index"
 	 end
 
 	 # Update patient height
-	 	# UPDATE VIEW
-	 	# UPDATE ROUTES
+	 	# TESTED - WORKS
 	 def qD1c
 	 	pHeight = params[:pHeight]
 	 	ccNum = params[:ccNum]
 	 	Table.connection.execute("update Patient set Height = '#{pHeight}'
-                                where CareCardNum LIKE '#{CCNum}'")
-    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+                                where CareCardNum LIKE '#{ccNum}'")
+    	@result = Table.connection.select_all("select *
+												from Patient
+												where CareCardNum = '#{ccNum}'")
 	 	render "index"
 	 end
 
 	 # Update patient weight
-	 	# UPDATE VIEW
-	 	# UPDATE ROUTES
+	 	 	# TESTED - WORKS
 	 def qD1d
 	 	pWeight = params[:pWeight]
 	 	ccNum = params[:ccNum]
 	 	Table.connection.execute("update Patient set Weight = '#{pWeight}'
-                                where CareCardNum LIKE '#{CCNum}'")
-    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+                                where CareCardNum LIKE '#{ccNum}'")
+    	@result = Table.connection.select_all("select *
+												from Patient
+												where CareCardNum = '#{ccNum}'")
 	 	render "index"
 	 end
 
@@ -480,6 +479,26 @@ class TablesController < ApplicationController
 											            		I.BrandName = D.BrandName and
 											            		P.CareCardNum = Pa.CareCardNum))")
 		render "index"
+	 end
+
+	 # Add a new patient to the database
+	 	# TESTED - WORKS
+	 def qD17
+	 	pFName = params[:pFName]
+	 	pLName = params[:pLName]
+	 	pAge = params[:pAge]
+	 	pWeight = params[:pWeight]
+	 	pHeight = params[:pHeight]
+	 	pAddress = params[:pAddress]
+	 	pPhoneNum = params[:pPhoneNum]
+	 	ccNum = params[:ccNum]
+	 	Table.connection.execute("INSERT INTO Patient
+									VALUES ('#{ccNum}', '#{pFName}', '#{pLName}', '#{pAge}', '#{pWeight}', '#{pHeight}', 
+        							'#{pAddress}', '#{pPhoneNum}')")
+	 	@result = Table.connection.select_all("select *
+	 											from Patient P
+	 											where P.CareCardNum = #{ccNum}")
+	 	render "index"
 	 end
 
 
