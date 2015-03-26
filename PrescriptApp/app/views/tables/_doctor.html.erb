@@ -153,70 +153,90 @@
    </p>
   <% end %>
 
-<div class='grey-background'>
-  <%= form_tag(qD13_path, :method=>'post') do %>
-   <h3>View patient's past appointments</h3>
+  <div class='grey-background'>
+    <%= form_tag(qD13_path, :method=>'post') do %>
+    <h3>View patient's past appointments</h3>
     <%= label_tag("ccNum", "Care card number:") %> 
     <%= text_field_tag "ccNum" %> </br>
-   <p>
-    <%= submit_tag 'Submit' %>
-   </p>
-  <% end %>
-</div>
+      <p>
+        <%= submit_tag 'Submit' %>
+      </p>
+    <% end %>
+  </div>
 
   <h3>Generate a report about which prescriptions a doctor has previously prescribed...</h3>
-  <%= button_to "Go!", qD14_path, :class => "button", :method => :get %>
+    <%= button_to "Go!", qD14_path, :class => "button", :method => :get %>
   <br>
 
-<div class='grey-background'>
-  <h3>Show the average number of refills for drugs</h3>
-  <%= button_to "Go!", qD15_path, :class => "button", :method => :get %>
-  <br>
-</div>
+  <div class='grey-background'>
+    <h3>Show the average number of refills for drugs</h3>
+      <%= button_to "Go!", qD15_path, :class => "button", :method => :get %>
+    <br>
+  </div>
 
   <%= form_tag(qD16_path, :method=>'post') do %>
-   <h3>View patients who have been prescribed all drugs from a specific company:</h3>
-    <%= label_tag("cName", "Company name:") %> 
-    <%= text_field_tag "cName" %> </br>
+    <h3>View patients who have been prescribed all drugs from a specific company:</h3>
+      <%= label_tag("cName", "Company name:") %> 
+      <%= text_field_tag "cName" %> </br>
+    <p>
+      <%= submit_tag 'Submit' %>
+    </p>
+  <% end %>
+
+  <div class='grey-background'>
+    <%= form_tag(qD17_path, :method=>'post') do %>
+   <h3>Add new patient</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("pFName", "First Name:") %> 
+    <%= text_field_tag "pFName" %> </br>
+    <%= label_tag("pLName", "Last Name:") %> 
+    <%= text_field_tag "pLName" %> </br>
+    <%= label_tag("pAge", "Age:") %> 
+    <%= text_field_tag "pAge" %> </br>
+    <%= label_tag("pWeight", "Weight:") %> 
+    <%= text_field_tag "pWeight" %> </br>
+    <%= label_tag("pHeight", "Height:") %> 
+    <%= text_field_tag "pHeight" %> </br>
+    <%= label_tag("pAddress", "Address:") %> 
+    <%= text_field_tag "pAddress" %> </br>
+    <%= label_tag("pPhoneNum", "Phone Number:") %> 
+    <%= text_field_tag "pPhoneNum" %> </br>
    <p>
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
-
-<div class='grey-background'>
-  <%= form_tag(qD17_path, :method=>'post') do %>
- <h3>Add new patient</h3>
-  <%= label_tag("ccNum", "Care card number:") %> 
-  <%= text_field_tag "ccNum" %> </br>
-  <%= label_tag("pFName", "First Name:") %> 
-  <%= text_field_tag "pFName" %> </br>
-  <%= label_tag("pLName", "Last Name:") %> 
-  <%= text_field_tag "pLName" %> </br>
-  <%= label_tag("pAge", "Age:") %> 
-  <%= text_field_tag "pAge" %> </br>
-  <%= label_tag("pWeight", "Weight:") %> 
-  <%= text_field_tag "pWeight" %> </br>
-  <%= label_tag("pHeight", "Height:") %> 
-  <%= text_field_tag "pHeight" %> </br>
-  <%= label_tag("pAddress", "Address:") %> 
-  <%= text_field_tag "pAddress" %> </br>
-  <%= label_tag("pPhoneNum", "Phone Number:") %> 
-  <%= text_field_tag "pPhoneNum" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-</div>
+  </div>
 
   <h3>Show the maximum number of refills for each drug</h3>
     <%= button_to "Go!", qD18_path, :class => "button", :method => :get %>
     <br>
 
-<div class='grey-background'>
+  <div class='grey-background'>
     <h3>Show refill data for for each drug</h3>
-  <%= button_to "Go!", qD19_path, :class => "button", :method => :get %>
+    <%= button_to "Go!", qD19_path, :class => "button", :method => :get %>
+    <br>
+  </div>
+
+  <h3>Most prescribed drugs by company</h3>
+  <%= button_to "Go!", qD20_path, :class => "button", :method => :get %>
   <br>
-</div>
+
+  <div class='grey-background'>
+    <%= form_tag(qD21_path, :method=>'post') do %>
+    <h3>Delete a patient</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <p>
+    <%= submit_tag 'Submit' %>
+    </p>
+    <% end %>
+  </div>
+
+  <h3>View all patients</h3>
+  <%= button_to "Go!", qD22_path, :class => "button", :method => :get %>
+  <br>
+
 
 </div>
 </div>
