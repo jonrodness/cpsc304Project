@@ -1,0 +1,211 @@
+
+
+<div class = "panel container">
+
+<div class='text-center'>
+  <h1>Doctor Options</h1>
+  <div class='row-line'></div>
+
+<div class='grey-background'>
+ <%= form_tag(qD1b_path, :method=>'post') do %>
+   <h3>Update phone number</h3>
+    <%= label_tag("dPhoneNum", "Phone Number:") %> 
+    <%= text_field_tag "dPhoneNum" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+  </div>
+
+ <%= form_tag(qD1c_path, :method=>'post') do %>
+   <h3>Update patient height</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("pHeight", "Height:") %> 
+    <%= text_field_tag "pHeight" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+<div class='grey-background'>
+   <%= form_tag(qD1d_path, :method=>'post') do %>
+   <h3>Update patient weight</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("pWeight", "Weight:") %> 
+    <%= text_field_tag "pWeight" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+</div>
+
+  <%= form_tag(qD2_path, :method=>'post') do %>
+   <h3>Prescribe a drug</h3>
+    <%= label_tag("prescription", "Prescription number:") %> 
+    <%= text_field_tag "prescription" %> </br>
+    <%= label_tag("refills", "Number of refills:") %> 
+    <%= text_field_tag "refills" %> </br>
+    <%= label_tag("dosage", "Dosage:") %> 
+    <%= text_field_tag "dosage" %> </br>
+    <%= label_tag("ccNum", "Patient Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("bName", "Brand Name:") %> 
+    <%= text_field_tag "bName" %> </br>
+    <%= label_tag("gName", "Generic Name:") %> 
+    <%= text_field_tag "gName" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+  <br>
+
+<div class='grey-background'>
+  <h3>Find pharmacies that are currently open (Weekday)</h3>
+  <%= button_to "Go!", qD3_path, :class => "button", :method => :get %>
+  <br>
+</div>
+
+  <h3>Find pharmacies that are currently open (Weekend)</h3>
+  <%= button_to "Go!", qD4_path, :class => "button", :method => :get %>
+  <br>
+
+<div class='grey-background'>
+  <h3>View Your Appointments</h3>
+  <%= button_to "Go!", qD5_path, :class => "button", :method => :get %>
+  <br>
+</div>
+
+  <%= form_tag(qD6_path, :method=>'post') do %>
+   <h3>View Appointments on a certain date:</h3>
+    <%= label_tag("date", "Date:") %> 
+    <%= date_field_tag "date" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+<div class='grey-background'>
+  <%= form_tag(qD7_path, :method=>'post') do %>
+   <h3>View Appointments during a certain time</h3>
+    <%= label_tag("sTime", "Start time:") %> 
+    <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
+    <%= label_tag("eTime", "End time:") %> 
+    <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+</div>
+
+  <%= form_tag(qD8_path, :method=>'post') do %>
+   <h3>View patient's information:</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+<div class='grey-background'>
+  <%= form_tag(qD9_path, :method=>'post') do %>
+   <h3>View patient's prescriptions:</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+</div>
+
+  <%= form_tag(qD10_path, :method=>'post') do %>
+   <h3>View patient's prescribed drugs:</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+<div class='grey-background'>
+  <%= form_tag(qD11_path, :method=>'post') do %>
+   <h3>View patient's prescribed drugs:</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("brandName", "Brand name:") %> 
+    <%= text_field_tag "brandName" %> </br>
+    <%= label_tag("genericName", "Generic name:") %> 
+    <%= text_field_tag "genericName" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+</div>
+
+  <%= form_tag(qD12_path, :method=>'post') do %>
+   <h3>View possible drug interactions:</h3>
+    <%= label_tag("iGenericName", "Generic name:") %> 
+    <%= text_field_tag "iGenericName" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+<div class='grey-background'>
+  <%= form_tag(qD13_path, :method=>'post') do %>
+   <h3>View patient's past appointments</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+</div>
+
+  <h3>Generate a report about which prescriptions a doctor has previously prescribed...</h3>
+  <%= button_to "Go!", qD14_path, :class => "button", :method => :get %>
+  <br>
+
+<div class='grey-background'>
+  <h3>Show the average number of refills for drugs</h3>
+  <%= button_to "Go!", qD15_path, :class => "button", :method => :get %>
+  <br>
+</div>
+
+  <%= form_tag(qD16_path, :method=>'post') do %>
+   <h3>View patients who have been prescribed all drugs from a specific company:</h3>
+    <%= label_tag("cName", "Company name:") %> 
+    <%= text_field_tag "cName" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+  <%= form_tag(qD17_path, :method=>'post') do %>
+ <h3>Add new patient</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+  <%= label_tag("pFName", "First Name:") %> 
+  <%= text_field_tag "pFName" %> </br>
+  <%= label_tag("pLName", "Last Name:") %> 
+  <%= text_field_tag "pLName" %> </br>
+  <%= label_tag("pAge", "Age:") %> 
+  <%= text_field_tag "pAge" %> </br>
+  <%= label_tag("pWeight", "Weight:") %> 
+  <%= text_field_tag "pWeight" %> </br>
+  <%= label_tag("pHeight", "Height:") %> 
+  <%= text_field_tag "pHeight" %> </br>
+  <%= label_tag("pAddress", "Address:") %> 
+  <%= text_field_tag "pAddress" %> </br>
+  <%= label_tag("pPhoneNum", "Phone Number:") %> 
+  <%= text_field_tag "pPhoneNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
+<br>
+
+</div>
+</div>

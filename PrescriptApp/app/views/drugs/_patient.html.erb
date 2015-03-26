@@ -1,0 +1,56 @@
+<h1>Patient</h1>
+
+<%= form_for @drug do |form| %>
+
+
+	<%= link_to "update personal information", action: "qPa1" %>
+
+	<div class="field">
+	    <%= form.label "test"  %><br />
+  	</div>
+
+	<br>
+
+	<%= link_to "Pharmacies that are currently open: Weekday", action: "qPa2" %>
+
+	<br>
+
+	<%= link_to "Pharmacies that are currently open: Weekend", action: "qPa3" %>
+
+	<br>
+
+	<%= link_to "Make an Appointment", action: "qPa4" %>
+
+	<br>
+
+	<%= link_to "Cancel an Appointment", action: "qPa5" %>
+
+	<br>
+
+	<%= link_to "View Upcoming Appointments", action: "qPa6" %>
+
+	<br>
+
+	<%= link_to "Check Drug Interactions", action: "qPa7" %>
+
+	<br>
+
+	<%= link_to "Check Interactions for this Prescription", action: "qPa8" %>
+
+	<br>
+
+	<%= link_to "View Prescription Status", action: "qPa9" %>
+
+	<br>
+
+	<%= link_to "Generate Report: Current Prescription", action: "qPa10" %>
+
+	<br>
+
+	<%= link_to "Generate Report: Previous Prescription", action: "qPa11" %>
+
+
+<% end %>
+
+
+
