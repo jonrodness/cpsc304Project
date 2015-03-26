@@ -526,19 +526,13 @@ select distinct I.BrandName, I.GenericName, P.Refills
 from Includes I, Prescription P 
 where I.PrescriptID = P.PrescriptID;
 
-# qD19 delete a time block. deleting a time block will delete the corresponding 
-# WE Want to give  doctors the ability to cancel appts 
-# TODO
-delete from TimeBlock
-	where TimeBlockDate = '2015-04-03' and
-			StartTime = '09:00:00' and
-			EndTime = '10:00:00';
 
-# qD20
+# qD19
 # TODO
 # select drug that was prescribed the most for each company
 
 # what we have now shows each drug and the number of times it was ordered
+# FIX THIS QUERY
 select D.BrandName, D.GenericName, 
 	D.CompanyName, 
 		COUNT(*) as "count"
