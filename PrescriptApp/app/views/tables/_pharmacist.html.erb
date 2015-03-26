@@ -1,38 +1,46 @@
-<h2>Pharmacist Options</h2>
-
-<h3>View prescriptions prescribed by doctor</h3>
-<%= button_to "Go!", qPh1_path, :class => "button", :method => :get %>
-<br>
-
-<%= form_tag(qPh2_path, :method=>'post') do %>
- <h3>Update prescription status:</h3>
-  <%= label_tag("prescription", "Prescription number:") %> 
-  <%= text_field_tag "prescription" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-
-<%= form_tag(qPh3_path, :method=>'post') do %>
- <h3>View past prescriptions:</h3>
-  <%= label_tag("ccNum", "Care card number:") %> 
-  <%= text_field_tag "ccNum" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-
-<h3>Print out a list of prescriptions filled that day</h3>
-<%= button_to "Go!", qPh4_path, :class => "button", :method => :get %>
-<br>
+<div class='text-center'>
+  <h2>Pharmacist Options</h2>
+  <div class='row-line'></div>
+  <h3>View prescriptions prescribed by doctor</h3>
+  <%= button_to "Go!", qPh1_path, :class => "button", :method => :get %>
+  <br>
 
 
-<%= form_tag(qPh5_path, :method=>'post') do %>
- <h3>Reduce the refill number of a patient’s prescription:</h3>
-  <%= label_tag("prescription", "Prescription number:") %> 
-  <%= text_field_tag "prescription" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
+  <div class="form-inline">
+    <%= form_tag(qPh2_path, :method=>'post') do %>
+     <h3>Update prescription status:</h3>
+      <%= label_tag("prescription", "Prescription number:") %> 
+      <%= text_field_tag "prescription" %> </br>
+     <p>
+      <%= submit_tag 'Submit' %>
+     </p>
+    <% end %>
+  </div>
 
+
+  <div class="form-inline">
+    <%= form_tag(qPh3_path, :method=>'post') do %>
+     <h3>View past prescriptions:</h3>
+      <%= label_tag("ccNum", "Care card number:") %> 
+      <%= text_field_tag "ccNum" %> </br>
+     <p>
+      <%= submit_tag 'Submit' %>
+     </p>
+    <% end %>
+  </div>
+
+  <h3>Print out a list of prescriptions filled that day</h3>
+  <%= button_to "Go!", qPh4_path, :class => "button", :method => :get %>
+  <br>
+
+  <div class="form-inline">
+    <%= form_tag(qPh5_path, :method=>'post') do %>
+     <h3>Reduce the refill number of a patient’s prescription:</h3>
+      <%= label_tag("prescription", "Prescription number:") %> 
+      <%= text_field_tag "prescription" %> </br>
+     <p>
+      <%= submit_tag 'Submit' %>
+     </p>
+    <% end %>
+  </div>
+</div>

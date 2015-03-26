@@ -9,7 +9,6 @@ class TablesController < ApplicationController
 		#@table.update_attribute(:identity, 1)
 		@result = Table.connection.select_all("SELECT * FROM Drug")
 		@license = current_user.license_num
-		Rails.logger.info ">>>>>>>>> #{@license} <<<<<<<"
 
 	end
 
@@ -21,8 +20,8 @@ class TablesController < ApplicationController
 	# View prescriptions prescribed by doctor
 	def qPh1
 		# TESTED - WORKS
-		# modified this to return a more useful result -Alfred
-		@result = Table.connection.select_all("select CONCAT(D.FirstName, ' ', D.LastName) as DoctorName, D.Type, P.Dosage, P.date_prescribed from Doctor D, Prescription P where D.LicenseNum=P.LicenseNum group by D.LastName")
+		# modified this to return a more useful result -Alfred	
+		@result = Table.connection.select_all("select CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor Name', D.Type as 'Doctor Type', I.BrandName as 'Brand Name',  P.Dosage, P.date_prescribed as 'Date Prescribed' from Doctor D, Prescription P, Includes I  where D.LicenseNum=P.LicenseNum and I.PrescriptID=P.PrescriptID group by D.LastName")
 		# @result = Table.connection.select_all("select Pr.PrescriptID, 
 		# 									   from Prescription Pr, Doctor D 
 		# 									   where Pr.LicenseNum=D.LicenseNum")
