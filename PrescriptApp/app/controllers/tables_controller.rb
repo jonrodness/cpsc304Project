@@ -2,10 +2,8 @@ class TablesController < ApplicationController
 	before_action :get_user_attributes
 
 	def index
-		@table = Table.new
-		@table.save
-		#@table.identity = 1
-		#@table.update_attribute(:identity, 1)
+		#@table = Table.new
+		#@table.save
 		if current_user.user_type == "Patient"
 			@result = Table.connection.select_all("SELECT CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', Age, Weight, Height, Address, PhoneNumber as 'Phone Number' FROM Patient WHERE Patient.CareCardNum=#{current_user.care_card_num}")
 			@title = "Your Personal Statistics"
@@ -22,7 +20,7 @@ class TablesController < ApplicationController
 
 		end
 				
-		@license = current_user.license_num
+		#@license = current_user.license_num
 
 	end
 
@@ -35,7 +33,7 @@ class TablesController < ApplicationController
 	def qPh1
 		# TESTED - WORKS
 		@result = Table.connection.select_all("select CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor Name', D.Type as 'Doctor Type', I.BrandName as 'Brand Name',  P.Dosage, P.date_prescribed as 'Date Prescribed' from Doctor D, Prescription P, Includes I  where D.LicenseNum=P.LicenseNum and I.PrescriptID=P.PrescriptID group by D.LastName")
-		@title = "Prescriptions, sorted by doctors' last names:"
+		@title = "Prescriptions, sorted by doctors' last names"
 		render "index"
 	end
 
@@ -43,6 +41,9 @@ class TablesController < ApplicationController
 		# TESTED - WORKS
 	 def qPh2
 	 	prescription = params[:prescription]
+
+	 	# check that prescription number is a non-negative number
+	 	assert {prescription.to_f >= 0}
 		Table.connection.execute("update Prescription set ReadyForPickUp=1 
 								  where PrescriptID ='#{prescription}' and ReadyForPickup=0")
 		@result = Table.connection.select_all("select PrescriptID as 'Prescription ID',Refills, Dosage, CareCardNum as 'Care Card Number', ReadyForPickUp as 'Pickup Status', date_prescribed as 'Date Prescribed' from Prescription
@@ -55,11 +56,13 @@ class TablesController < ApplicationController
 		 # TESTED - WORKS
 	 def qPh3
 	 	ccNum = params[:ccNum]
+	 	# check that care card number is a non-negative number
+	 	assert {ccNum.to_f >= 0}
 		@result = Table.connection.select_all("select Pr.date_prescribed as 'Date Prescribed',I.GenericName as 'Generic Name',Pr.Refills,Pr.Dosage
 												from Prescription Pr, Patient P, Includes I
 												where Pr.CareCardNum = P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum = '#{ccNum}'
 												Order By Pr.date_prescribed")
-		@title = "Past prescriptions for patient# #{ccNum}:"
+		@title = "Past prescriptions for patient# #{ccNum}"
 		render "index"
 	 end
 
@@ -71,7 +74,7 @@ class TablesController < ApplicationController
 	 											where Pr.PrescriptID=I.PrescriptID and 
 	 											Pr.CareCardNum = P.CareCardNum and 
 	 											Pr.date_prescribed = curdate()")
-	 	@title = "Prescriptions filled today:"
+	 	@title = "Prescriptions filled today"
 	 	render "index"
 	 end
 
@@ -79,6 +82,9 @@ class TablesController < ApplicationController
 		 # TESTED - WORKS
 	 def qPh5
 	 	prescription = params[:prescription]
+
+	 	# check that prescription number is a non-negative number
+	 	assert {prescription.to_f >= 0}
 		Table.connection.execute("update Prescription set Refills=Refills-1 
 								  where PrescriptID = '#{prescription}' and Refills > 0")
 		@result = Table.connection.select_all("SELECT PrescriptID as 'Prescription ID', Refills, Dosage FROM Prescription WHERE PrescriptID=#{prescription}")
@@ -86,12 +92,39 @@ class TablesController < ApplicationController
 		render "index"
 	 end
 
+	 # Show all drugs in the database
+	 	#TESTED - WORKS
+	 def qPh6
+	 	@result = Table.connection.select_all("select * from Drug")
+	 	@title = "List of drugs"
+	 	render "index"
+	 end
+
+	 # Delete a drug from the database
+	 	# TESTED - WORKS
+	 def qPh7
+	 	brandName = params[:brandName]
+	 	genericName = params[:genericName]
+	 	# check that brandName field is not empty
+	 	assert {!brandName.empty?}
+	 	# check that genericName field is not empty
+	 	assert {!genericName.empty?}
+	 	Table.connection.execute("delete 
+									from Drug
+									where BrandName = '#{brandName}' and
+										GenericName = '#{genericName}'")
+	 	@result = Table.connection.select_all("select * from Drug")
+	 	render "index"
+ 	 end
+
 	 ############################# Patient Queries ################################
 
 	 # Update patient address
 	     # TESTED - WORKS
 	 def qPa1a
 	 	pAddress = params[:pAddress]
+	 	# check that address field is not empty
+	 	assert {!pAddress.empty?}
 	 	Table.connection.execute("update Patient set Address = '#{pAddress}'
                                 where CareCardNum LIKE '#{@userCCNum}'")
     	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
@@ -102,6 +135,9 @@ class TablesController < ApplicationController
 	     # TESTED - WORKS
 	 def qPa1b
 	 	pPhoneNum = params[:pPhoneNum]
+
+	 	# check that phone number is 10 digits
+	 	assert {pPhoneNum.length == 10}
 	 	Table.connection.execute("update Patient set PhoneNumber = '#{pPhoneNum}' 
                                 where CareCardNum LIKE '#{@userCCNum}'")
 
@@ -139,6 +175,8 @@ class TablesController < ApplicationController
 	    eTime = params[:eTime]
 	    endTime = eTime["test(4i)"] + ":" + eTime["test(5i)"]
 	    license = params[:license]
+	    # check that license field is not empty
+	 	assert {!license.empty?}	    
 	    Table.connection.execute("insert into TimeBlock values ('#{date}',
 	        													    '#{startTime}',
 	        													    '#{endTime}')")
@@ -214,6 +252,8 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa7
 	 	drug = params[:drug]
+	 	# check that drug field is not empty
+	 	assert {!drug.empty?}
 	 	@result = Table.connection.select_all("select iBrandName as 'Brand Name', iGenericName as 'Generic Name' from InteractsWith where LCASE(dGenericName) like '%#{drug}%'")
 	 	@title = "Drugs that interact with #{drug}:"
 		render "index"
@@ -225,6 +265,10 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa8
 	 	prescription = params[:prescription]
+	 	# check that prescription field is not empty
+	 	assert {!prescription.empty?}
+	 	# check that prescription is a non-negative number
+	 	assert {prescription.to_f >= 0}
 	 	@result = Table.connection.select_all("select distinct IW.iBrandName as 'Brand name', IW.iGenericName as 'Generic name' from Prescription P, InteractsWith IW, Includes I, Drug D1, Drug D2 where P.PrescriptID LIKE '#{prescription}' and P.PrescriptID = I.PrescriptID and I.BrandName = D1.BrandName and I.GenericName = D1.GenericName and IW.dBrandName = D1.BrandName and IW.dGenericName = D1.GenericName and IW.iBrandName != D1.BrandName and IW.iGenericName != D1.GenericName")
 		@title = "Drugs that interact with drugs in prescription# #{prescription}:"
 		render "index"
@@ -272,9 +316,11 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qD1b
 	 	dPhoneNum = params[:dPhoneNum]
+	 	# check that phone number is 10 digits
+	 	assert {dPhoneNum.length == 10}
 	 	Table.connection.execute("update Doctor set PhoneNumber = '#{dPhoneNum}'")
 	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{@userlicense}'")
-		render "index"
+	 	redirect_to qPh6_path, :flash => { :notice => "Phone number successfully changed to #{dPhoneNum}"}
 	 end
 
 	 # Update patient height
@@ -282,12 +328,23 @@ class TablesController < ApplicationController
 	 def qD1c
 	 	pHeight = params[:pHeight]
 	 	ccNum = params[:ccNum]
+
+	 	# check that fields are filled
+	 	assert {!pHeight.nil?}
+	 	assert {!ccNum.nil?}
+
+	 	# check that height is non-negative number
+	 	assert {pHeight.to_f >= 0}
+
+	 	# check that care card number is a non-negative number
+	 	assert {ccNum.to_f >= 0}
+
 	 	Table.connection.execute("update Patient set Height = '#{pHeight}'
                                 where CareCardNum LIKE '#{ccNum}'")
     	@result = Table.connection.select_all("select *
 												from Patient
 												where CareCardNum = '#{ccNum}'")
-	 	render "index"
+	 	redirect_to tables_path, :flash => { :notice => "Height successfully changed to #{pHeight} for patient #{ccNum}"}
 	 end
 
 	 # Update patient weight
@@ -295,6 +352,17 @@ class TablesController < ApplicationController
 	 def qD1d
 	 	pWeight = params[:pWeight]
 	 	ccNum = params[:ccNum]
+
+	 	# check that fields are filled
+	 	assert {!pWeight.nil?}
+	 	assert {!ccNum.nil?}
+
+	 	# check that weight is non-negative number
+	 	assert {pWeight.to_f >= 0}
+
+	 	# check that care card number is a non-negative number
+	 	assert {ccNum.to_f >= 0}
+
 	 	Table.connection.execute("update Patient set Weight = '#{pWeight}'
                                 where CareCardNum LIKE '#{ccNum}'")
     	@result = Table.connection.select_all("select *
@@ -312,6 +380,20 @@ class TablesController < ApplicationController
 	 	ccNum = params[:ccNum]
 	 	bName = params[:bName]
 	 	gName = params[:gName]
+
+	 	# check that fields are filled
+	 	assert {!prescription.nil?}
+	 	assert {!refills.nil?}
+	 	assert {!dosage.nil?}
+	 	assert {!ccNum.nil?}
+	 	assert {!bName.nil?}
+	 	assert {!gName.nil?}
+
+	 	# check that prescription, refills, dosage, and ccNum are non-negative numbers
+	 	assert {prescription.to_f >= 0}
+	 	assert {refills.to_f >= 0}
+	 	assert {ccNum.to_f >= 0}
+
 	 	dLicenseNum = current_user.license_num
 	 	Table.connection.execute("insert into Prescription values ('#{dLicenseNum}', '#{prescription}', #{refills}, '#{dosage}', '#{ccNum}', 0, NOW())")
 	 	Table.connection.execute("insert into Includes values ('#{prescription}', '#{bName}', '#{gName}')")
@@ -321,8 +403,6 @@ class TablesController < ApplicationController
 
  	# Pharmacies that are currently open: Weekday
  		# TESTED - WORKS
-
-	
 	 def qD3
 	 	@table = Table.new
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
@@ -390,9 +470,11 @@ class TablesController < ApplicationController
 
 	 # View patient information
 	 	# TESTED - WORKS
-	 	# DO WE WANT TO LIMIT THIS TO ONLY THE PATIENTS THIS DOCTOR SEES?
 	 def qD8
 	 	ccNum = params[:ccNum]
+
+	 	# check that care card number is a non-negative number
+	 	assert {ccNum.to_f >= 0}
 	 	@result = Table.connection.select_all("select CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', 
 	 		Age, Weight, Height, Address, PhoneNumber as 'Phone Number'
 												from Patient
@@ -405,6 +487,8 @@ class TablesController < ApplicationController
 	 	 # TESTED - WORKS
 	 def qD9
 	 	ccNum = params[:ccNum]
+	 	# check that care card number is a non-negative number
+	 	assert {ccNum.to_f >= 0}
 	 	@result = Table.connection.select_all("select CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor Name', 
 	 		D.Type as 'Doctor Type', I.BrandName as 'Brand Name',  
 	 		P.Dosage, P.date_prescribed as 'Date Prescribed' 
@@ -424,6 +508,8 @@ class TablesController < ApplicationController
 	 	# DO WE WANT TO LIMIT THIS TO ONLY THE PATIENTS THIS DOCTOR SEES?
 	 def qD10
 	 	ccNum = params[:ccNum]
+	 	# check that care card number is a non-negative number
+	 	assert {ccNum.to_f >= 0}
 	 	@result = Table.connection.select_all("select I.GenericName as 'Generic Name', I.BrandName as 'Brand Name'
 												from Prescription Pr, Patient P, Includes I
 												where P.CareCardNum = '#{ccNum}' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;")
@@ -453,17 +539,15 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qD12
 	 	iGenericName = params[:iGenericName]
-	 	@result = Table.connection.select_all("select D.GenericName as 'Generic Name', D.BrandName as 'Brand Name'
+	 	# check that generic name is filled
+	 	assert {!iGenericName.empty?}
+	 	@result = Table.connection.select_all("select D.GenericName, D.BrandName
 												from InteractsWith I, Drug D
-												where (I.dBrandName = '#{iBrandName}' and
-														I.dGenericName = '#{iGenericName}' and
-														I.iGenericName = D.GenericName and
-														I.iBrandName = D.BrandName) or
-														(I.iBrandName = '#{iBrandName}' and
-														I.iGenericName = '#{iGenericName}' and
-														I.dBrandName = D.BrandName and
+												where (I.dGenericName = '#{iGenericName}' and
+														I.iGenericName = D.GenericName) or
+														(I.iGenericName = '#{iGenericName}' and
 														I.dGenericName = D.GenericName)")
-	 	@title = "Possible drug interactions for #{iBrandName}/#{iGenericName}"
+	 	@title = "Possible drug interactions for #{iGenericName}"
 		render "index"
 	 end
 
@@ -471,6 +555,8 @@ class TablesController < ApplicationController
 	 	# CANNOT TEST BECAUSE ALL POPULATIONS IN SCRIPT FOR MAKESAPPOINTMENT ARE IN FUTURE
 	 def qD13
 	 	ccNum = params[:ccNum]
+	 	# check that care card number is a non-negative number
+	 	assert {ccNum.to_f >= 0}
 	 	@result = Table.connection.select_all("select M.TimeMade as 'Time Made', M.DateMade as 'Date Made', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor',
 	 											 	M.TimeBlockDate as 'Date', M.StartTime as 'Start Time', M.EndTime as 'End Time'
 												from MakesAppointmentWith M, Doctor D, Patient P
@@ -522,6 +608,8 @@ class TablesController < ApplicationController
 		 # TESTED - WORKS
 	def qD16
 		cName = params[:cName]
+		# check that generic name is filled
+	 	assert {!cName.empty?}
 	 	@result = Table.connection.select_all("select Pa.CareCardNum as 'Care Card Number', CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name'
 											from Patient Pa
 											Where NOT EXISTS
@@ -549,12 +637,53 @@ class TablesController < ApplicationController
 	 	pAddress = params[:pAddress]
 	 	pPhoneNum = params[:pPhoneNum]
 	 	ccNum = params[:ccNum]
+
+	 	# check that all fields are filled
+	 	assert {!pFName.empty?}
+	 	assert {!pLName.empty?}
+	 	assert {!pAge.empty?}
+	 	assert {!pWeight.empty?}
+	 	assert {!pHeight.empty?}
+	 	assert {!pAddress.empty?}
+	 	assert {!pPhoneNum.empty?}
+	 	assert {!ccNum.empty?}
+
+	 	# check that age, weight, height, care card number, phone number are non-negative integers
+	 	assert {pAge.to_f >= 0}
+	 	assert {pWeight.to_f >= 0}
+	 	assert {pHeight.to_f >= 0}
+	 	assert {pPhoneNum.to_f >= 0}
+	 	assert {ccNum.to_f >= 0}
+
+	 	# check that phone number is 10 digits
+	 	assert {pPhoneNum.length == 10}
+
 	 	Table.connection.execute("INSERT INTO Patient
 									VALUES ('#{ccNum}', '#{pFName}', '#{pLName}', '#{pAge}', '#{pWeight}', '#{pHeight}', 
         							'#{pAddress}', '#{pPhoneNum}')")
 	 	@result = Table.connection.select_all("select *
 	 											from Patient P
 	 											where P.CareCardNum = #{ccNum}")
+	 	render "index"
+	 end
+
+	 #  Show max number of refills for each drug
+	 def qD18
+	 	@result = Table.connection.select_all("select CONCAT(Dr.BrandName, ' ', Dr.GenericName) as 'Drug', MAX(P.Refills) as 'MAX number of refills'
+															from Prescription P, Drug Dr, Includes I
+															where P.PrescriptID = I.PrescriptID and 
+																	I.BrandName = Dr.BrandName and 
+																	I.GenericName = Dr.GenericName
+															group by Dr.BrandName, Dr.GenericName
+															order by MAX(P.Refills) desc, Dr.BrandName, Dr.GenericName")
+	 	render "index"
+	 end
+
+	 # Show refills for all drugs in each prescription
+	 def qD19
+	 	@result = Table.connection.select_all("select distinct I.BrandName, I.GenericName, P.Refills 
+											from Includes I, Prescription P 
+											where I.PrescriptID = P.PrescriptID")
 	 	render "index"
 	 end
 
@@ -570,9 +699,14 @@ def get_user_attributes
 	Rails.logger.info ">>>>>>>>> #{@userPharmAddr} <<<<<<<"
 end
 
+def assert &block
+	raise Exceptions::AssertionError unless yield
+end
 
 # def table_params
 # 		params.require(:table).permit(:identity, :var1)
+# end
+# class AssertionError < RuntimeError
 # end
 
 end

@@ -9,7 +9,7 @@
 <div class='grey-background'>
   <div class="form-inline">
     <%= form_tag(qPh2_path, :method=>'post') do %>
-     <h3>Update prescription status:</h3>
+     <h3>Update prescription status</h3>
       <%= label_tag("prescription", "Prescription number:") %> 
       <%= text_field_tag "prescription" %> </br>
      <p>
@@ -21,7 +21,7 @@
 
   <div class="form-inline">
     <%= form_tag(qPh3_path, :method=>'post') do %>
-     <h3>View past prescriptions:</h3>
+     <h3>View past prescriptions</h3>
       <%= label_tag("ccNum", "Care card number:") %> 
       <%= text_field_tag "ccNum" %> </br>
      <p>
@@ -42,7 +42,7 @@
 <div class='grey-background'>
   <div class="form-inline">
     <%= form_tag(qPh5_path, :method=>'post') do %>
-     <h3>Reduce the refill number of a patient’s prescription:</h3>
+     <h3>Reduce the refill number of a patient’s prescription</h3>
       <%= label_tag("prescription", "Prescription number:") %> 
       <%= text_field_tag "prescription" %> </br>
      <p>
@@ -50,4 +50,25 @@
      </p>
     <% end %>
   </div>
+</div>
+
+  <h3>View all drugs in the database</h3>
+  <%= button_to "Go!", qPh6_path, :class => "button", :method => :get %>
+  <br>
+
+  <div class='grey-background'>
+    <div class="form-inline">
+      <%= form_tag(qPh7_path, :method=>'post') do %>
+       <h3>Delete a drug from the database</h3>
+        <%= label_tag("brandName", "Brand name:") %> 
+        <%= text_field_tag "brandName" %> </br>
+        <%= label_tag("genericName", "Generic name:") %> 
+        <%= text_field_tag "genericName" %> </br>
+       <p>
+        <%= submit_tag 'Submit' %>
+       </p>
+      <% end %>
+    </div>
+  </div>
+
 </div>

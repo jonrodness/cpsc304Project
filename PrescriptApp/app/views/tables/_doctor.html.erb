@@ -183,6 +183,7 @@
    </p>
   <% end %>
 
+<div class='grey-background'>
   <%= form_tag(qD17_path, :method=>'post') do %>
  <h3>Add new patient</h3>
   <%= label_tag("ccNum", "Care card number:") %> 
@@ -206,6 +207,18 @@
  </p>
 <% end %>
 <br>
+</div>
+
+    <h3>Show max number of refills for each drug</h3>
+    <%= button_to "Go!", qD18_path, :class => "button", :method => :get %>
+    <br>
+
+<div class='grey-background'>
+    <h3>Show refills for all drugs in each prescription</h3>
+    <%= button_to "Go!", qD19_path, :class => "button", :method => :get %>
+    <br>
+</div>
+
 
 </div>
 </div>

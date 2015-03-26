@@ -505,7 +505,7 @@ Where NOT EXISTS
             		I.BrandName = D.BrandName and
             		P.CareCardNum = Pa.CareCardNum));
 
-# qD17 - show max number of refills for each drug
+# qD18 - show max number of refills for each drug
 # TODO
 select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", MAX(P.Refills) as "MAX number of refills"
 from Prescription P, Drug Dr, Includes I
@@ -515,13 +515,13 @@ where P.PrescriptID = I.PrescriptID and
 group by Dr.BrandName, Dr.GenericName
 order by MAX(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
-#qD18 show all refils for all drugs (for demo purposes)
+#qD19 show all refils for all drugs (for demo purposes)
 # TODO
 select distinct I.BrandName, I.GenericName, P.Refills 
 from Includes I, Prescription P 
 where I.PrescriptID = P.PrescriptID;
 
-# qD19 delete a time block. deleting a time block will delete the corresponding 
+# qD20 delete a time block. deleting a time block will delete the corresponding 
 # WE Want to give  doctors the ability to cancel appts 
 # TODO
 delete from TimeBlock
@@ -529,7 +529,7 @@ delete from TimeBlock
 			StartTime = '09:00:00' and
 			EndTime = '10:00:00';
 
-# qD20
+# qD21
 # TODO
 # select drug that was prescribed the most for each company
 
