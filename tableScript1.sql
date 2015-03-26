@@ -245,7 +245,23 @@ VALUES ('3422344543', '9876', '200', '12 pills 8 times per day for 45 days',
        '1457629875', '0', '2013-12-16');
 
 INSERT INTO Prescription
+VALUES ('2743873823', '0198', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
 VALUES ('2743873823', '0098', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
+VALUES ('2743873823', '0298', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
+VALUES ('2743873823', '0398', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
+VALUES ('2743873823', '0498', '2', '1 pill 3 times per day for 10 days', 
        '3453438890', '1', '2012-12-12');
 
 INSERT INTO Prescription
@@ -324,6 +340,18 @@ VALUES ('9876', 'Ritalin', 'Methylphenidate');
 
 INSERT INTO Includes
 VALUES ('0098', 'Plavix', 'Clopidogrel');
+
+INSERT INTO Includes
+VALUES ('0198', 'Lipitor','Atorvastatin');
+
+INSERT INTO Includes
+VALUES ('0298', 'Zocor', 'Simvastatin');
+
+INSERT INTO Includes
+VALUES ('0398', 'Viagra', 'Sildenafil');
+
+# INSERT INTO Includes
+# VALUES ('0498', 'Advil', 'Ibuprofen');
 
 INSERT INTO Includes
 VALUES ('0045', 'Coumadin','Warfarin');
