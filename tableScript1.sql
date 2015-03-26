@@ -88,7 +88,7 @@ CREATE TABLE InteractsWith
     dGenericName VARCHAR(30),
     iBrandName VARCHAR(30),
     iGenericName VARCHAR(30),
-    PRIMARY KEY (dBrandName, dGenericName, iBrandName, iGenericName),
+    PRIMARY KEY (dBrandName,dGenericName, iBrandName,iGenericName),
     FOREIGN KEY (dBrandName, dGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE,
     FOREIGN KEY (iBrandName, iGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE);
 
@@ -313,19 +313,19 @@ VALUES ('Zocor', 'Simvastatin','Pfizer','99');
 #InteractsWith(dBrandName, dGenericName, iBrandName,iGenericName)
 
 INSERT INTO InteractsWith
-VALUES ('Advil', 'Ibuprofen', 'Coumadin', 'Warfarin');
+VALUES ('Ibuprofen', 'Warfarin');
 
 INSERT INTO InteractsWith
-VALUES ('Zocor', 'Simvastatin', 'Coumadin', 'Warfarin');
+VALUES ('Simvastatin', 'Warfarin');
 
 INSERT INTO InteractsWith
-VALUES ('Klor-Con','Potassium Chloride', 'Zestril','Lisinopril');
+VALUES ('Potassium Chloride', 'Lisinopril');
 
 INSERT INTO InteractsWith
-VALUES ('Niaspan','Niacin','Lipitor','Atorvastatin');
+VALUES ('Niacin','Atorvastatin');
 
 INSERT INTO InteractsWith
-VALUES ('Viagra', 'Sildenafil','Biaxin','Clarithromycin');
+VALUES ('Sildenafil','Clarithromycin');
 
 #Includes(PrescriptID, BrandName, GenericName)
 
