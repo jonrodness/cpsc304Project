@@ -56,7 +56,7 @@ CREATE TABLE Prescription
     ReadyForPickUp tinyint(1),
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
-    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum) ,
+    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum) ON DELETE CASCADE,
     FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE);
 
 grant select on Prescription to public;
@@ -77,8 +77,8 @@ CREATE TABLE Includes
     BrandName VARCHAR(30),    
     GenericName VARCHAR(30),
     PRIMARY KEY (PrescriptID, BrandName, GenericName),
-    FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID),
-    FOREIGN KEY (BrandName, GenericName) REFERENCES Drug (BrandName, GenericName));
+    FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID) ON DELETE CASCADE,
+    FOREIGN KEY (BrandName, GenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE);
 
 grant select on Includes to public;
 
@@ -91,6 +91,7 @@ CREATE TABLE InteractsWith
     PRIMARY KEY (dBrandName,dGenericName, iBrandName,iGenericName),
     FOREIGN KEY (dBrandName, dGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE,
     FOREIGN KEY (iBrandName, iGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE);
+
 
 grant select on InteractsWith to public;
 
@@ -139,10 +140,9 @@ CREATE TABLE MakesAppointmentWith
     EndTime TIME,
     CareCardNum CHAR(10),
     PRIMARY KEY (LicenseNum, TimeBlockDate, StartTime, EndTime),
-    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum), 
-    FOREIGN KEY (TimeBlockDate, StartTime, EndTime) REFERENCES TimeBlock (TimeBlockDate, StartTime, EndTime),
-    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum)
-    );
+    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum) ON DELETE CASCADE, 
+    FOREIGN KEY (TimeBlockDate, StartTime, EndTime) REFERENCES TimeBlock (TimeBlockDate, StartTime, EndTime) ON DELETE CASCADE,
+    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE);
 
 grant select on MakesAppointmentWith to public;
 
