@@ -35,7 +35,8 @@ Rails.application.routes.draw do
    #post '/qPa1p' => 'tables#qPa1p'
   #get 'qPa1' => 'tables#qPa1'
 
-  post '/tables/qPa1' => 'tables#qPa1', :as => 'qPa1'
+  post '/tables/qPa1a' => 'tables#qPa1a', :as => 'qPa1a'
+  post '/tables/qPa1b' => 'tables#qPa1b', :as => 'qPa1b'
   get 'qPa2' => 'tables#qPa2', :as => 'qPa2'
   get 'qPa3' => 'tables#qPa3', :as => 'qPa3'
   post '/tables/qPa4' => 'tables#qPa4', :as => 'qPa4'

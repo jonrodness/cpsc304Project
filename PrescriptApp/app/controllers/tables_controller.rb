@@ -72,40 +72,35 @@ class TablesController < ApplicationController
 
 	 ############################# Patient Queries ################################
 
-	 # Update personal information
-		 # USE VARIABLES FOR firstname, lastname, age, weight, height, address, phonenumber, CareCardNum
-		 # USE EXECUTE, NOT CONNECTION!
-     # TESTED - WORKS
-	 def qPa1
-	 	pFName = params[:pFName]
-	 	pLName = params[:pLName]
-	 	pAge = params[:pAge]
-	 	pWeight = params[:pWeight]
-	 	pHeight = params[:pHeight]
+	 # Update patient address
+	     # TESTED - WORKS
+	 def qPa1a
 	 	pAddress = params[:pAddress]
-	 	pPhoneNum = params[:pPhoneNum]
-	 	pCCNum = params[:pCCNum]
-	 	Table.connection.execute("update Patient set FirstName = '#{pFName}', 
-                                                    LastName = '#{pLName}', 
-                                                    Age = #{pAge}, 
-                                                    Weight = #{pWeight}, 
-                                                    Height = #{pHeight}, 
-                                                    Address = '#{pAddress}', 
-                                                    PhoneNumber = '#{pPhoneNum}' 
+	 	Table.connection.execute("update Patient set Address = '#{pAddress}'
                                 where CareCardNum LIKE '#{@userCCNum}'")
-    @result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+	 	render "index"
+	 end
+
+	 # Update patient phone number
+	     # TESTED - WORKS
+	 def qPa1b
+	 	pPhoneNum = params[:pPhoneNum]
+	 	Table.connection.execute("update Patient set PhoneNumber = '#{pPhoneNum}' 
+                                where CareCardNum LIKE '#{@userCCNum}'")
+    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
 	 	render "index"
 	 end
 
 	 # Pharmacies that are currently open: Weekday
-	 # TESTED - WORKS
+	 	# TESTED - WORKS
 	 def qPa2
 	 	@result = Table.connection.select_all("select * from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
 		render "index"
 	 end
 
 	 # Pharmacies that are currently open: Weekend
-	 # TESTED - WORKS
+	 	# TESTED - WORKS
 	 def qPa3
 	 	@result = Table.connection.select_all("select * from Pharmacy P where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing")
 		render "index"
@@ -125,9 +120,9 @@ class TablesController < ApplicationController
 	 # 	# Table.connection.select_all("insert into MakesAppointmentWith values (curdate(), curtime(), '1232131241', '2874-06-07', '12:30:00', '15:30:00', '1234567890')")
 		# render "index"
 		date = params[:date]
-    sTime = params[:sTime]
-    eTime = params[:eTime]
-    license = params[:license]
+	    sTime = params[:sTime]
+	    eTime = params[:eTime]
+	    license = params[:license]
     
         
         Table.connection.execute("insert into TimeBlock values ('#{date}',
@@ -233,23 +228,52 @@ class TablesController < ApplicationController
 
  	############################# Doctor Queries ################################
 
- 	# Update personal information
-	 	# ADD VARIABLES
+ 	# Update doctor address
+	 	# UPDATE VIEW
 	 	# TESTED - WORKS
-	 	# USE EXECUTE, NOT CONNECTION!
-	 def qD1
-	 	dFName = params[:dFName]
-	 	dLName = params[:dLName]
+	 def qD1a
 	 	dAddress = params[:dAddress]
 	 	dPhoneNum = params[:dPhoneNum]
-	 	dSpecialty =  params[:dSpecialty]
-	 	dLicenseNum = current_user.license_num
-	 	Table.connection.execute("update Doctor set FirstName = '#{dFName}', LastName = '#{dLName}',
-										Address = '#{dAddress}', PhoneNumber = '#{dPhoneNum}', Type = '#{dSpecialty}'
-									     where LicenseNum = '#{dLicenseNum}'")
+	 	Table.connection.execute("update Doctor set Address = '#{dAddress}'")
 	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{dLicenseNum}'")
 		render "index"
 	 end
+
+	 # Update doctor address
+	 	# UPDATE VIEW
+	 def qD1b
+	 	dAddress = params[:dAddress]
+	 	dPhoneNum = params[:dPhoneNum]
+	 	Table.connection.execute("update Doctor set PhoneNumber = '#{dPhoneNum}'")
+	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{dLicenseNum}'")
+		render "index"
+	 end
+
+	 # Update patient height
+	 	# UPDATE VIEW
+	 	# UPDATE ROUTES
+	 def qD1c
+	 	pHeight = params[:pHeight]
+	 	ccNum = params[:ccNum]
+	 	Table.connection.execute("update Patient set Height = '#{pHeight}'
+                                where CareCardNum LIKE '#{CCNum}'")
+    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+	 	render "index"
+	 end
+
+	 # Update patient weight
+	 	# UPDATE VIEW
+	 	# UPDATE ROUTES
+	 def qD1d
+	 	pWeight = params[:pWeight]
+	 	ccNum = params[:ccNum]
+	 	Table.connection.execute("update Patient set Weight = '#{pWeight}'
+                                where CareCardNum LIKE '#{CCNum}'")
+    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+	 	render "index"
+	 end
+
+
 
 	 # Prescribe a Drug
 	 	# USE VARIABLES
