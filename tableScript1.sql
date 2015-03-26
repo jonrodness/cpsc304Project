@@ -53,6 +53,7 @@ CREATE TABLE Prescription
     Refills INT,  
     Dosage VARCHAR(50),
     CareCardNum CHAR(10),
+    ReadyForPickUp tinyint(1),
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
     FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
@@ -143,6 +144,7 @@ CREATE TABLE MakesAppointmentWith
     FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum));
 
 grant select on MakesAppointmentWith to public;
+
 
 #Doctor(LicenseNum, FirstName, LastName,Address, PhoneNumber, Type)
 
@@ -243,12 +245,29 @@ VALUES ('3422344543', '9876', '200', '12 pills 8 times per day for 45 days',
        '1457629875', '0', '2013-12-16');
 
 INSERT INTO Prescription
+VALUES ('2743873823', '0198', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
 VALUES ('2743873823', '0098', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
+VALUES ('2743873823', '0298', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
+VALUES ('2743873823', '0398', '2', '1 pill 3 times per day for 10 days', 
+       '3453438890', '1', '2012-12-12');
+
+INSERT INTO Prescription
+VALUES ('2743873823', '0498', '2', '1 pill 3 times per day for 10 days', 
        '3453438890', '1', '2012-12-12');
 
 INSERT INTO Prescription
 VALUES ('3409389847', '0045', '3', '1 pill 12 times per day for 3 days', 
        '1099282394', '1', '2012-12-21');
+
 
 #Drug(BrandName, GenericName, CompanyName,Price)
 
@@ -321,6 +340,18 @@ VALUES ('9876', 'Ritalin', 'Methylphenidate');
 
 INSERT INTO Includes
 VALUES ('0098', 'Plavix', 'Clopidogrel');
+
+INSERT INTO Includes
+VALUES ('0198', 'Lipitor','Atorvastatin');
+
+INSERT INTO Includes
+VALUES ('0298', 'Zocor', 'Simvastatin');
+
+INSERT INTO Includes
+VALUES ('0398', 'Viagra', 'Sildenafil');
+
+# INSERT INTO Includes
+# VALUES ('0498', 'Advil', 'Ibuprofen');
 
 INSERT INTO Includes
 VALUES ('0045', 'Coumadin','Warfarin');
@@ -441,6 +472,5 @@ VALUES('14:30:00', '2015-10-24', '3409389847', '2015-10-24', '15:00:00', '16:00:
 
 INSERT INTO MakesAppointmentWith
 VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
-
 
 
