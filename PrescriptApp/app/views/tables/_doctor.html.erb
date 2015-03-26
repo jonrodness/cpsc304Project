@@ -7,18 +7,34 @@
   <div class='row-line'></div>
 
 <div class='grey-background'>
-  <%= form_tag(qD1_path, :method=>'post') do %>
-   <h3>Update personal information:</h3>
-    <%= label_tag("dFName", "First Name:") %> 
-    <%= text_field_tag "dFName" %> </br>
-    <%= label_tag("dLName", "Last Name:") %> 
-    <%= text_field_tag "dLName" %> </br>
-    <%= label_tag("dAddress", "Address:") %> 
-    <%= text_field_tag "dAddress" %> </br>
+ <%= form_tag(qD1b_path, :method=>'post') do %>
+   <h3>Update phone number</h3>
     <%= label_tag("dPhoneNum", "Phone Number:") %> 
     <%= text_field_tag "dPhoneNum" %> </br>
-    <%= label_tag("dSpecialty", "Specialty:") %> 
-    <%= text_field_tag "dSpecialty" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+  </div>
+
+ <%= form_tag(qD1c_path, :method=>'post') do %>
+   <h3>Update patient height</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("pHeight", "Height:") %> 
+    <%= text_field_tag "pHeight" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+
+<div class='grey-background'>
+   <%= form_tag(qD1d_path, :method=>'post') do %>
+   <h3>Update patient weight</h3>
+    <%= label_tag("ccNum", "Care card number:") %> 
+    <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("pWeight", "Weight:") %> 
+    <%= text_field_tag "pWeight" %> </br>
    <p>
     <%= submit_tag 'Submit' %>
    </p>
@@ -26,7 +42,7 @@
 </div>
 
   <%= form_tag(qD2_path, :method=>'post') do %>
-   <h3>Prescribe a Drug:</h3>
+   <h3>Prescribe a drug</h3>
     <%= label_tag("prescription", "Prescription number:") %> 
     <%= text_field_tag "prescription" %> </br>
     <%= label_tag("refills", "Number of refills:") %> 
@@ -130,8 +146,6 @@
 
   <%= form_tag(qD12_path, :method=>'post') do %>
    <h3>View possible drug interactions:</h3>
-    <%= label_tag("iBrandName", "Brand name:") %> 
-    <%= text_field_tag "iBrandName" %> </br>
     <%= label_tag("iGenericName", "Generic name:") %> 
     <%= text_field_tag "iGenericName" %> </br>
    <p>
@@ -168,5 +182,30 @@
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
+
+  <%= form_tag(qD17_path, :method=>'post') do %>
+ <h3>Add new patient</h3>
+  <%= label_tag("ccNum", "Care card number:") %> 
+  <%= text_field_tag "ccNum" %> </br>
+  <%= label_tag("pFName", "First Name:") %> 
+  <%= text_field_tag "pFName" %> </br>
+  <%= label_tag("pLName", "Last Name:") %> 
+  <%= text_field_tag "pLName" %> </br>
+  <%= label_tag("pAge", "Age:") %> 
+  <%= text_field_tag "pAge" %> </br>
+  <%= label_tag("pWeight", "Weight:") %> 
+  <%= text_field_tag "pWeight" %> </br>
+  <%= label_tag("pHeight", "Height:") %> 
+  <%= text_field_tag "pHeight" %> </br>
+  <%= label_tag("pAddress", "Address:") %> 
+  <%= text_field_tag "pAddress" %> </br>
+  <%= label_tag("pPhoneNum", "Phone Number:") %> 
+  <%= text_field_tag "pPhoneNum" %> </br>
+ <p>
+  <%= submit_tag 'Submit' %>
+ </p>
+<% end %>
+<br>
+
 </div>
 </div>

@@ -35,7 +35,8 @@ Rails.application.routes.draw do
    #post '/qPa1p' => 'tables#qPa1p'
   #get 'qPa1' => 'tables#qPa1'
 
-  post '/tables/qPa1' => 'tables#qPa1', :as => 'qPa1'
+  post '/tables/qPa1a' => 'tables#qPa1a', :as => 'qPa1a'
+  post '/tables/qPa1b' => 'tables#qPa1b', :as => 'qPa1b'
   get 'qPa2' => 'tables#qPa2', :as => 'qPa2'
   get 'qPa3' => 'tables#qPa3', :as => 'qPa3'
   post '/tables/qPa4' => 'tables#qPa4', :as => 'qPa4'
@@ -49,7 +50,10 @@ Rails.application.routes.draw do
   get 'qPa10' => 'tables#qPa10', :as => 'qPa10'
   get 'qPa11' => 'tables#qPa11', :as => 'qPa11'
 
-  post '/tables/qD1' => 'tables#qD1', :as => 'qD1'
+  post '/tables/qD1a' => 'tables#qD1a', :as => 'qD1a'
+  post '/tables/qD1b' => 'tables#qD1b', :as => 'qD1b'
+  post '/tables/qD1c' => 'tables#qD1c', :as => 'qD1c'
+  post '/tables/qD1d' => 'tables#qD1d', :as => 'qD1d'
   post '/tables/qD2' => 'tables#qD2', :as => 'qD2'
   get 'qD3' => 'tables#qD3', :as => 'qD3'
   get 'qD4' => 'tables#qD4', :as => 'qD4'
@@ -65,6 +69,7 @@ Rails.application.routes.draw do
   get 'qD14' => 'tables#qD14', :as => 'qD14'
   get 'qD15' => 'tables#qD15', :as => 'qD15'
   post '/tables/qD16' => 'tables#qD16', :as => 'qD16'
+  post '/tables/qD17' => 'tables#qD17', :as => 'qD17'
 
 
 
