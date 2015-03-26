@@ -47,7 +47,7 @@ delete
 	from Drug
 	where BrandName = 'Advil' and
 		GenericName = 'Ibuprofen';
-		
+
 ########User: Patients
 
 # qPa1----update personal information about him/herself
@@ -529,6 +529,18 @@ delete from TimeBlock
 			StartTime = '09:00:00' and
 			EndTime = '10:00:00';
 
+# qD20
+# TODO
+# select drug that was prescribed the most for each company
 
+# what we have now shows each drug and the number of times it was ordered
+select D.BrandName, D.GenericName, 
+	D.CompanyName, 
+		COUNT(*) as "count"
+		from Drug D, Includes I, Prescription P
+		where P.PrescriptID=I.PrescriptID 
+		AND I.BrandName=D.BrandName 
+		AND I.GenericName=D.GenericName
+		group by D.BrandName, D.GenericName, D.CompanyName
 
 
