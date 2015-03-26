@@ -1,7 +1,7 @@
 
-#drop database doctors;
-#create database doctors;
-#    use doctors;
+drop database doctors;
+create database doctors;
+    use doctors;
 
 drop table MakesAppointmentWith;
 drop table OrderedFrom;
@@ -56,7 +56,7 @@ CREATE TABLE Prescription
     ReadyForPickUp tinyint(1),
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
-    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
+    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum) ,
     FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE);
 
 grant select on Prescription to public;
@@ -139,9 +139,10 @@ CREATE TABLE MakesAppointmentWith
     EndTime TIME,
     CareCardNum CHAR(10),
     PRIMARY KEY (LicenseNum, TimeBlockDate, StartTime, EndTime),
-    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum),
+    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum), 
     FOREIGN KEY (TimeBlockDate, StartTime, EndTime) REFERENCES TimeBlock (TimeBlockDate, StartTime, EndTime),
-    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum));
+    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum)
+    );
 
 grant select on MakesAppointmentWith to public;
 
