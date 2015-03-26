@@ -5,44 +5,48 @@
 
   <div class='row-line'></div>
 
-<%= form_tag(qPa1_path, :method=>'post') do %>
- <h3>Update personal information</h3>
-  <%= label_tag("pFName", "First Name:") %> 
-  <%= text_field_tag "pFName" %> </br>
-  <%= label_tag("pLName", "Last Name:") %> 
-  <%= text_field_tag "pLName" %> </br>
-  <%= label_tag("pAge", "Age:") %> 
-  <%= text_field_tag "pAge" %> </br>
-  <%= label_tag("pWeight", "Weight:") %> 
-  <%= text_field_tag "pWeight" %> </br>
-  <%= label_tag("pHeight", "Height:") %> 
-  <%= text_field_tag "pHeight" %> </br>
-  <%= label_tag("pAddress", "Address:") %> 
-  <%= text_field_tag "pAddress" %> </br>
-  <%= label_tag("pPhoneNum", "Phone Number:") %> 
-  <%= text_field_tag "pPhoneNum" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
+<div class='grey-background'>
+  <%= form_tag(qPa1_path, :method=>'post') do %>
+   <h3>Update personal information</h3>
+    <%= label_tag("pFName", "First Name:") %> 
+    <%= text_field_tag "pFName" %> </br>
+    <%= label_tag("pLName", "Last Name:") %> 
+    <%= text_field_tag "pLName" %> </br>
+    <%= label_tag("pAge", "Age:") %> 
+    <%= text_field_tag "pAge" %> </br>
+    <%= label_tag("pWeight", "Weight:") %> 
+    <%= text_field_tag "pWeight" %> </br>
+    <%= label_tag("pHeight", "Height:") %> 
+    <%= text_field_tag "pHeight" %> </br>
+    <%= label_tag("pAddress", "Address:") %> 
+    <%= text_field_tag "pAddress" %> </br>
+    <%= label_tag("pPhoneNum", "Phone Number:") %> 
+    <%= text_field_tag "pPhoneNum" %> </br>
+   <p>
+    <%= submit_tag 'Submit' %>
+   </p>
+  <% end %>
+</div>
 <br>
 
 <h3>Find pharmacies that are currently open (Weekday)</h3>
 <%= button_to "Go!", qPa2_path, :class => "button", :method => :get %>
 <br>
 
+<div class='grey-background'>
 <h3>Find pharmacies that are currently open (Weekend)</h3>
 <%= button_to "Go!", qPa3_path, :class => "button", :method => :get %>
 <br>
+</div>
 
 <%= form_tag(qPa4_path, :method=>'post') do %>
  <h3>Make an Appointment:</h3>
   <%= label_tag("date", "Date:") %> 
   <%= date_field_tag "date" %> </br>
   <%= label_tag("sTime", "Start Time:") %> 
-  <%= time_select "sTime", "test", {minute_step: 30, ampm: true} %> </br>
+  <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
   <%= label_tag("eTime", "End Time:") %> 
-  <%= time_select "eTime", "test", {minute_step: 30, ampm: true} %> </br>
+  <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
   <%= label_tag("license", "Doctor License:") %> 
   <%= text_field_tag "license" %>
  <p>
@@ -50,22 +54,24 @@
  </p>
 <% end %>
 
+<div class='grey-background'>
 <%= form_tag(qPa5_path, :method=>'post') do %>
  <h3>Cancel an Appointment:</h3>
   <%= label_tag("date", "Date:") %> 
   <%= date_field_tag "date" %> </br>
   <%= label_tag("sTime", "Start Time:") %> 
-  <%= time_select "sTime", "test", {minute_step: 30, ampm: true} %> </br>
+  <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
  <p>
   <%= submit_tag 'Submit' %>
  </p>
 <% end %>
+</div>
 
 <h3>View all upcoming appointments</h3>
 <%= button_to "Go!", qPa6a_path, :class => "button", :method => :get %>
 <br>
 
-
+<div class='grey-background'>
 <%= form_tag(qPa6b_path, :method=>'post') do %>
  <h3>View upcoming appointments by date:</h3>
   <%= label_tag("date", "Date:") %> 
@@ -74,18 +80,20 @@
   <%= submit_tag 'Submit' %>
  </p>
 <% end %>
+</div>
 
 <%= form_tag(qPa6c_path, :method=>'post') do %>
  <h3>View upcoming appointments by time:</h3>
   <%= label_tag("sTime", "Start Time:") %> 
-  <%= time_select "sTime", "test", {minute_step: 30, ampm: true} %> </br>
+  <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
   <%= label_tag("eTime", "End Time:") %> 
-  <%= time_select "eTime", "test", {minute_step: 30, ampm: true} %> </br>
+  <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
  <p>
   <%= submit_tag 'Submit' %>
  </p>
 <% end %>
 
+<div class='grey-background'>
 <%= form_tag(qPa7_path, :method=>'post') do %>
  <h3>Check Drug Interactions:</h3>
   <%= label_tag("drug", "Drug generic name:") %> 
@@ -94,6 +102,7 @@
   <%= submit_tag 'Submit' %>
  </p>
 <% end %>
+</div>
 
 <%= form_tag(qPa8_path, :method=>'post') do %>
  <h3>Check Interactions for this Prescription:</h3>
@@ -104,17 +113,21 @@
  </p>
 <% end %>
 
+<div class='grey-background'>
 <h3>View Prescription Status</h3>
 <%= button_to "Go!", qPa9_path, :class => "button", :method => :get %>
 <br>
+</div>
 
 <h3>Generate Report: Current Prescriptions</h3>
 <%= button_to "Go!", qPa10_path, :class => "button", :method => :get %>
 <br>
 
+<div class='grey-background'>
 <h3>Generate Report: Previous Prescriptions</h3>
 <%= button_to "Go!", qPa11_path, :class => "button", :method => :get %>
 <br>
+</div>
 
 </div>
 

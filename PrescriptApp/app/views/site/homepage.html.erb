@@ -1,8 +1,31 @@
-<div class='jumbotron'>
-    <h1 class='jumbotron-custom'>Welcome to PrescriptApp</h1>
-</div>
+<div class='jumbotron text-center jumbotron-custom'>
+
+    <% if user_signed_in? %>
+        <h1>Welcome to PrescriptApp, <%= current_user.email %>!</h1>
+        <h2>Click the blue button below to interact with the system</h2>
+        <% else %>
+    <h1>Welcome to PrescriptApp</h1>
+    <h2>For all your prescription needs</h2>
+
+        <% end %>
+
+    <div class='logo'></div>
+    <img src="http://alfredsin.com/images/favicon-datamed.png" class='small-gap'>
+    <div class='gap'></div>
+
+    <% if user_signed_in? %>
+        <div class="text-center"> 
+                <%= link_to "Click here to view records and make appointments", tables_path, :class => 'btn btn-large btn-primary' %>
+        </div>
+        <% else %>
+        <div class='text-center'>
+            <%= link_to "Sign up!", new_user_registration_path, :class => 'btn btn-large btn-primary' %>
+        </div>
+
+        <% end %>
 
 
-<div class="text-center"> 
-    <%= link_to "Click here to view records and make appointments", tables_path, :class => 'btn btn-large btn-primary' %>
+
 </div>
+<h2 class='text-center' style="font-family: 'PT Serif', serif;">By: Jon Rodness, Chris Louie, Anny Gakhokidze, Alfred Sin</h2>
+

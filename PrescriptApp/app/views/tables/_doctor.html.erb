@@ -6,6 +6,7 @@
   <h1>Doctor Options</h1>
   <div class='row-line'></div>
 
+<div class='grey-background'>
   <%= form_tag(qD1_path, :method=>'post') do %>
    <h3>Update personal information:</h3>
     <%= label_tag("dFName", "First Name:") %> 
@@ -22,6 +23,7 @@
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
+</div>
 
   <%= form_tag(qD2_path, :method=>'post') do %>
    <h3>Prescribe a Drug:</h3>
@@ -44,40 +46,43 @@
 
   <br>
 
+<div class='grey-background'>
   <h3>Find pharmacies that are currently open (Weekday)</h3>
   <%= button_to "Go!", qD3_path, :class => "button", :method => :get %>
   <br>
+</div>
 
   <h3>Find pharmacies that are currently open (Weekend)</h3>
   <%= button_to "Go!", qD4_path, :class => "button", :method => :get %>
   <br>
 
-  <h3>View Appointments for picked date and time</h3>
+<div class='grey-background'>
+  <h3>View Your Appointments</h3>
   <%= button_to "Go!", qD5_path, :class => "button", :method => :get %>
   <br>
+</div>
 
   <%= form_tag(qD6_path, :method=>'post') do %>
    <h3>View Appointments on a certain date:</h3>
     <%= label_tag("date", "Date:") %> 
     <%= date_field_tag "date" %> </br>
-    <!-- <%= text_field_tag "date" %> </br> -->
    <p>
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
 
-
+<div class='grey-background'>
   <%= form_tag(qD7_path, :method=>'post') do %>
    <h3>View Appointments during a certain time</h3>
     <%= label_tag("sTime", "Start time:") %> 
-    <%= text_field_tag "sTime" %> </br>
+    <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
     <%= label_tag("eTime", "End time:") %> 
-    <%= text_field_tag "eTime" %> </br>
+    <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
    <p>
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
-
+</div>
 
   <%= form_tag(qD8_path, :method=>'post') do %>
    <h3>View patient's information:</h3>
@@ -88,7 +93,7 @@
    </p>
   <% end %>
 
-
+<div class='grey-background'>
   <%= form_tag(qD9_path, :method=>'post') do %>
    <h3>View patient's prescriptions:</h3>
     <%= label_tag("ccNum", "Care card number:") %> 
@@ -97,6 +102,7 @@
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
+</div>
 
   <%= form_tag(qD10_path, :method=>'post') do %>
    <h3>View patient's prescribed drugs:</h3>
@@ -107,6 +113,7 @@
    </p>
   <% end %>
 
+<div class='grey-background'>
   <%= form_tag(qD11_path, :method=>'post') do %>
    <h3>View patient's prescribed drugs:</h3>
     <%= label_tag("ccNum", "Care card number:") %> 
@@ -119,6 +126,7 @@
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
+</div>
 
   <%= form_tag(qD12_path, :method=>'post') do %>
    <h3>View possible drug interactions:</h3>
@@ -131,6 +139,7 @@
    </p>
   <% end %>
 
+<div class='grey-background'>
   <%= form_tag(qD13_path, :method=>'post') do %>
    <h3>View patient's past appointments</h3>
     <%= label_tag("ccNum", "Care card number:") %> 
@@ -139,14 +148,17 @@
     <%= submit_tag 'Submit' %>
    </p>
   <% end %>
+</div>
 
   <h3>Generate a report about which prescriptions a doctor has previously prescribed...</h3>
   <%= button_to "Go!", qD14_path, :class => "button", :method => :get %>
   <br>
 
-  <h3>Show the average number of refills for a certain drug</h3>
+<div class='grey-background'>
+  <h3>Show the average number of refills for drugs</h3>
   <%= button_to "Go!", qD15_path, :class => "button", :method => :get %>
   <br>
+</div>
 
   <%= form_tag(qD16_path, :method=>'post') do %>
    <h3>View patients who have been prescribed all drugs from a specific company:</h3>

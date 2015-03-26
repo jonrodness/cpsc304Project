@@ -20,6 +20,16 @@
   font-family: "Lucida Grande","Verdana","Arial","Bitstream Vera Sans",sans-serif;
   font-size: 14px;
 }
+
+.gap {
+  margin-top: 5vh;
+}
+
+.grey-background {
+  background-color: #ffb6c1;
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
   
 .header_wrapper {
     width: 880px;
@@ -30,8 +40,15 @@
 
 
 .jumbotron-custom {
-    font-size: 48pt;
-    text-align: center;
+    background: url('./background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    font-family: 'PT Serif', serif;
+}
+
+.logo {
+  background-image: url('http://alfredsin.com/images/favicon-datamed.png');
 }
 
 
@@ -41,10 +58,14 @@
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
-  border-color: #d3d3d3 -moz-use-text-color #d3d3d3;
+  border-color: #202020 -moz-use-text-color #202020;
   border-style: solid none;
   border-width: 3px 0;
-  margin: 18px 0;
+}
+
+.small-gap {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .table-padding {

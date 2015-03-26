@@ -2,11 +2,9 @@
 <html>
 <head>
 <title>PrescriptApp | <%= content_for?(:title) ? yield(:title) : "For all your prescription needs" %></title>  
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <%= favicon_link_tag 'favicon.png' %>
-  <link href='http://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -24,12 +22,11 @@ Email:
      <%= link_to "Home", root_path %>
       </div>
   <div class='btn btn-default'>
-    <%= link_to "Edit profile", edit_user_registration_path %>
-    </div>
-  <div class='btn btn-default'>
     <%= link_to "Logout", destroy_user_session_path, method: :delete %>
     </div>
-  
+    
+    <%= link_to "Home", root_path %>
+    <%= link_to "Logout", destroy_user_session_path, method: :delete %>
 
 
 
