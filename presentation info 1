@@ -1,0 +1,68 @@
+
+
+1) (1 point) projection and selection (user must able to specify selection
+constant)
+
+• rerun with another constant
+
+(qPh3) View past prescription for patient
+
+Input with these values:
+Care Card Num
+1234567890
+2346528765
+
+2) (1 point) join
+
+3) (1 point) division
+• insert a new tuple and rerun
+
+qD16 (Pfizer--should show only alfred at first, then add Advil for Chris via Prescription--use values as described below)
+
+INSERT INTO Prescription
+VALUES ('1232131241', '9999', '10', '4 pills 2 times per day for 10 days', 
+       '3453438890', '1', '2015-03-21');
+
+
+
+4) (1 point) aggregation
+• rerun with a different aggregation
+
+ qD15 - show the average number of refills for a certain drug
+ qd17-show max ( to prove use qd18--shows all the refills for the drugs)
+
+
+5) (2 points) nested aggregation
+• show query or view
+• rerun with a different aggregation
+qd20 (to fix still)
+
+
+6) (1 point) deletion
+• case 1: deletion causing cascades (students need to explain policy
+regarding blocking and show code)
+
+show appointments first
+
+delete timeBlock  (qd19)
+
+show that the related appointment is now gone
+
+
+• case 2: deletion without causing cascades
+try to delete drug that interacts with another drug (does not work)  (qpH6)
+
+# qPa5 - can cancel an appointment they made, by looking at the list of self booked appointments
+
+
+7) (1 point) update
+• update a value that violates some constraint
+• correct the value and update again
+
+# qPh5 (reduce the refill number of a patient’s prescription)
+-if you try to reduce refill on a prescription with 0 refills, does not work (try to do this for prescription number 0004)
+
+ 8) (2 points) GUI
+• type checking
+• location of error messages
+• look of GUI 

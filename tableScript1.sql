@@ -56,12 +56,12 @@ CREATE TABLE Prescription
     ReadyForPickUp tinyint(1),
     date_prescribed DATE,
     PRIMARY KEY (PrescriptID),
-    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum) ,
+    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum) ON DELETE CASCADE,
     FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE);
 
 grant select on Prescription to public;
 
-#Drug(BrandName, GenericName, CompanyName,Price)
+#Drug(BrandName, GenericName, CompanyName,Price)    
 CREATE TABLE Drug
     (BrandName VARCHAR(30),
     GenericName VARCHAR(30),
@@ -77,8 +77,8 @@ CREATE TABLE Includes
     BrandName VARCHAR(30),    
     GenericName VARCHAR(30),
     PRIMARY KEY (PrescriptID, BrandName, GenericName),
-    FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID),
-    FOREIGN KEY (BrandName, GenericName) REFERENCES Drug (BrandName, GenericName));
+    FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID) ON DELETE CASCADE,
+    FOREIGN KEY (BrandName, GenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE);
 
 grant select on Includes to public;
 
@@ -88,9 +88,10 @@ CREATE TABLE InteractsWith
     dGenericName VARCHAR(30),
     iBrandName VARCHAR(30),
     iGenericName VARCHAR(30),
-    PRIMARY KEY (dBrandName, dGenericName, iBrandName, iGenericName),
+    PRIMARY KEY (dBrandName,dGenericName, iBrandName,iGenericName),
     FOREIGN KEY (dBrandName, dGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE,
     FOREIGN KEY (iBrandName, iGenericName) REFERENCES Drug (BrandName, GenericName) ON DELETE CASCADE);
+
 
 grant select on InteractsWith to public;
 
@@ -139,10 +140,9 @@ CREATE TABLE MakesAppointmentWith
     EndTime TIME,
     CareCardNum CHAR(10),
     PRIMARY KEY (LicenseNum, TimeBlockDate, StartTime, EndTime),
-    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum), 
-    FOREIGN KEY (TimeBlockDate, StartTime, EndTime) REFERENCES TimeBlock (TimeBlockDate, StartTime, EndTime),
-    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum)
-    );
+    FOREIGN KEY (LicenseNum) REFERENCES Doctor (LicenseNum) ON DELETE CASCADE, 
+    FOREIGN KEY (TimeBlockDate, StartTime, EndTime) REFERENCES TimeBlock (TimeBlockDate, StartTime, EndTime) ON DELETE CASCADE,
+    FOREIGN KEY (CareCardNum) REFERENCES Patient (CareCardNum) ON DELETE CASCADE);
 
 grant select on MakesAppointmentWith to public;
 
@@ -216,6 +216,72 @@ VALUES ('1232131241', '0003', '10', '4 pills 2 times per day for 10 days',
        '1234567890', '1', '2012-08-24');
 
 INSERT INTO Prescription
+VALUES ('1232131241', '1111', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-24');
+
+INSERT INTO Prescription
+VALUES ('1232131241', '1112', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-24');
+
+INSERT INTO Prescription
+VALUES ('1232131241', '1113', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-24');
+
+INSERT INTO Prescription
+VALUES ('1232131241', '1114', '10', '4 pills 2 times per day for 10 days', 
+       '1234567890', '1', '2012-08-24');
+
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1115', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1116', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1117', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1118', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1119', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1120', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1121', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1122', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1123', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1124', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1125', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+# INSERT INTO Prescription
+# VALUES ('1232131241', '1126', '10', '4 pills 2 times per day for 10 days', 
+#        '1234567890', '1', '2012-08-24');
+# 
+
+
+INSERT INTO Prescription
 VALUES ('5483843482', '0004', '0', '1 tbsp 1 time per day for 1 day', 
        '2346528765', '0', '2014-05-10');
 
@@ -239,6 +305,10 @@ VALUES ('5483843482', '0008', '0', '1 tbsp 1 time per day for 1 day',
 
 INSERT INTO Prescription
 VALUES ('5483843482', '3456', '10', '1 tbsp 1 time per day for 1 day', 
+       '2346528765', '1', '2014-05-10');
+
+INSERT INTO Prescription
+VALUES ('5483843482', '3457', '10', '1 tbsp 1 time per day for 1 day', 
        '2346528765', '1', '2014-05-10');
 
 INSERT INTO Prescription
@@ -273,7 +343,22 @@ VALUES ('3409389847', '0045', '3', '1 pill 12 times per day for 3 days',
 #Drug(BrandName, GenericName, CompanyName,Price)
 
 INSERT INTO Drug 
+VALUES ('Aubagio', 'Teriflunomide', 'Sanofi', '10');
+
+INSERT INTO Drug 
+VALUES ('Lovenox', 'Clopidogrel', 'Sanofi', '10');
+
+INSERT INTO Drug 
+VALUES ('Mipomereson', 'Kynamro', 'Sanofi', '10');
+
+
+INSERT INTO Drug 
+VALUES ('Avapro', 'irbesartan', 'Bristol-Myers Squibb', '10');
+
+
+INSERT INTO Drug 
 VALUES ('Tylenol', 'Acetaminophen', 'Johnson and Johnson', '10');
+
 
 INSERT INTO Drug 
 VALUES ('Advil', 'Ibuprofen', 'Pfizer', '11');
@@ -314,27 +399,52 @@ VALUES ('Zocor', 'Simvastatin','Pfizer','99');
 #InteractsWith(dBrandName, dGenericName, iBrandName,iGenericName)
 
 INSERT INTO InteractsWith
-VALUES ('Advil', 'Ibuprofen', 'Coumadin', 'Warfarin');
+VALUES ('Ibuprofen', 'Warfarin');
 
 INSERT INTO InteractsWith
-VALUES ('Zocor', 'Simvastatin', 'Coumadin', 'Warfarin');
+VALUES ('Simvastatin', 'Warfarin');
 
 INSERT INTO InteractsWith
-VALUES ('Klor-Con','Potassium Chloride', 'Zestril','Lisinopril');
+VALUES ('Potassium Chloride', 'Lisinopril');
 
 INSERT INTO InteractsWith
-VALUES ('Niaspan','Niacin','Lipitor','Atorvastatin');
+VALUES ('Niacin','Atorvastatin');
 
 INSERT INTO InteractsWith
-VALUES ('Viagra', 'Sildenafil','Biaxin','Clarithromycin');
+VALUES ('Sildenafil','Clarithromycin');
 
 #Includes(PrescriptID, BrandName, GenericName)
+
+
+
+INSERT INTO Includes
+VALUES('1111', 'Aubagio', 'Teriflunomide');
+
+
+INSERT INTO Includes
+VALUES('1112', 'Lovenox', 'Clopidogrel');
+
+
+INSERT INTO Includes
+VALUES('1113', 'Mipomereson', 'Kynamro');
+
+
+INSERT INTO Includes
+VALUES('1114', 'Avapro', 'irbesartan');
+
+INSERT INTO Includes
+VALUES ('3457', 'Lovenox', 'Clopidogrel');
+
+
+
+
 
 INSERT INTO Includes
 VALUES('2345', 'Tylenol','Acetaminophen');
 
 INSERT INTO Includes
 VALUES ('3456', 'Advil','Ibuprofen');
+
 
 INSERT INTO Includes
 VALUES ('9876', 'Ritalin', 'Methylphenidate');

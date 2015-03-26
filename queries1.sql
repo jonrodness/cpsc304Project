@@ -30,12 +30,23 @@ select I.GenericName, Pr.Dosage
 from Prescription Pr, Patient P, Includes I
 where Pr.PrescriptID=I.PrescriptID AND Pr.CareCardNum=P.CareCardNum AND Pr.date_prescribed=curdate();
 
+
+
 # qPh5 can reduce the refill number of a patient’s prescription
 #chris-checked
 #jon-checked: entered, need to add PRESCRIPT ID variable
 update Prescription
     set Refills=Refills-1
     where PrescriptID='3456' AND Refills > 0;
+
+
+# qPh6 delete a drug from the database, the delete will be rejected 
+# if it interacts with some drug
+# TODO
+delete 
+	from Drug
+	where BrandName = 'Advil' and
+		GenericName = 'Ibuprofen';
 
 ########User: Patients
 
@@ -494,7 +505,8 @@ Where NOT EXISTS
             		I.BrandName = D.BrandName and
             		P.CareCardNum = Pa.CareCardNum));
 
-#qD17 - show max number of refills for each drug
+# qD17 - show max number of refills for each drug
+# TODO
 select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", MAX(P.Refills) as "MAX number of refills"
 from Prescription P, Drug Dr, Includes I
 where P.PrescriptID = I.PrescriptID and 
@@ -503,8 +515,32 @@ where P.PrescriptID = I.PrescriptID and
 group by Dr.BrandName, Dr.GenericName
 order by MAX(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
+#qD18 show all refils for all drugs (for demo purposes)
+# TODO
 select distinct I.BrandName, I.GenericName, P.Refills 
 from Includes I, Prescription P 
-where I.PrescriptID = P.PrescriptID ;
+where I.PrescriptID = P.PrescriptID;
+
+# qD19 delete a time block. deleting a time block will delete the corresponding 
+# WE Want to give  doctors the ability to cancel appts 
+# TODO
+delete from TimeBlock
+	where TimeBlockDate = '2015-04-03' and
+			StartTime = '09:00:00' and
+			EndTime = '10:00:00';
+
+# qD20
+# TODO
+# select drug that was prescribed the most for each company
+
+# what we have now shows each drug and the number of times it was ordered
+select D.BrandName, D.GenericName, 
+	D.CompanyName, 
+		COUNT(*) as "count"
+		from Drug D, Includes I, Prescription P
+		where P.PrescriptID=I.PrescriptID 
+		AND I.BrandName=D.BrandName 
+		AND I.GenericName=D.GenericName
+		group by D.BrandName, D.GenericName, D.CompanyName
 
 
