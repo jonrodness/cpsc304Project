@@ -1,4 +1,4 @@
-<div class='jumbotron'>
+<div class='jumbotron container'>
 <% if user_signed_in? %>
     <h1 class='jumbotron-custom'>Welcome to PrescriptApp</h1>
     <div class="text-center"> 
@@ -6,7 +6,8 @@
 	</div>
 <% else %>
     <h1 class='jumbotron-custom'>PrescriptApp</h1>
-    <h2> Make doctors appointments and keep track of your prescriptions</h2>
+    <div class="text-center"> 
+	    <h2> Make doctor appointments and keep track of your prescriptions.</h2>
+    </div>
 <% end %>
 </div>
-
