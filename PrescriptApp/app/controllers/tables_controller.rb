@@ -573,6 +573,29 @@ class TablesController < ApplicationController
 	 	render "index"
 	 end
 
+	 # show max number of refills for each drug
+  def qD18
+  	@result = Table.connection.select_all("select CONCAT(Dr.BrandName, '/', Dr.GenericName) as 'Drug', MAX(P.Refills) as 'Maximum refills'
+  	from Prescription P, Drug Dr, Includes I                                        
+  	where P.PrescriptID = I.PrescriptID and                                         
+  	I.BrandName = Dr.BrandName and                                              
+  	I.GenericName = Dr.GenericName                                              
+  	group by Dr.BrandName, Dr.GenericName                                           
+  	order by MAX(P.Refills) desc, Dr.BrandName, Dr.GenericName")
+  	@title = "Maximum refills for each drug"
+  	render "index"
+  end
+
+
+	 # show all refills for all drugs (for demo purposes)                         
+  def qD19
+    @result = Table.connection.select_all("select distinct I.BrandName as 'Brand Name', I.GenericName as 'Generic Name', P.Refills                           
+                                            from Includes I, Prescription P                                                 
+                                            where I.PrescriptID = P.PrescriptID ") 
+    @title = "Refill data for all drugs:"
+    render "index"
+  end                                                               
+ 
 
 private 
 
