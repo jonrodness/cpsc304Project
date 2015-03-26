@@ -55,7 +55,8 @@
   <%= form_tag(qD6_path, :method=>'post') do %>
    <h3>View Appointments on a certain date:</h3>
     <%= label_tag("date", "Date:") %> 
-    <%= text_field_tag "date" %> </br>
+    <%= date_field_tag "date" %> </br>
+    <!-- <%= text_field_tag "date" %> </br> -->
    <p>
     <%= submit_tag 'Submit' %>
    </p>

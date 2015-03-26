@@ -126,21 +126,24 @@ class TablesController < ApplicationController
 		# render "index"
 		date = params[:date]
     sTime = params[:sTime]
+    startTime = sTime["test(4i)"] + ":" + sTime["test(5i)"]
     eTime = params[:eTime]
+    endTime = eTime["test(4i)"] + ":" + eTime["test(5i)"]
     license = params[:license]
-    
+    # test1i = test(1i)
+    # Rails.logger.info ">>>>>>>>>>>>>>>>>> #{test1i} <<<<<<<<<<<<<<<<<<"
         
         Table.connection.execute("insert into TimeBlock values ('#{date}',
-        													    '#{sTime}',
-        													    '#{eTime}')")
+        													    '#{startTime}',
+        													    '#{endTime}')")
 
         # this line causing problems maybe
         Table.connection.execute("insert into MakesAppointmentWith values (curtime(),
         																   curdate(),
         																   '#{license}', 
         																   '#{date}', 
-        																   '#{sTime}', 
-        																   '#{eTime}', 
+        																   '#{startTime}', 
+        																   '#{endTime}', 
         																   '#{@userCCNum}')")
        
         @result = Table.connection.select_all("SELECT * FROM Drug")
@@ -155,8 +158,9 @@ class TablesController < ApplicationController
 	 def qPa5
 	 	date = params[:date]
 	 	sTime = params[:sTime]
+	 	startTime = sTime["test(4i)"] + ":" + sTime["test(5i)"]
 	 	@result = Table.connection.select_all("SELECT * FROM Drug")
-	 	Table.connection.execute("delete from MakesAppointmentWith where CareCardNum = '#{@userCCNum}' and TimeBlockDate = '#{date}' and StartTime = '#{sTime}'")
+	 	Table.connection.execute("delete from MakesAppointmentWith where CareCardNum = '#{@userCCNum}' and TimeBlockDate = '#{date}' and StartTime = '#{startTime}'")
 		render "index"
 	 end
 
@@ -184,8 +188,10 @@ class TablesController < ApplicationController
 		# TESTED - WORKS
 	 def qPa6c
 	 	sTime = params[:sTime]
+	 	startTime = sTime["test(4i)"] + ":" + sTime["test(5i)"]
 	 	eTime = params[:eTime]
-	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.StartTime >=  '#{sTime}'  and MakeApptW.EndTime <=  '#{eTime}'")
+	 	endTime = eTime["test(4i)"] + ":" + eTime["test(5i)"]
+	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.StartTime >=  '#{startTime}'  and MakeApptW.EndTime <=  '#{endTime}'")
 		render "index"
 	 end
 
