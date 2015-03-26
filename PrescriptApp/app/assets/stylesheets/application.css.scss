@@ -34,6 +34,20 @@
     text-align: center;
 }
 
-.table-head {
-  border-spacing: 50px 50px 50px 50px;
+
+.row-line {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-color: #d3d3d3 -moz-use-text-color #d3d3d3;
+  border-style: solid none;
+  border-width: 3px 0;
+  margin: 18px 0;
+}
+
+.table-padding {
+  padding-left: 20px;
+  padding-right: 20px;
 }
