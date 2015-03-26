@@ -165,8 +165,6 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 		MakeApptW.StartTime >=  '09:00:00'  and
 		MakeApptW.StartTime <=  '11:00:00';
 
-
-
 # qPa7 - can (quickly)check if he/she took a certain drug before
 #----can view a list of drugs that interact with a specific drug
 # chris-checked
@@ -422,13 +420,9 @@ where P.CareCardNum = Pr.CareCardNum and
 #jon -change!!
 select D.GenericName, D.BrandName
 from InteractsWith I, Drug D
-where (I.dBrandName = 'Coumadin' and
-		I.dGenericName = 'Warfarin' and
-		I.iGenericName = D.GenericName and
-		I.iBrandName = D.BrandName) or
-		(I.iBrandName = 'Coumadin' and
-		I.iGenericName = 'Warfarin' and
-		I.dBrandName = D.BrandName and
+where (I.dGenericName = 'Warfarin' and
+		I.iGenericName = D.GenericName) or
+		(I.iGenericName = 'Warfarin' and
 		I.dGenericName = D.GenericName);
 
 
@@ -470,7 +464,7 @@ where 	Pr.LicenseNum = D.LicenseNum and
 		D.LicenseNum LIKE '1232131241';
 
 
-# qD15 - show the average number of refills for a certain drug
+# qD15 - show the average number of refills for all drugs
 # jon - checked: entered, works
 # show the average number of refills for a certain drug
 #checked - need this query to pass the "aggregation query" check
@@ -500,6 +494,17 @@ Where NOT EXISTS
             		I.BrandName = D.BrandName and
             		P.CareCardNum = Pa.CareCardNum));
 
+#qD17 - show max number of refills for each drug
+select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", MAX(P.Refills) as "MAX number of refills"
+from Prescription P, Drug Dr, Includes I
+where P.PrescriptID = I.PrescriptID and 
+		I.BrandName = Dr.BrandName and 
+		I.GenericName = Dr.GenericName
+group by Dr.BrandName, Dr.GenericName
+order by MAX(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
+select distinct I.BrandName, I.GenericName, P.Refills 
+from Includes I, Prescription P 
+where I.PrescriptID = P.PrescriptID ;
 
 
