@@ -269,6 +269,11 @@ where 	P.CareCardNum LIKE '1234567890' and
 		Pr.refills = 0
 order by Pr.date_prescribed desc;
 
+# qPa12
+# deleting the patient will delete the appts and includes and prescription
+delete from Patient 
+	where CareCardNum='1099282394';
+
 
 ########User: Doctors
 
@@ -521,6 +526,7 @@ select distinct I.BrandName, I.GenericName, P.Refills
 from Includes I, Prescription P 
 where I.PrescriptID = P.PrescriptID;
 
+<<<<<<< HEAD
 # qD20 delete a time block. deleting a time block will delete the corresponding 
 # WE Want to give  doctors the ability to cancel appts 
 # TODO
@@ -530,10 +536,15 @@ delete from TimeBlock
 			EndTime = '10:00:00';
 
 # qD21
+=======
+
+# qD19
+>>>>>>> 25fca3a6cc5edeee966c20437fd48351f1666a41
 # TODO
 # select drug that was prescribed the most for each company
 
 # what we have now shows each drug and the number of times it was ordered
+# FIX THIS QUERY
 select D.BrandName, D.GenericName, 
 	D.CompanyName, 
 		COUNT(*) as "count"

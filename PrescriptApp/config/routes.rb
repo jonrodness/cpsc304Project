@@ -76,7 +76,6 @@ Rails.application.routes.draw do
   get 'qD19' => 'tables#qD19', :as => 'qD19'
 
 
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

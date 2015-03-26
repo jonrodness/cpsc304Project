@@ -44,10 +44,9 @@ regarding blocking and show code)
 
 show appointments first
 
-delete timeBlock  (qd19)
+delete patient (qPa12)
 
-show that the related appointment is now gone
-
+show that the related appointments and prescriptions are deleted now
 
 • case 2: deletion without causing cascades
 try to delete drug that interacts with another drug (does not work)  (qpH6)
