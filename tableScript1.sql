@@ -1,7 +1,7 @@
-
-drop database doctors;
-create database doctors;
-    use doctors;
+# 
+# drop database doctors;
+# create database doctors;
+#     use doctors;
 
 drop table MakesAppointmentWith;
 drop table OrderedFrom;

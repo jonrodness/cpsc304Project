@@ -33,6 +33,10 @@
     <%= text_field_tag "dosage" %> </br>
     <%= label_tag("ccNum", "Patient Care card number:") %> 
     <%= text_field_tag "ccNum" %> </br>
+    <%= label_tag("bName", "Brand Name:") %> 
+    <%= text_field_tag "bName" %> </br>
+    <%= label_tag("gName", "Generic Name:") %> 
+    <%= text_field_tag "gName" %> </br>
    <p>
     <%= submit_tag 'Submit' %>
    </p>
@@ -145,7 +149,7 @@
   <br>
 
   <%= form_tag(qD16_path, :method=>'post') do %>
-   <h3>View patients who have been prescribed a drug from a specific company:</h3>
+   <h3>View patients who have been prescribed all drugs from a specific company:</h3>
     <%= label_tag("cName", "Company name:") %> 
     <%= text_field_tag "cName" %> </br>
    <p>

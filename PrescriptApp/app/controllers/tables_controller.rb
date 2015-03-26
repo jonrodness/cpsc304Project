@@ -267,8 +267,11 @@ class TablesController < ApplicationController
 	 	refills = params[:refills]
 	 	dosage = params[:dosage]
 	 	ccNum = params[:ccNum]
+	 	bName = params[:bName]
+	 	gName = params[:gName]
 	 	dLicenseNum = current_user.license_num
 	 	Table.connection.execute("insert into Prescription values ('#{dLicenseNum}', '#{prescription}', #{refills}, '#{dosage}', '#{ccNum}', 0, NOW())")
+	 	Table.connection.execute("insert into Includes values ('#{prescription}', '#{bName}', '#{gName}')")
 	 	@result = Table.connection.select_all("SELECT * FROM Prescription WHERE Prescription.PrescriptID = #{prescription}")
 		render "index"
 	 end
@@ -454,7 +457,7 @@ class TablesController < ApplicationController
 											Where NOT EXISTS
 											     (Select *
 											      from Drug D
-											      Where D.CompanyName LIKE '#{cName}'
+											      Where LCASE(D.CompanyName) LIKE LCASE('#{cName}')
 											      AND NOT EXISTS
 											      (Select * 
 											            From Prescription P, Includes I
@@ -482,3 +485,7 @@ end
 # end
 
 end
+
+
+
+
