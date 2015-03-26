@@ -269,11 +269,6 @@ where 	P.CareCardNum LIKE '1234567890' and
 		Pr.refills = 0
 order by Pr.date_prescribed desc;
 
-# qPa12
-# deleting the patient will delete the appts and includes and prescription
-delete from Patient 
-	where CareCardNum='1099282394';
-
 
 ########User: Doctors
 
@@ -526,33 +521,31 @@ select distinct I.BrandName, I.GenericName, P.Refills
 from Includes I, Prescription P 
 where I.PrescriptID = P.PrescriptID;
 
-<<<<<<< HEAD
-# qD20 delete a time block. deleting a time block will delete the corresponding 
-# WE Want to give  doctors the ability to cancel appts 
-# TODO
-delete from TimeBlock
-	where TimeBlockDate = '2015-04-03' and
-			StartTime = '09:00:00' and
-			EndTime = '10:00:00';
-
-# qD21
-=======
 
 # qD19
->>>>>>> 25fca3a6cc5edeee966c20437fd48351f1666a41
-# TODO
 # select drug that was prescribed the most for each company
+select distinct T1.CompanyName as 'Company Name', CONCAT(T1.BrandName, ' ', T1.GenericName) as 'Drug Name', T1.Count as 'Drug Count'
+  from (
+      select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'Count'
+      from Drug D, Includes I, Prescription P                                     
+      where P.PrescriptID=I.PrescriptID                                           
+        AND I.BrandName=D.BrandName                                                 
+        AND I.GenericName=D.GenericName                                             
+        group by D.BrandName, D.GenericName, D.CompanyName) as T1,
+      (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'Count'
+      from Drug D, Includes I, Prescription P                                     
+      where P.PrescriptID=I.PrescriptID                                           
+        AND I.BrandName=D.BrandName                                                 
+        AND I.GenericName=D.GenericName                                             
+        group by D.BrandName, D.GenericName, D.CompanyName) as T2
+  where T1.Count >= T2.Count
+  group by T1.CompanyName
 
-# what we have now shows each drug and the number of times it was ordered
-# FIX THIS QUERY
-select D.BrandName, D.GenericName, 
-	D.CompanyName, 
-		COUNT(*) as "count"
-		from Drug D, Includes I, Prescription P
-		where P.PrescriptID=I.PrescriptID 
-		AND I.BrandName=D.BrandName 
-		AND I.GenericName=D.GenericName
-		group by D.BrandName, D.GenericName, D.CompanyName
+
+# qD20
+# deleting the patient will delete the appts and includes and prescription
+delete from Patient 
+	where CareCardNum='1099282394';
 
 
 ----------------------------------------

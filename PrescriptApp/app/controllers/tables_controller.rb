@@ -8,16 +8,14 @@ class TablesController < ApplicationController
 			@result = Table.connection.select_all("SELECT CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', Age, Weight, Height, Address, PhoneNumber as 'Phone Number' FROM Patient WHERE Patient.CareCardNum=#{current_user.care_card_num}")
 			@title = "Your Personal Statistics"
 		elsif current_user.user_type == "Doctor"
-			@result = Table.connection.select_all("select LicenseNum as 'License Number', CONCAT(FirstName, ' ', LastName) as 'Doctor Name', Address, PhoneNumber as 'Phone Number', Type from Doctor where Doctor.LicenseNum=#{current_user.license_num}")
+			@result = Table.connection.select_all("select LicenseNum as 'License Number', CONCAT(FirstName, ' ', LastName) as 'Doctor Name', Address, PhoneNumber as 'Phone Number', Type from Doctor where LicenseNum='#{current_user.license_num}'")
 			@title = "Your Information"
 		elsif current_user.user_type == "Pharmacist"
-
 			@result = Table.connection.select_all("select Address, Name, PhoneNumber as 'Phone Number', 
 				TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p') as 'Weekday Open', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p') as 'Weekday Close',
 				TIME_FORMAT(WeekendHoursOpening, '%h:%i%p')  as 'Weekend Open', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Close'
 				 from Pharmacy where Address like '#{current_user.pharmacy_address}'")
 			@title = "Your Pharmacy Information"
-
 		end
 				
 		#@license = current_user.license_num
@@ -95,8 +93,9 @@ class TablesController < ApplicationController
 	 # Show all drugs in the database
 	 	#TESTED - WORKS
 	 def qPh6
-	 	@result = Table.connection.select_all("select * from Drug")
-	 	@title = "List of drugs"
+	 	@result = Table.connection.select_all("select BrandName as 'Brand Name', GenericName as 'Generic Name', CompanyName as 'Company Name', Price 
+                                            from Drug")
+	 	@title = "List of drugs:"
 	 	render "index"
 	 end
 
@@ -305,6 +304,8 @@ class TablesController < ApplicationController
 		@title = "Previous prescriptions:"
 		render "index"
 	 end
+
+                                                                 
 
  	############################# Doctor Queries ################################
 
@@ -704,7 +705,52 @@ class TablesController < ApplicationController
                                             where I.PrescriptID = P.PrescriptID ") 
     @title = "Refill data for all drugs:"
     render "index"
-  end                                                               
+  end       
+
+  # select drug that was prescribed the most for each company 
+  def qD20
+    @result =  Table.connection.select_all("select distinct T1.CompanyName as 'Company Name', CONCAT(T1.BrandName, ' ', T1.GenericName) as 'Drug Name', T1.Count as 'Drug Count'
+                                            from (
+                                                select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'Count'
+                                                from Drug D, Includes I, Prescription P                                     
+                                                where P.PrescriptID=I.PrescriptID                                           
+                                                  AND I.BrandName=D.BrandName                                                 
+                                                  AND I.GenericName=D.GenericName                                             
+                                                  group by D.BrandName, D.GenericName, D.CompanyName) as T1,
+                                                (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'Count'
+                                                from Drug D, Includes I, Prescription P                                     
+                                                where P.PrescriptID=I.PrescriptID                                           
+                                                  AND I.BrandName=D.BrandName                                                 
+                                                  AND I.GenericName=D.GenericName                                             
+                                                  group by D.BrandName, D.GenericName, D.CompanyName) as T2
+                                            where T1.Count >= T2.Count
+                                            group by T1.CompanyName")
+
+    @title = "Drug prescribed the most for each company"
+    render "index"
+  end                    
+                                                                                 
+  # deleting the patient will delete the appts and includes and prescription     
+  def qD21
+    ccNum = params[:ccNum]
+      assert {!ccNum.empty?}
+      assert {ccNum.to_f >= 0}
+    Table.connection.execute("delete from Patient where CareCardNum='#{ccNum}'")
+    @result = Table.connection.select_all("Select Pa.CareCardNum as 'Care Card Number', CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name',
+                      Address, PhoneNumber as 'Phone Number'
+                      from Patient Pa")
+    @title = "Patient ##{ccNum} deleted! Displaying everyone else:"
+    render "index"
+  end        
+
+  def qD22
+    @result = Table.connection.select_all("Select Pa.CareCardNum as 'Care Card Number', CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name',
+                      Address, PhoneNumber as 'Phone Number'
+                      from Patient Pa")
+    @title = "All patients:" 
+    render "index"
+  end
+
  
 
 private 
