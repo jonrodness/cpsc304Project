@@ -272,13 +272,8 @@ class TablesController < ApplicationController
 	 	render "index"
 	 end
 
-
-
 	 # Prescribe a Drug
-	 	# USE VARIABLES
 	 	# TESTED - WORKS
-	 	# ARE THESE THE CORRECT VARIABLES?
-	 	# USE EXECUTE, NOT CONNECTION!
 	 def qD2
 	 	prescription  = params[:prescription]
 	 	refills = params[:refills]
@@ -308,7 +303,6 @@ class TablesController < ApplicationController
 
 	# View Appointments for picked date and time
 	 	# ADD DOCTOR LICENSE VARIABLE
-	 	# DOES THIS NEED MORE PARAMS?
 	 def qD5
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
@@ -401,20 +395,15 @@ class TablesController < ApplicationController
 	 end
 
 	 # View possible drug interactions
-	 	# TESTED - WORKS, BUT SHOULDN'T HAVE TO ADD BOTH GENERIC AND BRAND NAMES
+	 	# TESTED - WORKS
 	 def qD12
-	 	iBrandName = params[:iBrandName]
 	 	iGenericName = params[:iGenericName]
 	 	@result = Table.connection.select_all("select D.GenericName, D.BrandName
 												from InteractsWith I, Drug D
-												where (I.dBrandName = '#{iBrandName}' and
-														I.dGenericName = '#{iGenericName}' and
-														I.iGenericName = D.GenericName and
-														I.iBrandName = D.BrandName) or
-														(I.iBrandName = '#{iBrandName}' and
-														I.iGenericName = '#{iGenericName}' and
-														I.dBrandName = D.BrandName and
-														I.dGenericName = D.GenericName)")
+												where (I.dGenericName = '#{iGenericName}' and
+														I.iGenericName = D.GenericName) or
+														(I.iGenericName = '#{iGenericName}' and
+														I.dGenericName = D.GenericName);")
 		render "index"
 	 end
 

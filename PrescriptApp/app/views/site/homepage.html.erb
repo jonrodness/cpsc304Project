@@ -1,8 +1,12 @@
 <div class='jumbotron'>
+<% if user_signed_in? %>
     <h1 class='jumbotron-custom'>Welcome to PrescriptApp</h1>
-</div>
-
-
-<div class="text-center"> 
+    <div class="text-center"> 
     <%= link_to "Click here to view records and make appointments", tables_path, :class => 'btn btn-large btn-primary' %>
+	</div>
+<% else %>
+    <h1 class='jumbotron-custom'>PrescriptApp</h1>
+    <h2> Make doctors appointments and keep track of your prescriptions</h2>
+<% end %>
 </div>
+
