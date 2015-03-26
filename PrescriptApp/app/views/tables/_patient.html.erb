@@ -6,7 +6,7 @@
   <div class='row-line'></div>
 
 
-
+<div class='grey-background'>
 <%= form_tag(qPa1a_path, :method=>'post') do %>
  <h3>Update address</h3>
   <%= label_tag("pAddress", "Address:") %> 
@@ -15,6 +15,7 @@
   <%= submit_tag 'Submit' %>
  </p>
 <% end %>
+</div>
 <br>
 
 <%= form_tag(qPa1b_path, :method=>'post') do %>

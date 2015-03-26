@@ -94,7 +94,8 @@ class TablesController < ApplicationController
 	 	pAddress = params[:pAddress]
 	 	Table.connection.execute("update Patient set Address = '#{pAddress}'
                                 where CareCardNum LIKE '#{@userCCNum}'")
-    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+    @result = Table.connection.select_all("SELECT CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', Age, Weight, Height, Address, PhoneNumber as 'Phone Number' FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
+	 	@title = "Update successful! Your address in the database is now #{pAddress}"
 	 	render "index"
 	 end
 
@@ -106,7 +107,7 @@ class TablesController < ApplicationController
                                 where CareCardNum LIKE '#{@userCCNum}'")
 
     	@result = Table.connection.select_all("SELECT CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', Age, Weight, Height, Address, PhoneNumber as 'Phone Number' FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
-    	@title = "Your updated information:"
+    	@title = "Update successful! Your phone number in the database is now #{pPhoneNum}"
     	# @result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
 	 	render "index"
 	 end
@@ -149,7 +150,7 @@ class TablesController < ApplicationController
         																   '#{sTime}', 
         																   '#{eTime}', 
         																   '#{@userCCNum}')")
-       	@title = "Appointment made! Details below about your upcomign appointments..."
+       	@title = "Appointment made! Details below about your upcoming appointments..."
       	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}'")
 
         render "index"
@@ -176,6 +177,7 @@ class TablesController < ApplicationController
 		# TESTED - WORKS
 	 def qPa6a
 	 	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}'")
+		@title = "Upcoming appointments:"
 		render "index"
 	 end
 
@@ -238,6 +240,7 @@ class TablesController < ApplicationController
 	 	CareCardNum as 'Care Card Number', ReadyForPickUp as 'Pickup Status',  	
 	 	date_prescribed as 'Date Prescribed'
 	 	 from Prescription where ReadyForPickup=1")
+	 	@title = "Prescription status"
 		render "index"
 	 end
 
@@ -246,6 +249,7 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa10
 	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills > 0 order by Pr.date_prescribed desc")
+		@title = "Current prescriptions:"
 		render "index"
 	 end
 
@@ -254,6 +258,7 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa11
 	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
+		@title = "Previous prescriptions:"
 		render "index"
 	 end
 
@@ -264,7 +269,8 @@ class TablesController < ApplicationController
 	 def qD1a
 	 	dAddress = params[:dAddress]
 	 	Table.connection.execute("update Doctor set Address = '#{dAddress}'")
-	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{@userlicense}'")
+	 	@result = Table.connection.select_all("select LicenseNum as 'License Number', CONCAT(FirstName, ' ', LastName) as 'Doctor Name', Address, PhoneNumber as 'Phone Number', Type from Doctor where Doctor.LicenseNum=#{current_user.license_num}")
+		@title = "Your address was updated to: #{dAddress}"
 		render "index"
 	 end
 
@@ -273,7 +279,8 @@ class TablesController < ApplicationController
 	 def qD1b
 	 	dPhoneNum = params[:dPhoneNum]
 	 	Table.connection.execute("update Doctor set PhoneNumber = '#{dPhoneNum}'")
-	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{@userlicense}'")
+	 	@result = Table.connection.select_all("select LicenseNum as 'License Number', CONCAT(FirstName, ' ', LastName) as 'Doctor Name', Address, PhoneNumber as 'Phone Number', Type from Doctor where Doctor.LicenseNum=#{current_user.license_num}")
+		@title = "Your Phone Number was updated to: #{dPhoneNum}"
 		render "index"
 	 end
 
@@ -284,9 +291,10 @@ class TablesController < ApplicationController
 	 	ccNum = params[:ccNum]
 	 	Table.connection.execute("update Patient set Height = '#{pHeight}'
                                 where CareCardNum LIKE '#{ccNum}'")
-    	@result = Table.connection.select_all("select *
+    	@result = Table.connection.select_all("select CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', Age, Weight, Height, Address, PhoneNumber as 'Phone Number' 
 												from Patient
 												where CareCardNum = '#{ccNum}'")
+    	@title = "Patient ##{ccNum}'s height was updated to #{pHeight}"
 	 	render "index"
 	 end
 
@@ -297,9 +305,10 @@ class TablesController < ApplicationController
 	 	ccNum = params[:ccNum]
 	 	Table.connection.execute("update Patient set Weight = '#{pWeight}'
                                 where CareCardNum LIKE '#{ccNum}'")
-    	@result = Table.connection.select_all("select *
-												from Patient
-												where CareCardNum = '#{ccNum}'")
+   	@result = Table.connection.select_all("select CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', Age, Weight, Height, Address, PhoneNumber as 'Phone Number' 
+										from Patient
+										where CareCardNum = '#{ccNum}'")
+   	@title = "Patient ##{ccNum}'s weight was updated to #{pWeight}"
 	 	render "index"
 	 end
 
@@ -315,7 +324,10 @@ class TablesController < ApplicationController
 	 	dLicenseNum = current_user.license_num
 	 	Table.connection.execute("insert into Prescription values ('#{dLicenseNum}', '#{prescription}', #{refills}, '#{dosage}', '#{ccNum}', 0, NOW())")
 	 	Table.connection.execute("insert into Includes values ('#{prescription}', '#{bName}', '#{gName}')")
-	 	@result = Table.connection.select_all("SELECT * FROM Prescription WHERE Prescription.PrescriptID = #{prescription}")
+	 	@result = Table.connection.select_all("SELECT LicenseNum as 'License Number', PrescriptID as 'Prescription ID', Refills, Dosage                               | CareCardNum | ReadyForPickUp | date_prescribed
+	 	 FROM Prescription WHERE Prescription.PrescriptID = #{prescription}")
+	 	@title = "Prescription created! Details below:"
+
 		render "index"
 	 end
 
@@ -350,6 +362,7 @@ class TablesController < ApplicationController
 														MakeApptW.CareCardNum = P.CareCardNum and
 														D.LicenseNum  = '#{@userlicense}'
 												order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate")
+	 	@title = "Appointments ordered chronologically"
 		render "index"
 	 end
 
@@ -364,6 +377,7 @@ class TablesController < ApplicationController
 														MakeApptW.CareCardNum = P.CareCardNum and
 														D.LicenseNum  = '#{@userlicense}' and
 														MakeApptW.TimeBlockDate = '#{date}'")
+	 	@title = "Appointments on #{date}:"
 		render "index"
 	 end
 
@@ -555,6 +569,7 @@ class TablesController < ApplicationController
 	 	@result = Table.connection.select_all("select *
 	 											from Patient P
 	 											where P.CareCardNum = #{ccNum}")
+	 	@title = "#{pFName} #{pLName} added to database with Care Card Number #{ccNum}"
 	 	render "index"
 	 end
 
