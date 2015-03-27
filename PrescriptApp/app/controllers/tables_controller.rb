@@ -344,8 +344,8 @@ class TablesController < ApplicationController
 	 	ccNum = params[:ccNum]
 
 	 	# check that fields are filled
-	 	assert {!pHeight.nil?}
-	 	assert {!ccNum.nil?}
+	 	assert {!pHeight.empty?}
+	 	assert {!ccNum.empty?}
 
 	 	# check that height is non-negative number
 	 	assert {pHeight.to_f >= 0}
@@ -369,8 +369,8 @@ class TablesController < ApplicationController
 	 	ccNum = params[:ccNum]
 
 	 	# check that fields are filled
-	 	assert {!pWeight.nil?}
-	 	assert {!ccNum.nil?}
+	 	assert {!pWeight.empty?}
+	 	assert {!ccNum.empty?}
 
 	 	# check that weight is non-negative number
 	 	assert {pWeight.to_f >= 0}
