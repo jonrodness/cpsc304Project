@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
 	  require "#{Rails.root}/lib/exceptions.rb"
-	  #rescue_from ActiveRecord::StatementInvalid, :with => :error_statement_invalid
+	  rescue_from ActiveRecord::StatementInvalid, :with => :error_statement_invalid
 	  rescue_from Exceptions::AssertionError, :with => :error_assertion_error
 	  before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
