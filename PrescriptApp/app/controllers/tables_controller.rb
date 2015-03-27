@@ -187,8 +187,8 @@ class TablesController < ApplicationController
 	        																   curdate(),
         																   '#{license}', 
         																   '#{date}', 
-        																   '#{sTime}', 
-        																   '#{eTime}', 
+        																   '#{startTime}', 
+        																   '#{endTime}', 
         																   '#{@userCCNum}')")
        	@title = "Appointment made! Details below about your upcoming appointments..."
       	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}'")
@@ -256,6 +256,9 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa7
 	 	drug = params[:drug]
+    @namesArray = Table.connection.select_all("select BrandName from Drug")
+    Rails.logger.info ">>>>>>>>>>>>>>#{@namesArray.as_json}<<<<<<<<<<<<<<<<" ## TODO: make this a dropdown box
+    @namesArrayJSON = @namesArray.as_json
 	 	# check that drug field is not empty
 	 	assert {!drug.empty?}
 	 	@result = Table.connection.select_all("select iBrandName as 'Brand Name', iGenericName as 'Generic Name' from InteractsWith where LCASE(dGenericName) like '%#{drug}%'")
@@ -294,7 +297,7 @@ class TablesController < ApplicationController
 	 	# ADD VARIABLE FOR CCNum
 	 	# TESTED - WORKS
 	 def qPa10
-	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills > 0 order by Pr.date_prescribed desc")
+	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, '/', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills > 0 order by Pr.date_prescribed desc")
 		@title = "Current prescriptions:"
 		render "index"
 	 end
@@ -303,7 +306,7 @@ class TablesController < ApplicationController
 	 	# ADD VARIABLE FOR CCNum
 	 	# TESTED - WORKS
 	 def qPa11
-	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
+	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, '/', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
 		@title = "Previous prescriptions:"
 		render "index"
 	 end
@@ -410,7 +413,7 @@ class TablesController < ApplicationController
 	 	dLicenseNum = current_user.license_num
 	 	Table.connection.execute("insert into Prescription values ('#{dLicenseNum}', '#{prescription}', #{refills}, '#{dosage}', '#{ccNum}', 0, NOW())")
 	 	Table.connection.execute("insert into Includes values ('#{prescription}', '#{bName}', '#{gName}')")
-	 	@result = Table.connection.select_all("SELECT LicenseNum as 'License Number', PrescriptID as 'Prescription ID', Refills, Dosage                               | CareCardNum | ReadyForPickUp | date_prescribed
+	 	@result = Table.connection.select_all("SELECT LicenseNum as 'License Number', PrescriptID as 'Prescription ID', Refills, Dosage, CareCardNum as 'Care Card Number', ReadyForPickUp 'Pickup Status', date_prescribed as 'Date Prescribed'
 	 	 FROM Prescription WHERE Prescription.PrescriptID = #{prescription}")
 	 	@title = "Prescription created! Details below:"
 
