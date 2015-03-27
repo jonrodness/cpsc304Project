@@ -376,40 +376,24 @@ group by D.LastName;
 
 
 
-# qD10 - can view a list of previous drugs taken by a certain patient
-#-----can view a list of previous drugs taken by a certain patient
-#chris
-# jon - checked: entered, ensure only for this doctor's patients
-select I.GenericName
+# (qD10) Can view a list of previous drugs taken by a certain patient
+select I.GenericName as 'Generic Name', I.BrandName as 'Brand Name'
 from Prescription Pr, Patient P, Includes I
-where P.CareCardNum= '1234567890' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
+where P.CareCardNum= '1234567890' AND Pr.CareCardNum=P.CareCardNum 
+	AND I.PrescriptID=Pr.PrescriptID;
 
 
-#old NEED TO UPDATE TO NEXT ONE
--- # qD11 - can check if a certain drug was taken in the past by a certain patient
--- # jon - checked: entered, ensure only for this doctor's patients
--- select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
--- 		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
--- 		Pr.dosage as "Drug dosage"
--- from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
--- where 	P.CareCardNum LIKE '1234567890' and
--- 		P.CareCardNum = Pr.CareCardNum and 
--- 		Pr.LicenseNum = D.LicenseNum and 
--- 		I.PrescriptID = Pr.PrescriptID and
--- 		I.BrandName = Dr.BrandName and
--- 		I.GenericName = Dr.GenericName and
--- 		Pr.refills = 0
--- order by Pr.date_prescribed desc;
-#can check if a certain drug was taken in the past by a certain patient
-# 	anny:checked
-# jon - change!
-select Pr.LicenseNum as "Prescribed by", Pr.PrescriptID as "Prescription ID", Pr.Dosage, Pr.date_prescribed
-from Patient P, Prescription Pr, Includes I
+# (qD11) Can check if a certain drug was taken in the past by a certain patient
+select distinct CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', 
+	Pr.PrescriptID as 'Prescription ID', Pr.Dosage, 
+	Pr.date_prescribed as 'Date Prescribed'
+from Patient P, Prescription Pr, Includes I, Doctor D
 where P.CareCardNum = Pr.CareCardNum and
-	P.CareCardNum = '1234567890' and
-	Pr.PrescriptID = I.PrescriptID and
-	I.BrandName LIKE 'BLABLA' or
-	I.GenericName LIKE 'blabla';
+P.CareCardNum = '1234567890' and
+Pr.LicenseNum = D.LicenseNum and
+Pr.PrescriptID = I.PrescriptID and
+I.BrandName LIKE 'Advil' or
+I.GenericName LIKE 'Ibuprofen';
 
 
 -- # qD12 - can view a list of drugs that interact with a specific drug  (same as patient)
