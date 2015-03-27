@@ -376,101 +376,65 @@ group by D.LastName;
 
 
 
-# qD10 - can view a list of previous drugs taken by a certain patient
-#-----can view a list of previous drugs taken by a certain patient
-#chris
-# jon - checked: entered, ensure only for this doctor's patients
-select I.GenericName
+# (qD10) Can view a list of previous drugs taken by a certain patient
+select I.GenericName as 'Generic Name', I.BrandName as 'Brand Name'
 from Prescription Pr, Patient P, Includes I
-where P.CareCardNum= '1234567890' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;
+where P.CareCardNum= '1234567890' AND Pr.CareCardNum=P.CareCardNum 
+	AND I.PrescriptID=Pr.PrescriptID;
 
 
-#old NEED TO UPDATE TO NEXT ONE
--- # qD11 - can check if a certain drug was taken in the past by a certain patient
--- # jon - checked: entered, ensure only for this doctor's patients
--- select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
--- 		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
--- 		Pr.dosage as "Drug dosage"
--- from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
--- where 	P.CareCardNum LIKE '1234567890' and
--- 		P.CareCardNum = Pr.CareCardNum and 
--- 		Pr.LicenseNum = D.LicenseNum and 
--- 		I.PrescriptID = Pr.PrescriptID and
--- 		I.BrandName = Dr.BrandName and
--- 		I.GenericName = Dr.GenericName and
--- 		Pr.refills = 0
--- order by Pr.date_prescribed desc;
-#can check if a certain drug was taken in the past by a certain patient
-# 	anny:checked
-# jon - change!
-select Pr.LicenseNum as "Prescribed by", Pr.PrescriptID as "Prescription ID", Pr.Dosage, Pr.date_prescribed
-from Patient P, Prescription Pr, Includes I
+# (qD11) Can check if a certain drug was taken in the past by a certain patient
+select distinct CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', 
+	Pr.PrescriptID as 'Prescription ID', Pr.Dosage, 
+	Pr.date_prescribed as 'Date Prescribed'
+from Patient P, Prescription Pr, Includes I, Doctor D
 where P.CareCardNum = Pr.CareCardNum and
-	P.CareCardNum = '1234567890' and
-	Pr.PrescriptID = I.PrescriptID and
-	I.BrandName LIKE 'BLABLA' or
-	I.GenericName LIKE 'blabla';
+P.CareCardNum = '1234567890' and
+Pr.LicenseNum = D.LicenseNum and
+Pr.PrescriptID = I.PrescriptID and
+I.BrandName LIKE 'Advil' or
+I.GenericName LIKE 'Ibuprofen';
 
 
--- # qD12 - can view a list of drugs that interact with a specific drug  (same as patient)
--- #chris
--- # jon - checked: entered, column names are not working
--- select I.iGenericName
+# (qD12) View possible drug interactions
+select iBrandName as 'Brand Name', iGenericName as 'Generic Name' 
+from InteractsWith 
+where LCASE(dGenericName) like '%ibuprofen%'
+UNION
+select dBrandName as 'Brand Name', dGenericName as 'Generic Name' 
+from InteractsWith 
+where LCASE(iGenericName) like '%ibuprofen%';
 
 
-#can view a list of drugs that interact with a specific drug  (same as patient)
-#chris-checked
-#jon -change!!
-select D.GenericName, D.BrandName
-from InteractsWith I, Drug D
-where (I.dGenericName = 'Warfarin' and
-		I.iGenericName = D.GenericName) or
-		(I.iGenericName = 'Warfarin' and
-		I.dGenericName = D.GenericName);
+# (qD13) Can view a list of past appointments by a certain patient
+select M.TimeMade as 'Time Made', M.DateMade as 'Date Made', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor',
+ 	M.TimeBlockDate as 'Date', M.StartTime as 'Start Time', M.EndTime as 'End Time'
+from MakesAppointmentWith M, Doctor D, Patient P
+where D.LicenseNum = M.LicenseNum and
+M.CareCardNum = P.CareCardNum and
+P.CareCardNum = '1234567890' and
+D.LicenseNum = '2743873823' and
+TimeBlockDate < curdate();
 
-
--- #notified when patients cancel an appointment
--- 	# hmmm? probs we can just do this at the application level, idk
-
-#old NEED TO CHANGE TO NEXT ONE
--- # qD13
--- #can view a list of past appointments by a certain patient
--- #chris
--- # jon - checked: entered, works, but need to select more attributes?
--- select M.DateMade
--- from MakesAppointmentWith M, Doctor D
--- where D.LicenseNum=M.LicenseNum;
-
-#can view a list of past appointments by a certain patient
-#chris-checked
-# jon - change!!
-select *
-from MakesAppointmentWith M, Doctor D, Patient p
-where D.LicenseNum=M.LicenseNum and
-	M.CareCardNum = P.CareCardNum and
-	TimeBlockDate < curdate();
-
-
-# qD14----Generate a report about which prescriptions a doctor has
-#   previously prescribed, and to whom the prescriptions were prescribed, as well as which pharmacy filled the prescription
+# (qD14) Generate a report about which prescriptions a doctor 
+#has previously prescribed
 # 	sample, doctor's license num = '1232131241'
-# jon - checked: entered, works, add variables
-select Pr.PrescriptID, CONCAT(P.FirstName, " ", P.LastName) as PatientName, CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug, CONCAT(Pm.Address, ", ", Pm.Name) as PharmacyDescription 
-from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, Includes I, Drug Dr
+select Pr.PrescriptID as 'Prescription ID', 
+	CONCAT(P.FirstName, ' ', P.LastName) as 'Patient Name', 
+	CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, 
+	CONCAT(Pm.Address, ', ', Pm.Name) as 'Pharmacy Description' 
+from Prescription Pr, Doctor D, Patient P, Pharmacy Pm, OrderedFrom O, 
+	Includes I, Drug Dr
 where 	Pr.LicenseNum = D.LicenseNum and
-		Pr.CareCardNum = P.CareCardNum and 
-		O.PrescriptID = Pr.PrescriptID and 
-		O.PharmacyAddress = Pm.Address and 
-		I.PrescriptID = Pr.PrescriptID and
-		I.BrandName = Dr.BrandName and
-		I.GenericName = Dr.GenericName and
-		D.LicenseNum LIKE '1232131241';
+	Pr.CareCardNum = P.CareCardNum and 
+	O.PrescriptID = Pr.PrescriptID and 
+	O.PharmacyAddress = Pm.Address and 
+	I.PrescriptID = Pr.PrescriptID and
+	I.BrandName = Dr.BrandName and
+	I.GenericName = Dr.GenericName and
+	D.LicenseNum LIKE '1232131241';
 
-
-# qD15 - show the average number of refills for all drugs
-# jon - checked: entered, works
-# show the average number of refills for a certain drug
-#checked - need this query to pass the "aggregation query" check
+# (qD15) Show the average number of refills for all drugs
 select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", AVG(P.Refills) as "Average number of refills"
 from Prescription P, Drug Dr, Includes I
 where P.PrescriptID = I.PrescriptID and 
@@ -480,22 +444,22 @@ group by Dr.BrandName, Dr.GenericName
 order by AVG(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
 
-# qD16 - select patients who ordered all products by company name = Pfizer
-# jon - checked: entered, add variables
-# select patients who ordered all products by company name = Pfizer
-#checked - need this query to pass the "division query" check
-select Pa.CareCardNum, Pa.FirstName
+# (qD16) Select patients who ordered all products by company name = Pfizer
+select Pa.CareCardNum as 'Care Card Number', 
+	CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name'
 from Patient Pa
 Where NOT EXISTS
      (Select *
       from Drug D
-      Where D.CompanyName LIKE 'Pfizer'
+      Where LCASE(D.CompanyName) LIKE LCASE('pfizer')
       AND NOT EXISTS
       (Select * 
             From Prescription P, Includes I
             WHERE P.PrescriptID = I.prescriptID and 
             		I.BrandName = D.BrandName and
             		P.CareCardNum = Pa.CareCardNum));
+
+
 
 # qD18a - show max number of refills for each drug
 # TODO
