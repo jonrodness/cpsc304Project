@@ -113,7 +113,7 @@ CREATE TABLE OrderedFrom
     (PrescriptID CHAR(4),
     PharmacyAddress VARCHAR(50),
     OrderNo CHAR(11),
-    PRIMARY KEY (PrescriptID, PharmacyAddress),
+    PRIMARY KEY (PrescriptID),
     FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID) ON DELETE CASCADE,
     FOREIGN KEY (PharmacyAddress) REFERENCES Pharmacy (Address) ON DELETE CASCADE,
     UNIQUE (OrderNo));
@@ -560,6 +560,12 @@ VALUES ('2015-10-24', '15:00:00', '16:00:00');
 INSERT INTO TimeBlock
 VALUES ('2015-07-04', '16:00:00', '16:30:00');
 
+INSERT INTO TimeBlock
+VALUES ('2014-07-04', '16:00:00', '16:30:00');
+
+INSERT INTO TimeBlock
+VALUES ('2013-07-04', '16:00:00', '16:30:00');
+
 #MakesAppointmentWith(TimeMade, DateMade,LicenseNum,TimeBlockDate, StartTime, EndTime, CareCardNum)
 INSERT INTO MakesAppointmentWith
 VALUES ('09:0:00', '2015-04-01','1232131241','2015-04-03','11:30:00','12:00:00','1234567890');
@@ -582,5 +588,12 @@ VALUES('14:30:00', '2015-10-24', '3409389847', '2015-10-24', '15:00:00', '16:00:
 
 INSERT INTO MakesAppointmentWith
 VALUES('08:30:00', '2015-07-04', '2743873823', '2015-07-04', '16:00:00', '16:30:00', '1099282394');
+
+INSERT INTO MakesAppointmentWith
+VALUES('08:30:00', '2013-07-04', '2743873823', '2014-07-04', '16:00:00', '16:30:00', '1234567890');
+
+INSERT INTO MakesAppointmentWith
+VALUES('10:30:00', '2012-08-04', '2743873823', '2013-07-04', '16:00:00', '16:30:00', '1234567890');
+
 
 
