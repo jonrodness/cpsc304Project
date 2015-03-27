@@ -255,12 +255,14 @@ order by Pr.date_prescribed desc;
 
 # qPa12 a user can order a prescription from a pharmacy
 # TODO 
-# WE NEED TO AUTOGENERATE 
-# A NUMBER EACH TIME FOR ORDER NUMBER
-# OMG HOW DO WE DO THIS
+# guys please add an assertion or something, that warns the user when they try to 
+# place an order for the same prescription to the same pharmacy
+# maybe we should make the primary key of orderedfrom - just the prescription id,
+# so that the patient cannot order more than one of the same prescription. because right now it allows me t
+# add more than one prescription
 # #OrderedFrom(PrescriptID,PharmacyAddress, OrderNo )
 insert into OrderedFrom
-	values ('0498', '885 Broadway W, Vancouver, BC V5Z 1J9', '03457436500');
+	values ('0498', '885 Broadway W, Vancouver, BC V5Z 1J9', null);
 ########User: Doctors
 
 # (qD1a) Doctor an update their address
