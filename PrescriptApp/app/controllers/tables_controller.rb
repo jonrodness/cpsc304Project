@@ -64,7 +64,7 @@ class TablesController < ApplicationController
 		render "index"
 	 end
 
-	 # Print out a list of prescriptions filled that day
+	 # Gets a list of prescriptions filled that day
 	 	# CAN'T TEST WITHOUT PRESCRIPTIONS FOR THE CURRENT DAY
 	 def qPh4
 	 	@result = Table.connection.select_all("select Pr.PrescriptID as 'Prescription ID', I.GenericName as 'Generic Name', Pr.Dosage 

@@ -1,48 +1,52 @@
 ########User: Pharmacists
 
-# qPh1 view prescriptions prescribed by doctor
-#chris-checked
-#jon-checked: entered and working
-select CONCAT(D.FirstName, ' ', D.LastName) as DoctorName, D.Type, P.Dosage, P.date_prescribed 
-from Doctor D, Prescription P 
-where D.LicenseNum=P.LicenseNum 
+# (qPh1) View prescriptions prescribed by doctor
+select CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor Name', 
+	D.Type as 'Doctor Type', I.BrandName as 'Brand Name',  
+	P.Dosage, P.date_prescribed as 'Date Prescribed' 
+from Doctor D, Prescription P, Includes I  
+where D.LicenseNum=P.LicenseNum and I.PrescriptID=P.PrescriptID 
 group by D.LastName;
 
-# qPh2 change status of prescription (not ready for pick up, ready for pick up) (**need to add as attribute)
-#chris-checked
-#jon-checked: entered, need to add PrescriptID variable
+# (qPh2) Change status of prescription (not ready changed to ready for pick up)
+# PrescriptID has variable in tables_controller, static variable=3456
 update Prescription
     set ReadyForPickUp=1
     where PrescriptID ='3456' AND ReadyForPickup=0;
 
-# qPh3 can view past prescriptions for patient
-#chris-checked
-#jon-checked: entered, need to add CareCardNum variable
-select Pr.date_prescribed,I.GenericName,Pr.Refills,Pr.Dosage
+# (qPh3) Can view past prescriptions for patient
+# CareCardNum has variable in tables_controller, 
+# Static variable below as placeholders
+
+select Pr.date_prescribed as 'Date Prescribed',I.GenericName as 'Generic Name',
+	Pr.Refills,Pr.Dosage
 from Prescription Pr, Patient P, Includes I
-where Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND Pr.CareCardNum=1234567890
+where Pr.CareCardNum = P.CareCardNum AND I.PrescriptID=Pr.PrescriptID AND 
+	Pr.CareCardNum = 1234567890
 Order By Pr.date_prescribed;
 
-# qPh4 can print out a list of prescriptions filled that day
-#chris-checked
-#jon - checked, test with current day record
-select I.GenericName, Pr.Dosage
-from Prescription Pr, Patient P, Includes I
-where Pr.PrescriptID=I.PrescriptID AND Pr.CareCardNum=P.CareCardNum AND Pr.date_prescribed=curdate();
+# (qPh4) Can get a list of prescriptions filled that day
+select Pr.PrescriptID as 'Prescription ID', I.GenericName as 'Generic Name', 
+	Pr.Dosage 
+from Prescription Pr, Patient P, Includes I 
+where Pr.PrescriptID=I.PrescriptID and Pr.CareCardNum = P.CareCardNum and 
+	Pr.date_prescribed = curdate() ;
 
-
-
-# qPh5 can reduce the refill number of a patient’s prescription
-#chris-checked
-#jon-checked: entered, need to add PRESCRIPT ID variable
+# (qPh5) Can reduce the refill number of a patient’s prescription
+# PrescriptID has variable in tables_controller
+# Static variable below as placeholders
 update Prescription
     set Refills=Refills-1
     where PrescriptID='3456' AND Refills > 0;
 
+# (qPh6) Show all drugs in the database
+select BrandName as 'Brand Name', GenericName as 'Generic Name', 
+	CompanyName as 'Company Name', Price 
+from Drug
 
-# qPh6 delete a drug from the database, the delete will be rejected 
-# if it interacts with some drug
-# TODO
+# (qPh7) Delete a drug from the database, the delete will be rejected 
+# BrandName and GenericName have variables in tables_controller, 
+# Static variables below as placeholders
 delete 
 	from Drug
 	where BrandName = 'Advil' and
@@ -50,82 +54,56 @@ delete
 
 ########User: Patients
 
-# qPa1----update personal information about him/herself
-# anny-checked
-#	?????? so many possible attributes to update?
-#	 sample query: patient carecard num = 1234567890
-#	 store all attrs of the patient in some variables
-#	 in our query, either set the attribute to a new value that the user entered, or the old value that we stored in variables
-#jon-checked: entered, need to add VARIABLES for firstname, lastname, age, weight, height, address, phonenumber, CareCardNum, ADD SECOND QUERY
+# (qPa1a) Update patient Address
+# Address and CareCardNum have variables in tables_controller
+# Static variables below as placeholders
+update Patient 
+	set Address = 'static'
+    where CareCardNum LIKE '1234567890';
 
-update Patient
-set FirstName = 'blabla',
-    LastName = 'blabla',
-    Age = 'blabla',
-    Weight = 'blabla',
-    Height = 'blabla',
-    Address = 'blabla',
-    PhoneNumber = 'blabla'
-where P.CareCardNum LIKE '1234567890'; 
+# (qPa1b) Update patient phone number
+# PhoneNumber and CareCardNum have variables in tables_controller
+# Static variables below as placeholders
+update Patient 
+	set PhoneNumber = '0987654321' 
+    where CareCardNum LIKE '1234567890';
 
-select*
-from Patient P 
-where P.CareCardNum LIKE '1234567890'
-
-
-#----can input an address and a radius and see a list of doctors offices within the indicated radius of the indicated address
-	# this is gonna be complicated omg
-#----select doctor attributes from doctor tables and filter by attributes
-	# what does this even mean 
-
-# qPa2------select pharmacies that are currently open
-#select pharmacies that are currently open
-#chris--in one query or 2?
-#jon -checked: entered, working, reformat
-select *
-from Pharmacy P
+# (qPa2) Select pharmacies that are currently open (weekday)
+select Address, Name, PhoneNumber, 
+	TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p') as 'Weekday Opening', 
+	TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', 
+	TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', 
+	TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' 
+from Pharmacy P 
 where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing;
 
-
-# qPa3------select pharmacies that are currently open
-# based on the day of the week, use one or the other query 
-#select pharmacies that are currently open
-#chris
-#jon -checked: entered, working, reformat
-select *
-from Pharmacy P
+# (qPa3) Select pharmacies that are currently open (weekend)
+select Address, Name, PhoneNumber, 
+	TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', 
+	TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', 
+	TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', 
+	TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' 
+from Pharmacy P 
 where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing;
-
 
 #given a date/time, view pharmacies that are open at that date/time
 	# implemented above
 
-#can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
-	# too hard man, now we gotta use google service to translate addresses into coordinates and calculate distances, eff this
-#request permission to add a doctor to their personal list of doctors
-	# nope, we dont store personal list of doctors
 
-#can select a personal doctor by name and last name and view a list of time blocks when the doctor is available
-	# i dont think this is possible to implement 
-
-# qPa4
-#jon -checked: entered, add variables
-
-#can create an appointment with any doctor at any given time, as long
-# anny-checked
-# 	 as the doctor is available during that time and the appointment is within business hours
-# 	first, we gotta create a timeblock tuple 
-# 	second, recall MakesAppointmentWith(TimeMade, DateMade,LicenseNum,TimeBlockDate, StartTime, EndTime, CareCardNum)
+# (qPa4) Can create an appointment with any doctor
+# TimeBlock and MakesAppointmentWith attributes are variables in tables_controller
+# Static variables below as placeholders
 insert into TimeBlock
 values (
 		'2874-06-07',
 		'12:30:00',
 		'15:30:00'
-);
+		);
+
 insert into MakesAppointmentWith
 values (
-		curdate(),
 		curtime(),
+		curdate(),
 		'1232131241',
 		'2874-06-07',
 		'12:30:00',
@@ -133,10 +111,9 @@ values (
 		'1234567890'
 		);
 
-# qPa5 - can cancel an appointment they made, by looking at the list of self booked appointments
-#jon - checked: entered, add variables
-#can cancel an appointment they made, by looking at the list of self booked appointments
-# checked
+# (qPa5) Patients can cancel an appointment they made
+# Attributes are variables in tables_controller
+# Static variables below as placeholders
 delete from MakesAppointmentWith 
 where
 	CareCardNum = '1234567890' and
@@ -144,19 +121,20 @@ where
 	StartTime = '09:00:00';
 
 
-# ----can view upcoming appointments, on a certain date(optional) and during a certain time(optional)
-# 3 queries
-# 1) qPa6a - view upcoming appts
-#jon - checked: entered, add variables
-select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
-		CONCAT(D.FirstName, " ", D.LastName) as "Doctor",  
-	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
-from MakesAppointmentWith MakeApptW, Doctor D, Patient P
-where MakeApptW.LicenseNum = D.LicenseNum and
-		MakeApptW.CareCardNum = P.CareCardNum and
-		P.CareCardNum = '1234567890';
+# (qPa6a) View upcoming appts
+# CareCardNum is a variable in tables_controller
+# Static variable below as placeholders
+select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', 
+	TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', 
+	MakeApptW.TimeBlockDate as 'Date', 
+	CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', 
+	CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' 
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P 
+where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum 
+	and P.CareCardNum = '1234567890';
 
-# 2) qPa6b - view appts on a certain date(optional), sample date = '2015-04-03'
+
+# (qPa6b) View upcoming appointments by date
 select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 		CONCAT(D.FirstName, " ", D.LastName) as "Doctor",  
 	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
@@ -505,7 +483,7 @@ Where NOT EXISTS
             		I.BrandName = D.BrandName and
             		P.CareCardNum = Pa.CareCardNum));
 
-# qD18 - show max number of refills for each drug
+# qD18a - show max number of refills for each drug
 # TODO
 select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", MAX(P.Refills) as "MAX number of refills"
 from Prescription P, Drug Dr, Includes I
@@ -515,7 +493,7 @@ where P.PrescriptID = I.PrescriptID and
 group by Dr.BrandName, Dr.GenericName
 order by MAX(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
-#qD19 show all refils for all drugs (for demo purposes)
+#qD18b show all refils for all drugs (for demo purposes)
 # TODO
 select distinct I.BrandName, I.GenericName, P.Refills 
 from Includes I, Prescription P 
