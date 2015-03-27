@@ -98,7 +98,7 @@ class TablesController < ApplicationController
 	 def qPh6
 	 	@result = Table.connection.select_all("select BrandName as 'Brand Name', GenericName as 'Generic Name', CompanyName as 'Company Name', Price 
                                             from Drug")
-	 	@title = "List of drugs:"
+	 	@title = "List of drugs"
 	 	render "index"
 	 end
 
@@ -154,7 +154,7 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa2
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
-		@title = "Pharmacies open right now:"
+		@title = "Pharmacies open right now"
 		render "index"
 	 end
 
@@ -162,7 +162,7 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa3
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing")
-		@title = "Pharmacies open right now:"
+		@title = "Pharmacies open right now"
 		render "index"
 	 end
 
@@ -187,8 +187,8 @@ class TablesController < ApplicationController
 	        																   curdate(),
         																   '#{license}', 
         																   '#{date}', 
-        																   '#{sTime}', 
-        																   '#{eTime}', 
+        																   '#{startTime}', 
+        																   '#{endTime}', 
         																   '#{@userCCNum}')")
        	@title = "Appointment made! Details below about your upcoming appointments..."
       	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}'")
@@ -217,7 +217,7 @@ class TablesController < ApplicationController
 		# TESTED - WORKS
 	 def qPa6a
 	 	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}'")
-		@title = "Upcoming appointments:"
+		@title = "Upcoming appointments"
 		render "index"
 	 end
 
@@ -228,7 +228,7 @@ class TablesController < ApplicationController
 	 def qPa6b
 	 	date = params[:date]
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.TimeBlockDate = '#{date}'")
-		@title = "Your appointments on #{date}:"
+		@title = "Your appointments on #{date}"
 		render "index"
 	 end
 	
@@ -238,6 +238,7 @@ class TablesController < ApplicationController
 		# TESTED - WORKS
 	 def qPa6c
 	 	sTime = params[:sTime]
+	 	startTime = sTime["test(4i)"] + ":" + sTime["test(5i)"]
 	 	eTime = params[:eTime]
 	 	endTime = eTime["test(4i)"] + ":" + eTime["test(5i)"]
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime as 'Start Time', MakeApptW.EndTime as 'End Time', 
@@ -246,7 +247,7 @@ class TablesController < ApplicationController
 	 		from MakesAppointmentWith MakeApptW, Doctor D, Patient P 
 	 		where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and 
 	 		P.CareCardNum = '#{@userCCNum}' and MakeApptW.StartTime >=  '#{startTime}'  and MakeApptW.EndTime <=  '#{endTime}'")
-		@title = "Your appointments between #{startTime} and #{endTime}:"
+		@title = "Your appointments between #{startTime} and #{endTime}"
 
 		render "index"
 	 end
@@ -259,7 +260,7 @@ class TablesController < ApplicationController
 	 	# check that drug field is not empty
 	 	assert {!drug.empty?}
 	 	@result = Table.connection.select_all("select iBrandName as 'Brand Name', iGenericName as 'Generic Name' from InteractsWith where LCASE(dGenericName) like '%#{drug}%'")
-	 	@title = "Drugs that interact with #{drug}:"
+	 	@title = "Drugs that interact with #{drug}"
 		render "index"
 	 end
 
@@ -274,7 +275,7 @@ class TablesController < ApplicationController
 	 	# check that prescription is a non-negative number
 	 	assert {prescription.to_f >= 0}
 	 	@result = Table.connection.select_all("select distinct IW.iBrandName as 'Brand name', IW.iGenericName as 'Generic name' from Prescription P, InteractsWith IW, Includes I, Drug D1, Drug D2 where P.PrescriptID LIKE '#{prescription}' and P.PrescriptID = I.PrescriptID and I.BrandName = D1.BrandName and I.GenericName = D1.GenericName and IW.dBrandName = D1.BrandName and IW.dGenericName = D1.GenericName and IW.iBrandName != D1.BrandName and IW.iGenericName != D1.GenericName")
-		@title = "Drugs that interact with drugs in prescription# #{prescription}:"
+		@title = "Drugs that interact with drugs in prescription# #{prescription}"
 		render "index"
 	 end
 
@@ -295,7 +296,7 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa10
 	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills > 0 order by Pr.date_prescribed desc")
-		@title = "Current prescriptions:"
+		@title = "Current prescriptions"
 		render "index"
 	 end
 
@@ -304,7 +305,7 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa11
 	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
-		@title = "Previous prescriptions:"
+		@title = "Previous prescriptions"
 		render "index"
 	 end
 
@@ -412,7 +413,7 @@ class TablesController < ApplicationController
 	 	Table.connection.execute("insert into Includes values ('#{prescription}', '#{bName}', '#{gName}')")
 	 	@result = Table.connection.select_all("SELECT LicenseNum as 'License Number', PrescriptID as 'Prescription ID', Refills, Dosage                               | CareCardNum | ReadyForPickUp | date_prescribed
 	 	 FROM Prescription WHERE Prescription.PrescriptID = #{prescription}")
-	 	@title = "Prescription created! Details below:"
+	 	@title = "Prescription created! Details below"
 
 		render "index"
 	 end
@@ -422,7 +423,7 @@ class TablesController < ApplicationController
 	 def qD3
 	 	@table = Table.new
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
-		@title = "Pharmacies open right now:"
+		@title = "Pharmacies open right now"
 		render "index"
 	 end
  	
@@ -431,7 +432,7 @@ class TablesController < ApplicationController
 	 def qD4
 	 	@table = Table.new
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing")
-		@title = "Pharmacies open right now:"
+		@title = "Pharmacies open right now"
 		render "index"
 	 end
 
@@ -461,7 +462,7 @@ class TablesController < ApplicationController
 														MakeApptW.CareCardNum = P.CareCardNum and
 														D.LicenseNum  = '#{@userlicense}' and
 														MakeApptW.TimeBlockDate = '#{date}'")
-	 	@title = "Appointments on #{date}:"
+	 	@title = "Appointments on #{date}"
 		render "index"
 	 end
 
@@ -482,7 +483,7 @@ class TablesController < ApplicationController
 														D.LicenseNum  = '#{@userlicense}' and
 														MakeApptW.StartTime >=  '#{sTime}'  and
 														MakeApptW.EndTime <=  '#{eTime}'")
-	 	@title = "Your appointments between #{startTime} and #{endTime}:"
+	 	@title = "Your appointments between #{startTime} and #{endTime}"
 		render "index"
 	 end
 
@@ -497,7 +498,7 @@ class TablesController < ApplicationController
 	 		Age, Weight, Height, Address, PhoneNumber as 'Phone Number'
 												from Patient
 												where CareCardNum = '#{ccNum}'")
-	 	@title = "Patient information:"
+	 	@title = "Patient information"
 		render "index"
 	 end
 
@@ -517,7 +518,7 @@ class TablesController < ApplicationController
 			# 							 		from Prescription Pr, Doctor D, Patient P 
 			# 							 		where Pr.LicenseNum = D.LicenseNum and
 			# 							 		P.CareCardNum = '#{ccNum}'")
-		@title = "Prescription Information:"
+		@title = "Prescription Information"
 		render "index"
 	 end
 
@@ -533,7 +534,7 @@ class TablesController < ApplicationController
 												where P.CareCardNum = '#{ccNum}' AND 
                         Pr.CareCardNum=P.CareCardNum 
                         AND I.PrescriptID=Pr.PrescriptID;")
-		@title = "Previous Drugs prescribed to patient# #{ccNum}:"
+		@title = "Previous Drugs prescribed to patient# #{ccNum}"
 		render "index"
 	 end
 
@@ -551,7 +552,7 @@ class TablesController < ApplicationController
 													Pr.PrescriptID = I.PrescriptID and
 													I.BrandName LIKE '#{brandName}' or
 													I.GenericName LIKE '#{genericName}'")
-		@title = "All prescriptions of #{brandName}/#{genericName} for patient# #{ccNum}:"
+		@title = "All prescriptions of #{brandName}/#{genericName} for patient# #{ccNum}"
 		render "index"
 	 end
 
@@ -585,7 +586,7 @@ class TablesController < ApplicationController
 													P.CareCardNum = '#{ccNum}' and
 													D.LicenseNum = '#{@userlicense}' and
 													TimeBlockDate < curdate()")
-	 	@title = "Your past appointments with patient# #{ccNum}:"
+	 	@title = "Your past appointments with patient# #{ccNum}"
 		render "index"
 	 end
 
@@ -605,7 +606,7 @@ class TablesController < ApplicationController
 													I.BrandName = Dr.BrandName and
 													I.GenericName = Dr.GenericName and
 													D.LicenseNum LIKE '#{@userlicense}'")
-	 	@title = "Your previously prescribed prescriptions:"
+	 	@title = "Your previously prescribed prescriptions"
 		render "index"
 	 end
 
@@ -642,7 +643,7 @@ class TablesController < ApplicationController
 											            WHERE P.PrescriptID = I.prescriptID and 
 											            		I.BrandName = D.BrandName and
 											            		P.CareCardNum = Pa.CareCardNum))")
-	 	@title = "Patients who have been prescribed a drug from #{cName}:"
+	 	@title = "Patients who have been prescribed a drug from #{cName}"
 		render "index"
 	 end
 
@@ -708,7 +709,7 @@ class TablesController < ApplicationController
     @result = Table.connection.select_all("select distinct I.BrandName as 'Brand Name', I.GenericName as 'Generic Name', P.Refills                           
                                             from Includes I, Prescription P                                                 
                                             where I.PrescriptID = P.PrescriptID ") 
-    @title = "Refill data for all drugs:"
+    @title = "Refill data for all drugs"
     render "index"
   end       
 
@@ -744,7 +745,7 @@ class TablesController < ApplicationController
     @result = Table.connection.select_all("Select Pa.CareCardNum as 'Care Card Number', CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name',
                       Address, PhoneNumber as 'Phone Number'
                       from Patient Pa")
-    @title = "Patient ##{ccNum} deleted! Displaying everyone else:"
+    @title = "Patient ##{ccNum} deleted! Displaying everyone else"
     render "index"
   end        
 
@@ -752,7 +753,7 @@ class TablesController < ApplicationController
     @result = Table.connection.select_all("Select Pa.CareCardNum as 'Care Card Number', CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name',
                       Address, PhoneNumber as 'Phone Number'
                       from Patient Pa")
-    @title = "All patients:" 
+    @title = "All patients" 
     render "index"
   end
 
