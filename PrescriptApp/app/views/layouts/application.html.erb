@@ -12,14 +12,14 @@
 
 
 <% if user_signed_in? %>
-<div class='col-md-8'>
+<div class='col-md-8 custom-font'>
 Signed in as: 
       <%= current_user.user_type %>
 |
 Email:
       <%= current_user.email %>
 </div>
-<div class='col-md-4' style='text-align: right'>
+<div class='col-md-4 custom-font' style='text-align: right'>
   <div class='btn btn-default'>
      <%= link_to "Home", root_path %>
       </div>
@@ -35,7 +35,7 @@ Email:
 
 </div>
 <% else %>
-<div class='col-md-4'>
+<div class='col-md-4 custom-font'>
   <div class='btn btn-default'>
     <%= link_to "Sign up", new_user_registration_path %>
   </div>
@@ -46,7 +46,7 @@ Email:
 
 <% end %>
 
-<div class='text-center'>
+<div class='text-center custom-font'>
   <% if notice %>
     <p class="alert alert-success"><%= notice %></p>
   <% end %>
@@ -57,5 +57,8 @@ Email:
 
 <%= yield %>
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
 </html>

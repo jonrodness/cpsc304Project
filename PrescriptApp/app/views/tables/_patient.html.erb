@@ -1,134 +1,263 @@
-<div class = "panel container">
-<div class='text-center'>
+<div class = "panel container custom-font">
+  <div class='text-center'>
+  <h2>Patient Options</h2>
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                <h3>Update Address</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse in">
+            <div class="panel-body">
+                  <%= form_tag(qPa1a_path, :method=>'post') do %>
+                    <%= label_tag("pAddress", "Address:") %> 
+                    <%= text_field_tag "pAddress" %> </br>
+                   <p>
+                    <%= submit_tag 'Submit' %>
+                   </p>
+                  <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                <h3>Update Phone Number</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+                <%= form_tag(qPa1b_path, :method=>'post') do %>
+                <%= label_tag("pPhoneNum", "Phone Number:") %> 
+                <%= text_field_tag "pPhoneNum" %> </br>
+                 <p>
+                  <%= submit_tag 'Submit' %>
+                 </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                <h3>Find pharmacies that are currently open (weekday)</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+              <%= button_to "Go!", qPa2_path, :class => "button", :method => :get %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                <h3>Find pharmacies that are currently open (Weekend)</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse4" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+                <%= button_to "Go!", qPa3_path, :class => "button", :method => :get %><br>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
+                <h3>Make an appointment</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse5" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+                <%= form_tag(qPa4_path, :method=>'post') do %>
+                <%= label_tag("date", "Date:") %> 
+                <%= date_field_tag "date" %> </br>
+                <%= label_tag("sTime", "Start Time:") %> 
+                <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
+                <%= label_tag("eTime", "End Time:") %> 
+                <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
+                <%= label_tag("license", "Doctor License:") %> 
+                <%= text_field_tag "license" %>
+               <p>
+                <%= submit_tag 'Submit' %>
+               </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">
+                <h3>Cancel an appointment</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse6" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+              <%= form_tag(qPa5_path, :method=>'post') do %>
+                <%= label_tag("date", "Date:") %> 
+                <%= date_field_tag "date" %> </br>
+                <%= label_tag("sTime", "Start Time:") %> 
+                <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
+               <p>
+                <%= submit_tag 'Submit' %>
+               </p>
+              <% end %>
+            </div>
+          </div>
+        </div> <!-- -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse7">
+                <h3>View all upcoming appointments</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse7" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+              <%= button_to "Go!", qPa6a_path, :class => "button", :method => :get %>
+            </div>
+          </div>
+      </div> 
+      <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse8">
+               <h3>View upcoming appointments by date</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse8" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+                <%= form_tag(qPa6b_path, :method=>'post') do %>
+                <%= label_tag("date", "Date:") %> 
+                <%= date_field_tag "date" %> </br>
+               <p>
+                <%= submit_tag 'Submit' %>
+               </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse9">
+                <h3>View upcoming appointments by time</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse9" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+              <%= form_tag(qPa6c_path, :method=>'post') do %>
+              <%= label_tag("sTime", "Start Time:") %> 
+              <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
+              <%= label_tag("eTime", "End Time:") %> 
+              <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
+             <p>
+              <%= submit_tag 'Submit' %>
+             </p>
+            <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse10">
+                 <h3>Check drug interactions</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse10" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+                <%= form_tag(qPa7_path, :method=>'post') do %>
+                  <%= label_tag("drug", "Drug generic name:") %> 
+                  <%= text_field_tag "drug" %> </br>
+                 <p>
+                  <%= submit_tag 'Submit' %>
+                 </p>
+                <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse11">
+               <h3>Check Interactions for a prescription</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse11" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+                <%= form_tag(qPa8_path, :method=>'post') do %>
+                <%= label_tag("prescription", "Prescription number:") %> 
+                <%= text_field_tag "prescription" %> </br>
+               <p>
+                <%= submit_tag 'Submit' %>
+               </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse12">
+                <h3>View Prescription Status</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse12" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+                <%= button_to "Go!", qPa9_path, :class => "button", :method => :get %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse13">
+                <h3>Generate report: Current Prescriptions</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse13" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+                <%= button_to "Go!", qPa10_path, :class => "button", :method => :get %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse14">
+                <h3>Generate Report: Previous Prescriptions</h3>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse14" class="panel-collapse collapse">
+            <div class="panel-body btn-default">
+              <%= button_to "Go!", qPa11_path, :class => "button", :method => :get %>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<h2 class='text-center'>Patient Options</h2>
 
-  <div class='row-line'></div>
-
-
-<div class='grey-background'>
-<%= form_tag(qPa1a_path, :method=>'post') do %>
- <h3>Update address</h3>
-  <%= label_tag("pAddress", "Address:") %> 
-  <%= text_field_tag "pAddress" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-</div>
-<br>
-
-<%= form_tag(qPa1b_path, :method=>'post') do %>
- <h3>Update phone number</h3>
-  <%= label_tag("pPhoneNum", "Phone Number:") %> 
-  <%= text_field_tag "pPhoneNum" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-<br>
-
-<h3>Find pharmacies that are currently open (weekday)</h3>
-<%= button_to "Go!", qPa2_path, :class => "button", :method => :get %>
-<br>
-
-<div class='grey-background'>
-<h3>Find pharmacies that are currently open (Weekend)</h3>
-<%= button_to "Go!", qPa3_path, :class => "button", :method => :get %>
-<br>
-</div>
-
-<%= form_tag(qPa4_path, :method=>'post') do %>
- <h3>Make an appointment</h3>
-  <%= label_tag("date", "Date:") %> 
-  <%= date_field_tag "date" %> </br>
-  <%= label_tag("sTime", "Start Time:") %> 
-  <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
-  <%= label_tag("eTime", "End Time:") %> 
-  <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
-  <%= label_tag("license", "Doctor License:") %> 
-  <%= text_field_tag "license" %>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-
-<div class='grey-background'>
-<%= form_tag(qPa5_path, :method=>'post') do %>
- <h3>Cancel an appointment</h3>
-  <%= label_tag("date", "Date:") %> 
-  <%= date_field_tag "date" %> </br>
-  <%= label_tag("sTime", "Start Time:") %> 
-  <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-</div>
-
-<h3>View all upcoming appointments</h3>
-<%= button_to "Go!", qPa6a_path, :class => "button", :method => :get %>
-<br>
-
-<div class='grey-background'>
-<%= form_tag(qPa6b_path, :method=>'post') do %>
- <h3>View upcoming appointments by date</h3>
-  <%= label_tag("date", "Date:") %> 
-  <%= date_field_tag "date" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-</div>
-
-<%= form_tag(qPa6c_path, :method=>'post') do %>
- <h3>View upcoming appointments by time</h3>
-  <%= label_tag("sTime", "Start Time:") %> 
-  <%= time_select "sTime", "test", {minute_step: 15, ampm: true} %> </br>
-  <%= label_tag("eTime", "End Time:") %> 
-  <%= time_select "eTime", "test", {minute_step: 15, ampm: true} %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-
-<div class='grey-background'>
-<%= form_tag(qPa7_path, :method=>'post') do %>
- <h3>Check drug interactions</h3>
-  <%= label_tag("drug", "Drug generic name:") %> 
-  <%= text_field_tag "drug" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-</div>
-
-<%= form_tag(qPa8_path, :method=>'post') do %>
- <h3>Check Interactions for this prescription</h3>
-  <%= label_tag("prescription", "Prescription number:") %> 
-  <%= text_field_tag "prescription" %> </br>
- <p>
-  <%= submit_tag 'Submit' %>
- </p>
-<% end %>
-
-<div class='grey-background'>
-<h3>View Prescription Status</h3>
-<%= button_to "Go!", qPa9_path, :class => "button", :method => :get %>
-<br>
-</div>
-
-<h3>Generate report: current prescriptions</h3>
-<%= button_to "Go!", qPa10_path, :class => "button", :method => :get %>
-<br>
-
-<div class='grey-background'>
-<h3>Generate Report: Previous Prescriptions</h3>
-<%= button_to "Go!", qPa11_path, :class => "button", :method => :get %>
-<br>
-</div>
-
-</div>
-
-
+  </div>
 </div>

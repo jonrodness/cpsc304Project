@@ -530,7 +530,9 @@ class TablesController < ApplicationController
 	 	assert {ccNum.to_f >= 0}
 	 	@result = Table.connection.select_all("select I.GenericName as 'Generic Name', I.BrandName as 'Brand Name'
 												from Prescription Pr, Patient P, Includes I
-												where P.CareCardNum = '#{ccNum}' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;")
+												where P.CareCardNum = '#{ccNum}' AND 
+                        Pr.CareCardNum=P.CareCardNum 
+                        AND I.PrescriptID=Pr.PrescriptID;")
 		@title = "Previous Drugs prescribed to patient# #{ccNum}:"
 		render "index"
 	 end

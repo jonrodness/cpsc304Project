@@ -1,11 +1,137 @@
-<div class='text-center'>
+<div class='text-center custom-font'>
   <br>
 <div class = "panel container">
 
 <h2>Pharmacist Options</h2>
 
-  <div class='row-line'></div>
-
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+          <h3>Update prescription status</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse1" class="panel-collapse collapse in">
+      <div class="panel-body">
+        <%= form_tag(qPh2_path, :method=>'post') do %>
+        <%= label_tag("prescription", "Prescription number:") %> 
+        <%= text_field_tag "prescription" %> </br>
+       <p>
+        <%= submit_tag 'Submit' %>
+       </p>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+          <h3>View past prescriptions</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse2" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= form_tag(qPh3_path, :method=>'post') do %>
+        <%= label_tag("ccNum", "Care card number:") %> 
+        <%= text_field_tag "ccNum" %> </br>
+       <p>
+        <%= submit_tag 'Submit' %>
+       </p>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+          <h3>View prescriptions prescribed by doctor</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse3" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= button_to "Go!", qPh1_path, :class => "button", :method => :get %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+          <h3>Print out a list of prescriptions filled today</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse4" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= button_to "Go!", qPh4_path, :class => "button", :method => :get %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
+          <h3>Reduce the refill number of a patient’s prescription</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse5" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= form_tag(qPh5_path, :method=>'post') do %>
+        <%= label_tag("prescription", "Prescription number:") %> 
+        <%= text_field_tag "prescription" %> </br>
+       <p>
+        <%= submit_tag 'Submit' %>
+       </p>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">
+          <h3>View all drugs in the database</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse6" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= button_to "Go!", qPh6_path, :class => "button", :method => :get %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse7">
+          <h3>Delete a drug from the database</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse7" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= form_tag(qPh7_path, :method=>'post') do %>
+       
+        <%= label_tag("brandName", "Brand name:") %> 
+        <%= text_field_tag "brandName" %> </br>
+        <%= label_tag("genericName", "Generic name:") %> 
+        <%= text_field_tag "genericName" %> </br>
+       <p>
+        <%= submit_tag 'Submit' %>
+       </p>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div> 
+<!-- 
 <div class='grey-background'>
   <div class="form-inline">
     <%= form_tag(qPh2_path, :method=>'post') do %>
@@ -69,6 +195,6 @@
        </p>
       <% end %>
     </div>
-  </div>
+  </div> -->
 
 </div>
