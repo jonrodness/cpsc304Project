@@ -52,6 +52,10 @@ delete
 	where BrandName = 'Advil' and
 		GenericName = 'Ibuprofen';
 
+#result
+select * 
+from Drug;
+
 ########User: Patients
 
 # (qPa1a) Update patient Address
@@ -60,6 +64,12 @@ delete
 update Patient 
 	set Address = 'static'
     where CareCardNum LIKE '1234567890';
+#result
+SELECT CareCardNum as 'Care Card Number', FirstName as 'First Name', 
+	LastName as 'Last Name', Age, Weight, Height, Address, 
+	PhoneNumber as 'Phone Number' 
+FROM Patient 
+where CareCardNum LIKE '1234567890';
 
 # (qPa1b) Update patient phone number
 # PhoneNumber and CareCardNum have variables in tables_controller
@@ -67,6 +77,12 @@ update Patient
 update Patient 
 	set PhoneNumber = '0987654321' 
     where CareCardNum LIKE '1234567890';
+#result
+SELECT CareCardNum as 'Care Card Number', FirstName as 'First Name', 
+	LastName as 'Last Name', Age, Weight, Height, Address, 
+	PhoneNumber as 'Phone Number' 
+FROM Patient 
+where CareCardNum LIKE '1234567890';
 
 # (qPa2) Select pharmacies that are currently open (weekday)
 select Address, Name, PhoneNumber, 
@@ -85,10 +101,6 @@ select Address, Name, PhoneNumber,
 	TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' 
 from Pharmacy P 
 where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing;
-
-#given a date/time, view pharmacies that are open at that date/time
-	# implemented above
-
 
 # (qPa4) Can create an appointment with any doctor
 # TimeBlock and MakesAppointmentWith attributes are variables in tables_controller
@@ -110,6 +122,15 @@ values (
 		'15:30:00',
 		'1234567890'
 		);
+#result
+select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', 
+	TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', 
+	MakeApptW.TimeBlockDate as 'Date', 
+	CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', 
+	CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' 
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P 
+where MakeApptW.LicenseNum = D.LicenseNum 
+	and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '1234567890';
 
 # (qPa5) Patients can cancel an appointment they made
 # Attributes are variables in tables_controller
@@ -119,11 +140,7 @@ where
 	CareCardNum = '1234567890' and
 	TimeBlockDate = '2015-04-03' and
 	StartTime = '09:00:00';
-
-
-# (qPa6a) View upcoming appts
-# CareCardNum is a variable in tables_controller
-# Static variable below as placeholders
+#result
 select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', 
 	TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', 
 	MakeApptW.TimeBlockDate as 'Date', 
@@ -133,107 +150,96 @@ from MakesAppointmentWith MakeApptW, Doctor D, Patient P
 where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum 
 	and P.CareCardNum = '1234567890';
 
+# (qPa6a) View upcoming appts
+# CareCardNum is a variable in tables_controller
+# Static variable below as placeholder
+select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', 
+	TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', 
+	MakeApptW.TimeBlockDate as 'Date', 
+	CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', 
+	CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' 
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P 
+where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum 
+	and P.CareCardNum = '1234567890';
 
 # (qPa6b) View upcoming appointments by date
-select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
-		CONCAT(D.FirstName, " ", D.LastName) as "Doctor",  
-	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
-from MakesAppointmentWith MakeApptW, Doctor D, Patient P
-where MakeApptW.LicenseNum = D.LicenseNum and
-		MakeApptW.CareCardNum = P.CareCardNum and
-		P.CareCardNum = '1234567890' and
-		MakeApptW.TimeBlockDate = '2015-04-03';
-# 3) qPa6c - view appts during a certain time(optional)
-select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
-		CONCAT(D.FirstName, " ", D.LastName) as "Doctor",  
-	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
-from MakesAppointmentWith MakeApptW, Doctor D, Patient P
-where MakeApptW.LicenseNum = D.LicenseNum and
-		MakeApptW.CareCardNum = P.CareCardNum and
-		P.CareCardNum = '1234567890' and
-		MakeApptW.StartTime >=  '09:00:00'  and
-		MakeApptW.StartTime <=  '11:00:00';
+# CareCardNum, TimeBlockDate have variables in tables_controller
+# Static variable below as placeholders
+select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, 
+	CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', 	
+	CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' 
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P 
+where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum 
+	and P.CareCardNum = '1234567890' and MakeApptW.TimeBlockDate = '2015-04-03';
 
-# qPa7 - can (quickly)check if he/she took a certain drug before
-#----can view a list of drugs that interact with a specific drug
-# chris-checked
-# example query: select the generic name of all drugs that interact with Ibuprofen
-# jon - checked: entered,  add variables
-select dGenericName
-from InteractsWith
-where iGenericName like '%Ibuprofen%'
+# (qPa6c) View appts during a certain time(optional)
+# CareCardNum, StartTime, EndTime have variables in tables_controller
+# Static variable below as placeholders
+select MakeApptW.StartTime as 'Start Time', MakeApptW.EndTime as 'End Time', 
+	MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', 
+	CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' 
+from MakesAppointmentWith MakeApptW, Doctor D, Patient P 
+where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and 
+	P.CareCardNum = '1234567890' and MakeApptW.StartTime >=  '09:00:00'  
+	and MakeApptW.EndTime <=  '11:00:00';
+
+# (qPa7) Check Drug Interactions
+# dGenericName, iGenericName, dBrandName and dGenericName have variables 
+#in tables_controller
+# Static variables below as placeholders
+select iBrandName as 'Brand Name', iGenericName as 'Generic Name' 
+from InteractsWith 
+where LCASE(dGenericName) like '%ibuprofen%'
 UNION
-select iGenericName
-from InteractsWith
-where dGenericName like '%Ibuprofen%';
+select dBrandName as 'Brand Name', dGenericName as 'Generic Name' 
+from InteractsWith 
+where LCASE(iGenericName) like '%ibuprofen%';
 
-# qPa8 - can input a prescription ID and view a list of drugs that interact with this prescription
-	/*
-	# example: find all drugs that interact with the drug prescribed in prescription 99
-	select
-	from Prescription p, InteractsWith iw
-	where p.
-	*/ -- ^Don't think this query is possible given our schema -Alfred
-	# jon - checked: entered, add variables
-#can input a prescription ID and view a list of drugs that interact with this prescription
-#checked and doneeee
-select distinct IW.iBrandName as "Brand name" , IW.iGenericName as "Generic name"
-from Prescription P, InteractsWith IW, Includes I, Drug D1, Drug D2
-where 	P.PrescriptID LIKE '0001' and
-		P.PrescriptID = I.PrescriptID and
-		I.BrandName = D1.BrandName and
-		I.GenericName = D1.GenericName and
-
-		IW.dBrandName = D1.BrandName and
-		IW.dGenericName = D1.GenericName and
-
-		IW.iBrandName != D1.BrandName and
-		IW.iGenericName != D1.GenericName;
+# (qPa8) Check Interactions for this prescriptionID
+# PrescriptID has variable in tables_controller
+# Static variable below as placeholder
+select distinct IW.iBrandName as 'Brand name', IW.iGenericName as 'Generic name' 
+from Prescription P, InteractsWith IW, Includes I, Drug D1, Drug D2 
+where P.PrescriptID LIKE '0001' and P.PrescriptID = I.PrescriptID 
+	and I.BrandName = D1.BrandName and I.GenericName = D1.GenericName 
+	and IW.dBrandName = D1.BrandName and IW.dGenericName = D1.GenericName 
+	and IW.iBrandName != D1.BrandName and IW.iGenericName != D1.GenericName;
 
 
-# qPa9 - can view status of prescription pick up (ready or not for pickup)
-#jon: checked: - CHANGE TO FIRST QUERY
-#----can view all prescriptions that are ready for pickup
-#checked
+
+# (qPa9) View Prescription Status (ready or not for pickup)
+# CareCardNum is a variable in tables_controller
+# Static variable below as placeholder
 select Pr.PrescriptID as "Prescription ID" , O.PharmacyAddress
 from Prescription Pr, Patient P, OrderedFrom O
 where Pr.ReadyForPickup=1 and 
 	O.PrescriptID = Pr.PrescriptID and 
 	P.CareCardNum LIKE '1234567890';
--- select *
--- from Prescription
--- where ReadyForPickup=1;
 
 
-# qPa10----Generate a report about what prescriptions a patient is currently using, 
-# 	when they were prescribed, and which doctor prescribed them, as well as which pharmacies have them in stock currently
-# 	the last part is impossible, we dont have that kind of info
-# 	and we cant differentiate between prescriptions patient took vs taking now
-# anny:checked
-# 	generate a report about prescriptions for a patient, when they were prescribed, which doctor prescribed them
-# 	the most recent on the top	
-# 	sample patient license num: '1234567890'
-# jon: checked: entered, add variables
 
-select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
-        CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
-        Pr.dosage as "Drug dosage",  Pr.refills as "Refills"
-from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr
-where 	P.CareCardNum LIKE '1234567890' and
-		P.CareCardNum = Pr.CareCardNum and 
-		Pr.LicenseNum = D.LicenseNum and 
-		I.PrescriptID = Pr.PrescriptID and
-		I.BrandName = Dr.BrandName and
-		I.GenericName = Dr.GenericName and
-		Pr.refills > 0
-
+# (qPa10) Generate a report about what prescriptions a patient is currently using, 
+# 	when they were prescribed, and which doctor prescribed them
+# CareCardNum is a variable in tables_controller
+# Static variable below as placeholder
+select distinct Pr.PrescriptID as 'Prescription ID', 
+	(Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', 
+	D.LastName) as 'Prescribed by', 
+	CONCAT (Dr.BrandName, ' ', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage', 
+	Pr.refills as 'Refills' 
+from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr 
+where P.CareCardNum LIKE '1234567890' and 
+	P.CareCardNum = Pr.CareCardNum and 
+	Pr.LicenseNum = D.LicenseNum 
+	and I.PrescriptID = Pr.PrescriptID 
+	and I.BrandName = Dr.BrandName 
+	and I.GenericName = Dr.GenericName 
+	and Pr.refills > 0 
 order by Pr.date_prescribed desc;
 
-        
-
-
-# qPa11--- second analogous report, but for previous prescriptions (not current)
-# jon: checked: entered, add variables
+# (qPa11) second analogous report, but for previous prescriptions (not current)
+# CareCardNum is a variable in tables_controller
+# Static variable below as placeholder
 select distinct Pr.PrescriptID as "Prescription ID", (Pr.date_prescribed) as "Date prescribed", 
 		CONCAT(D.FirstName, " ", D.LastName) as "Prescribed by", CONCAT (Dr.BrandName, " ", Dr.GenericName) as Drug,
 		Pr.dosage as "Drug dosage",  Pr.refills as "Refills"
@@ -250,27 +256,32 @@ order by Pr.date_prescribed desc;
 
 ########User: Doctors
 
-# qD1 - can update personal information about him/herself
-# jon: checked: entered, add variables, ADD SECOND QUERY?
-#-----can update personal information about him/herself
-#checked
+# (qD1a) Doctor an update their address
+update Doctor 
+set Address = 'staticAddress'
+where LicenseNum = '1232131241';
 
+# (qD1b) Doctor an update their phone number
+update Doctor 
+set PhoneNumber = '7789877680'
+where LicenseNum = '1232131241';
+#result
+select LicenseNum as 'License Number', 
+	CONCAT(FirstName, ' ', LastName) as 'Doctor Name', Address, 
+	PhoneNumber as 'Phone Number', Type 
+from Doctor 
+where Doctor.LicenseNum='1232131241';
 
-update Doctor
-set
-	FirstName = 'bla',
-	LastName = 'bla',
-	Address = 'bla',
-	PhoneNumber = 7789877680,
-	Type = "Super cool doctor type"
-where
-	LicenseNum = '1232131241';
-
-select *
-from Doctor
-where
-	LicenseNum = '1232131241'	;
-
+# (qd1c) Update patient height
+update Patient 
+set Height = '172'
+where CareCardNum LIKE '1234567890';
+#result
+select CareCardNum as 'Care Card Number', FirstName as 'First Name', 
+	LastName as 'Last Name', Age, Weight, Height, Address, 
+	PhoneNumber as 'Phone Number' 
+from Patient
+where CareCardNum = '1234567890';
 
 # qD2 can prescribe a drug
 #chris--need to put variable names laters
