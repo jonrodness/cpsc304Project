@@ -1,13 +1,13 @@
 <br>
 
-<div class = "panel container">
+<div class = "panel container custom-font-table">
 	<h1 class='text-center'>
 	<%= @title %> 
 	</h1>
 	<div class='row-line'></div>
 
 	<div class="table-padding">
-		<table class='table table-responsive'>
+		<table class='table table-responsive table-hover'>
 			<thead class='table'>
 				<tr>
 				<% @result.columns.each do |title| %>
@@ -16,7 +16,7 @@
 				</tr>
 			</thead>
 
-			<tbody>
+			<tbody class='table'>
 				<% @result.rows.each do |row| %>
 				<tr>
 				<% row.each do |value| %>

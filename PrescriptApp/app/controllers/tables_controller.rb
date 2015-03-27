@@ -4,19 +4,22 @@ class TablesController < ApplicationController
 	def index
 		#@table = Table.new
 		#@table.save
-		if current_user.user_type == "Patient"
+		if current_user.user_type == "Patient" && !@userCCNum.empty? 
 			@result = Table.connection.select_all("SELECT CareCardNum as 'Care Card Number', FirstName as 'First Name', LastName as 'Last Name', Age, Weight, Height, Address, PhoneNumber as 'Phone Number' FROM Patient WHERE Patient.CareCardNum=#{current_user.care_card_num}")
 			@title = "Your Personal Statistics"
-		elsif current_user.user_type == "Doctor"
-			@result = Table.connection.select_all("select LicenseNum as 'License Number', CONCAT(FirstName, ' ', LastName) as 'Doctor Name', Address, PhoneNumber as 'Phone Number', Type from Doctor where LicenseNum='#{current_user.license_num}'")
+		elsif current_user.user_type == "Doctor" && !@userlicense.empty? 
+			@result = Table.connection.select_all("select LicenseNum as 'License Number', CONCAT(FirstName, ' ', LastName) as 'Doctor Name', Address, PhoneNumber as 'Phone Number', Type from Doctor where Doctor.LicenseNum=#{current_user.license_num}")
 			@title = "Your Information"
-		elsif current_user.user_type == "Pharmacist"
+		elsif current_user.user_type == "Pharmacist" && !@userPharmAddr.empty? 
 			@result = Table.connection.select_all("select Address, Name, PhoneNumber as 'Phone Number', 
 				TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p') as 'Weekday Open', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p') as 'Weekday Close',
 				TIME_FORMAT(WeekendHoursOpening, '%h:%i%p')  as 'Weekend Open', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Close'
 				 from Pharmacy where Address like '#{current_user.pharmacy_address}'")
 			@title = "Your Pharmacy Information"
-		end
+		else
+			@title = "List of drugs"
+			@result = Table.connection.select_all("select * from Drug")
+	end
 				
 		#@license = current_user.license_num
 
@@ -527,7 +530,9 @@ class TablesController < ApplicationController
 	 	assert {ccNum.to_f >= 0}
 	 	@result = Table.connection.select_all("select I.GenericName as 'Generic Name', I.BrandName as 'Brand Name'
 												from Prescription Pr, Patient P, Includes I
-												where P.CareCardNum = '#{ccNum}' AND Pr.CareCardNum=P.CareCardNum AND I.PrescriptID=Pr.PrescriptID;")
+												where P.CareCardNum = '#{ccNum}' AND 
+                        Pr.CareCardNum=P.CareCardNum 
+                        AND I.PrescriptID=Pr.PrescriptID;")
 		@title = "Previous Drugs prescribed to patient# #{ccNum}:"
 		render "index"
 	 end
