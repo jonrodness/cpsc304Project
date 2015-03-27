@@ -272,7 +272,7 @@ select LicenseNum as 'License Number',
 from Doctor 
 where Doctor.LicenseNum='1232131241';
 
-# (qd1c) Update patient height
+# (qD1c) Update patient height
 update Patient 
 set Height = '172'
 where CareCardNum LIKE '1234567890';
@@ -283,36 +283,49 @@ select CareCardNum as 'Care Card Number', FirstName as 'First Name',
 from Patient
 where CareCardNum = '1234567890';
 
-# qD2 can prescribe a drug
-#chris--need to put variable names laters
-# jon: checked: entered, add variables -LOOK AT AGAIN, MAY NEED TO CHANGE
-#-----can prescribe a drug
-#chris--checked
-#licensenum= 1232131241
-#carecardnum = 1234567890
-# Prescription (LicenseNum, PrescriptID,Refills,Dosage,CareCardNum,ReadyForPickUp,date_prescribed)
+# (qD1d) Update patient weight
+update Patient 
+set Weight = '179'
+where CareCardNum LIKE '1234567890';
+#result
+select CareCardNum as 'Care Card Number', FirstName as 'First Name', 
+	LastName as 'Last Name', Age, Weight, Height, Address, 
+	PhoneNumber as 'Phone Number' 
+from Patient
+where CareCardNum = '1234567890';
 
+# (qD2) can prescribe a drug
 insert into Prescription
 values ('1232131241','0000','10' ,'Erdday allday for 50 days' ,'1234567890' , 0, NOW());
 
+insert into Includes 
+values ('0000', 'Advil', 'Ibuprofen');
+#result
+SELECT LicenseNum as 'License Number', PrescriptID as 'Prescription ID', 
+	Refills, Dosage, CareCardNum as 'Care Card Number', 
+	ReadyForPickUp 'Pickup Status', date_prescribed as 'Date Prescribed'
+FROM Prescription 
+WHERE Prescription.PrescriptID = '0000';
 
-#same as the patient ^^^
-#can view a list of pharmacies that are open at the moment
-	# already done
+# (qD3) Select pharmacies that are currently open (weekday)
+select Address, Name, PhoneNumber, 
+	TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p') as 'Weekday Opening', 
+	TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', 
+	TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', 
+	TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' 
+from Pharmacy P 
+where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing;
 
+# (qD4) Select pharmacies that are currently open (weekend)
+select Address, Name, PhoneNumber, 
+	TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', 
+	TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', 
+	TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', 
+	TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' 
+from Pharmacy P 
+where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing;
 
-#can view a list of pharmacies that are open on a certain date and time(optional)
-# pD3 & pD4
-	# already done
-# jon -checked: entered, reformat
-
-#can input an address and a radius and as a result, can view a list of pharmacies that are open at the moment , within the indicated radius of the indicated address
-	# too hard
-
-#can view a list of all appointments for any picked date and any picked time
-# qD5
-# jon -checked: entered, add variables
-#----can view a list of all appointments for any picked date and any picked time
+# (qD5) View Appointments for picked date and time
 select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 		CONCAT(P.FirstName, " ", P.LastName) as "Patient",  
 	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
@@ -323,10 +336,7 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate; 
 
 
-# qD6
-# jon -checked: entered, add variables
-# 2) view appts on a certain date(optional), sample date = '2015-04-03'
-#---- 2) view appts on a certain date(optional), sample date = '2015-04-03'
+# (qD6) View Appointments on a certain date
 select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 		CONCAT(P.FirstName, " ", P.LastName) as "Patient",  
 	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
@@ -336,37 +346,34 @@ where MakeApptW.LicenseNum = D.LicenseNum and
 		D.LicenseNum  = '1232131241' and
 		MakeApptW.TimeBlockDate = '2015-04-03';
 
-# qD7
-# jon -checked: entered, add variables
-# 3) view appts during a certain time(optional)
-#---- 3) view appts during a certain time(optional)
-select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
-		CONCAT(P.FirstName, " ", P.LastName) as "Patient",  
-	CONCAT(MakeApptW.TimeMade, " ", MakeApptW.DateMade) as "Appointment made on "
+# (qD7) View Appointments during a certain time
+select MakeApptW.StartTime as 'Start Time', MakeApptW.EndTime as 'End Time', 
+	MakeApptW.TimeBlockDate as 'Date', 
+	CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
+	CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on '
 from MakesAppointmentWith MakeApptW, Doctor D, Patient P
 where MakeApptW.LicenseNum = D.LicenseNum and
 		MakeApptW.CareCardNum = P.CareCardNum and
 		D.LicenseNum  = '1232131241' and
 		MakeApptW.StartTime >=  '09:00:00'  and
-		MakeApptW.StartTime <=  '11:00:00';
+		MakeApptW.EndTime <=  '11:00:00';
 
-
-#can register a patient who requested his/her services
-	# nope
-
-# qD8 - can view personal information about a patient 
-# jon -checked: entered, add variables
-#-----can view personal information about a patient 
+# (qD8) View patient information
 # example query: view all data about patient number 999
-select *
+select CareCardNum as 'Care Card Number', FirstName as 'First Name', 
+	LastName as 'Last Name', Age, Weight, Height, Address, 
+	PhoneNumber as 'Phone Number'
 from Patient
-where CareCardNum=999;
-# doctor should be able to see a list of previous/current prescriptions for a patient
-#	the query is already implemented above
+where CareCardNum = '1234567890';
 
-# qD9 -can view a list of previous prescriptions for a certain patient
-# jon - checked: entered, ensure only for this doctor's patients
-#	same as Q1
+# (qD9) Can view a list of previous prescriptions for a certain patient
+select CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor Name', 
+	 		D.Type as 'Doctor Type', I.BrandName as 'Brand Name',  
+	 		P.Dosage, P.date_prescribed as 'Date Prescribed' 
+from Doctor D, Prescription P, Includes I  
+where P.LicenseNum='1232131241' and I.PrescriptID=P.PrescriptID 
+group by D.LastName
+
 select Pr.PrescriptID 
 from Prescription Pr, Doctor D, Patient P 
 where Pr.LicenseNum = D.LicenseNum and
