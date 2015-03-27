@@ -372,12 +372,8 @@ select CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor Name',
 	 		P.Dosage, P.date_prescribed as 'Date Prescribed' 
 from Doctor D, Prescription P, Includes I  
 where P.LicenseNum='1232131241' and I.PrescriptID=P.PrescriptID 
-group by D.LastName
+group by D.LastName;
 
-select Pr.PrescriptID 
-from Prescription Pr, Doctor D, Patient P 
-where Pr.LicenseNum = D.LicenseNum and
-P.CareCardNum = '#{ccNum}'
 
 
 # qD10 - can view a list of previous drugs taken by a certain patient
