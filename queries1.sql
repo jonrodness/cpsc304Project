@@ -253,7 +253,14 @@ where 	P.CareCardNum LIKE '1234567890' and
 		Pr.refills = 0
 order by Pr.date_prescribed desc;
 
-
+# qPa12 a user can order a prescription from a pharmacy
+# TODO 
+# WE NEED TO AUTOGENERATE 
+# A NUMBER EACH TIME FOR ORDER NUMBER
+# OMG HOW DO WE DO THIS
+# #OrderedFrom(PrescriptID,PharmacyAddress, OrderNo )
+insert into OrderedFrom
+	values ('0498', '885 Broadway W, Vancouver, BC V5Z 1J9', '03457436500');
 ########User: Doctors
 
 # (qD1a) Doctor an update their address
