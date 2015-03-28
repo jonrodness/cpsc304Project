@@ -468,29 +468,42 @@ Where NOT EXISTS
             		I.BrandName = D.BrandName and
             		P.CareCardNum = Pa.CareCardNum));
 
+# (qd17)
+INSERT INTO Patient
+VALUES ('#{ccNum}', '#{pFName}', '#{pLName}', '#{pAge}', '#{pWeight}', '#{pHeight}', 
+'#{pAddress}', '#{pPhoneNum}')
 
-
-# qD18a - show max number of refills for each drug
-# TODO
-select CONCAT(Dr.BrandName, " ", Dr.GenericName) as "Drug", MAX(P.Refills) as "MAX number of refills"
-from Prescription P, Drug Dr, Includes I
-where P.PrescriptID = I.PrescriptID and 
-		I.BrandName = Dr.BrandName and 
-		I.GenericName = Dr.GenericName
-group by Dr.BrandName, Dr.GenericName
+# (qD18) Show max number of refills for each drug
+select CONCAT(Dr.BrandName, '/', Dr.GenericName) as 'Drug', 
+	MAX(P.Refills) as 'Maximum refills'
+from Prescription P, Drug Dr, Includes I                                        
+where P.PrescriptID = I.PrescriptID and                                         
+	I.BrandName = Dr.BrandName and                                              
+	I.GenericName = Dr.GenericName                                              
+group by Dr.BrandName, Dr.GenericName                                           
 order by MAX(P.Refills) desc, Dr.BrandName, Dr.GenericName;
 
-#qD18b show all refils for all drugs (for demo purposes)
-# TODO
+# (qD19) Show all refils for all drugs
 select distinct I.BrandName, I.GenericName, P.Refills 
 from Includes I, Prescription P 
 where I.PrescriptID = P.PrescriptID;
 
 
 
-# qD19
-# select drugs that have the highest/lowest amounts of prescriptions
+# (qD20a) Select drugs that have the highest amount of prescriptions
+CREATE VIEW Temp as
+select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
+		from Drug D, Includes I, Prescription P
+		where P.PrescriptID=I.PrescriptID 
+		AND I.BrandName=D.BrandName 
+		AND I.GenericName=D.GenericName
+		group by D.BrandName, D.GenericName, D.CompanyName;
+select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
+from Temp
+Where Temp.count = (Select max(Temp.count)
+					From Temp);
 
+# (qD20b) Select drugs that have the lowest amount of prescriptions
 CREATE VIEW Temp as
 select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
 		from Drug D, Includes I, Prescription P
@@ -502,106 +515,16 @@ select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
 from Temp
 Where Temp.count = (Select min(Temp.count)
 					From Temp);
-select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
-from Temp
-Where Temp.count = (Select max(Temp.count)
-					From Temp);
 
-
-# qD20
-# deleting the patient will delete the appts and includes and prescription
+# (qD21) Delete a patient (will also delete the appointment 
+	#and includes and prescription
 delete from Patient 
 	where CareCardNum='1099282394';
+#Results
+Select Pa.CareCardNum as 'Care Card Number', 
+	CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name',
+	Address, PhoneNumber as 'Phone Number'
+from Patient Pa;
 
-
-----------------------------------------
-#RECENT CHANGES BY JON 
-----------------------------------------
-
-# removed update patient information (qPa1)
-# removed update doctor information (qD1)
-
-
- # Update patient address
-	     # TESTED - WORKS
-	 def qPa1a
-	 	pAddress = params[:pAddress]
-	 	Table.connection.execute("update Patient set Address = '#{pAddress}'
-                                where CareCardNum LIKE '#{@userCCNum}'")
-    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
-	 	render "index"
-	 end
-
-	 # Update patient phone number
-	     # TESTED - WORKS
-	 def qPa1b
-	 	pPhoneNum = params[:pPhoneNum]
-	 	Table.connection.execute("update Patient set PhoneNumber = '#{pPhoneNum}' 
-                                where CareCardNum LIKE '#{@userCCNum}'")
-    	@result = Table.connection.select_all("SELECT * FROM Patient where CareCardNum LIKE '#{@userCCNum}'")
-	 	render "index"
-	 end
-
-	 # Update doctor address
-	 	# TESTED - WORKS
-	 def qD1a
-	 	dAddress = params[:dAddress]
-	 	Table.connection.execute("update Doctor set Address = '#{dAddress}'")
-	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{@userlicense}'")
-		render "index"
-	 end
-
-	 # Update doctor phone number
-	 	# TESTED - WORKS
-	 def qD1b
-	 	dPhoneNum = params[:dPhoneNum]
-	 	Table.connection.execute("update Doctor set PhoneNumber = '#{dPhoneNum}'")
-	 	@result = Table.connection.select_all("select * from Doctor where LicenseNum = '#{@userlicense}'")
-		render "index"
-	 end
-
-	 # Update patient height
-	 	# TESTED - WORKS
-	 def qD1c
-	 	pHeight = params[:pHeight]
-	 	ccNum = params[:ccNum]
-	 	Table.connection.execute("update Patient set Height = '#{pHeight}'
-                                where CareCardNum LIKE '#{ccNum}'")
-    	@result = Table.connection.select_all("select *
-												from Patient
-												where CareCardNum = '#{ccNum}'")
-	 	render "index"
-	 end
-
-	 # Update patient weight
-	 	 	# TESTED - WORKS
-	 def qD1d
-	 	pWeight = params[:pWeight]
-	 	ccNum = params[:ccNum]
-	 	Table.connection.execute("update Patient set Weight = '#{pWeight}'
-                                where CareCardNum LIKE '#{ccNum}'")
-    	@result = Table.connection.select_all("select *
-												from Patient
-												where CareCardNum = '#{ccNum}'")
-	 	render "index"
-	 end
-
-	 	 # Add a new patient to the database
-	 	# TESTED - WORKS
-	 def qD17
-	 	pFName = params[:pFName]
-	 	pLName = params[:pLName]
-	 	pAge = params[:pAge]
-	 	pWeight = params[:pWeight]
-	 	pHeight = params[:pHeight]
-	 	pAddress = params[:pAddress]
-	 	pPhoneNum = params[:pPhoneNum]
-	 	ccNum = params[:ccNum]
-	 	Table.connection.execute("INSERT INTO Patient
-									VALUES ('#{ccNum}', '#{pFName}', '#{pLName}', '#{pAge}', '#{pWeight}', '#{pHeight}', 
-        							'#{pAddress}', '#{pPhoneNum}')")
-	 	@result = Table.connection.select_all("select *
-	 											from Patient P
-	 											where P.CareCardNum = #{ccNum}")
-	 	render "index"
-	 end
+Select * from MakesAppointmentWith;
+Select * from Includes;
