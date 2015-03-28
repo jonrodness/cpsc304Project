@@ -565,12 +565,13 @@ class TablesController < ApplicationController
 	 	iGenericName = params[:iGenericName]
 	 	# check that generic name is filled
 	 	assert {!iGenericName.empty?}
-	 	@result = Table.connection.select_all("select D.GenericName, D.BrandName
-												from InteractsWith I, Drug D
-												where (I.dGenericName = '#{iGenericName}' and
-														I.iGenericName = D.GenericName) or
-														(I.iGenericName = '#{iGenericName}' and
-														I.dGenericName = D.GenericName)")
+	 	@result = Table.connection.select_all("select iBrandName as 'Brand Name', iGenericName as 'Generic Name'               
+																						from InteractsWith                                                              
+																						where LCASE(dGenericName) like '%#{iGenericName}%'                                    
+																						UNION                 	                                                          
+																						select dBrandName as 'Brand Name', dGenericName as 'Generic Name'               
+																						from InteractsWith                                                              
+																						where LCASE(iGenericName) like '%#{iGenericName}%';   ")
 	 	@title = "Possible drug interactions for #{iGenericName}"
 		render "index"
 	 end
@@ -718,26 +719,43 @@ class TablesController < ApplicationController
 
   # select drug that was prescribed the most for each company 
   def qD20
-    @result =  Table.connection.select_all("select distinct T1.CompanyName as 'Company Name', CONCAT(T1.BrandName, ' ', T1.GenericName) as 'Drug Name', T1.Count as 'Drug Count'
-                                            from (
-                                                select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'Count'
-                                                from Drug D, Includes I, Prescription P                                     
-                                                where P.PrescriptID=I.PrescriptID                                           
-                                                  AND I.BrandName=D.BrandName                                                 
-                                                  AND I.GenericName=D.GenericName                                             
-                                                  group by D.BrandName, D.GenericName, D.CompanyName) as T1,
-                                                (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'Count'
-                                                from Drug D, Includes I, Prescription P                                     
-                                                where P.PrescriptID=I.PrescriptID                                           
-                                                  AND I.BrandName=D.BrandName                                                 
-                                                  AND I.GenericName=D.GenericName                                             
-                                                  group by D.BrandName, D.GenericName, D.CompanyName) as T2
-                                            where T1.Count >= T2.Count
-                                            group by T1.CompanyName")
+    @result =  Table.connection.select_all("select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
+																						from (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'count'
+																						from Drug D, Includes I, Prescription P
+																						where P.PrescriptID=I.PrescriptID
+																						AND I.BrandName=D.BrandName
+																						AND I.GenericName=D.GenericName
+																						group by D.BrandName, D.GenericName, D.CompanyName) as Temp
+																						Where Temp.count = (Select max(Tempb.count)
+																						From (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'count'
+																						from Drug D, Includes I, Prescription P
+																						where P.PrescriptID=I.PrescriptID
+																						AND I.BrandName=D.BrandName
+																						AND I.GenericName=D.GenericName
+																						group by D.BrandName, D.GenericName, D.CompanyName) as Tempb)")
 
     @title = "Drug prescribed the most for each company"
     render "index"
-  end                    
+  end  
+
+  def qD20a
+  	@result = Table.connection.select_all("select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
+																						from (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'count'
+																						from Drug D, Includes I, Prescription P
+																						where P.PrescriptID=I.PrescriptID
+																						AND I.BrandName=D.BrandName
+																						AND I.GenericName=D.GenericName
+																						group by D.BrandName, D.GenericName, D.CompanyName) as Temp
+																						Where Temp.count = (Select min(Tempb.count)
+																						From (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'count'
+																						from Drug D, Includes I, Prescription P
+																						where P.PrescriptID=I.PrescriptID
+																						AND I.BrandName=D.BrandName
+																						AND I.GenericName=D.GenericName
+																						group by D.BrandName, D.GenericName, D.CompanyName) as Tempb)")
+		@title = "Drug prescribed the least for each company"
+		render "index"
+  end                  
                                                                                  
   # deleting the patient will delete the appts and includes and prescription     
   def qD21
