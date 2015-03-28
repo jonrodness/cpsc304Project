@@ -486,30 +486,36 @@ where I.PrescriptID = P.PrescriptID;
 
 
 # (qD20a) Select drugs that have the highest amount of prescriptions
-CREATE VIEW Temp as
-select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
-		from Drug D, Includes I, Prescription P
-		where P.PrescriptID=I.PrescriptID 
-		AND I.BrandName=D.BrandName 
-		AND I.GenericName=D.GenericName
-		group by D.BrandName, D.GenericName, D.CompanyName;
 select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
-from Temp
-Where Temp.count = (Select max(Temp.count)
-					From Temp);
+from (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
+			from Drug D, Includes I, Prescription P
+			where P.PrescriptID=I.PrescriptID
+				AND I.BrandName=D.BrandName
+				AND I.GenericName=D.GenericName
+			group by D.BrandName, D.GenericName, D.CompanyName) as Temp
+Where Temp.count = (Select max(Tempb.count)
+										From (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
+													from Drug D, Includes I, Prescription P
+													where P.PrescriptID=I.PrescriptID
+													AND I.BrandName=D.BrandName
+													AND I.GenericName=D.GenericName
+													group by D.BrandName, D.GenericName, D.CompanyName) as Tempb);
 
 # (qD20b) Select drugs that have the lowest amount of prescriptions
-CREATE VIEW Temp as
-select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
-		from Drug D, Includes I, Prescription P
-		where P.PrescriptID=I.PrescriptID 
-		AND I.BrandName=D.BrandName 
-		AND I.GenericName=D.GenericName
-		group by D.BrandName, D.GenericName, D.CompanyName;
 select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
-from Temp
-Where Temp.count = (Select min(Temp.count)
-					From Temp);
+from (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
+			from Drug D, Includes I, Prescription P
+			where P.PrescriptID=I.PrescriptID
+			AND I.BrandName=D.BrandName
+			AND I.GenericName=D.GenericName
+			group by D.BrandName, D.GenericName, D.CompanyName) as Temp
+			Where Temp.count = (Select min(Tempb.count)
+													From (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as "count"
+																from Drug D, Includes I, Prescription P
+																where P.PrescriptID=I.PrescriptID
+																AND I.BrandName=D.BrandName
+																AND I.GenericName=D.GenericName
+																group by D.BrandName, D.GenericName, D.CompanyName) as Tempb);
 
 # (qD21) Delete a patient (will also delete the appointment 
 	#and includes and prescription
