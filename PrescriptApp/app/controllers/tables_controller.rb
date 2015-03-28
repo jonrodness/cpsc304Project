@@ -227,7 +227,7 @@ class TablesController < ApplicationController
 	 	# TESTED - WORKS
 	 def qPa6b
 	 	date = params[:date]
-	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate, CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.TimeBlockDate = '#{date}'")
+	 	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.TimeBlockDate = '#{date}'")
 		@title = "Your appointments on #{date}"
 		render "index"
 	 end
@@ -241,7 +241,7 @@ class TablesController < ApplicationController
 	 	startTime = sTime["test(4i)"] + ":" + sTime["test(5i)"]
 	 	eTime = params[:eTime]
 	 	endTime = eTime["test(4i)"] + ":" + eTime["test(5i)"]
-	 	@result = Table.connection.select_all("select MakeApptW.StartTime as 'Start Time', MakeApptW.EndTime as 'End Time', 
+	 	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', 
 	 		MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', 
 	 		CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' 
 	 		from MakesAppointmentWith MakeApptW, Doctor D, Patient P 
@@ -452,7 +452,7 @@ class TablesController < ApplicationController
 												order by MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate")
 	 	@title = "Appointments ordered chronologically"
 		render "index"
-	 end
+	 end  
 
 	 # View Appointments on a certain date
 	 def qD6
@@ -484,8 +484,8 @@ class TablesController < ApplicationController
 												where MakeApptW.LicenseNum = D.LicenseNum and
 														MakeApptW.CareCardNum = P.CareCardNum and
 														D.LicenseNum  = '#{@userlicense}' and
-														MakeApptW.StartTime >=  '#{sTime}'  and
-														MakeApptW.EndTime <=  '#{eTime}'")
+														MakeApptW.StartTime >=  '#{startTime}'  and
+														MakeApptW.EndTime <=  '#{endTime}'")
 	 	@title = "Your appointments between #{startTime} and #{endTime}"
 		render "index"
 	 end
@@ -553,7 +553,7 @@ class TablesController < ApplicationController
 													P.CareCardNum = '#{ccNum}' and
 													Pr.LicenseNum = D.LicenseNum and
 													Pr.PrescriptID = I.PrescriptID and
-													I.BrandName LIKE '#{brandName}' or
+													I.BrandName LIKE '#{brandName}' and
 													I.GenericName LIKE '#{genericName}'")
 		@title = "All prescriptions of #{brandName}/#{genericName} for patient# #{ccNum}"
 		render "index"
