@@ -1,13 +1,10 @@
-
-	•	A list of the SQL queries used
-	•	A description of how this differed from the formal specifications. If your project differed from the specification, why? Note that differing from the formal specification does not function in your application.
-
+###########
 -----Short description of what the project accomplished---
 
-Our application makes communication between doctors, patients and pharmacies easier. There are 3 types of users, doctors, pharmacists and patients. Our application makes it easy for patients to manage their appointments, by allowing them to schedule an appointment with any doctor, and cancel one if they need to. Patients can also view all of their upcoming appointments, or just the ones on a certain date, or during a certain time. Patients can also look at a list of drugs that interact with a certain drug or with a certain prescription. They can also view which prescriptions are ready for pickup in the pharmacy and which prescriptions they are still taking or were taking in the past. And finally, patients can find all pharmacies that are currently open.  Doctors can view a list of all appointments or just the ones on a certain date, or during a certain time, or on a certain date and certain time, as long as it is the appointments that are scheduled for them. Doctors have access to some but not all of patient's personal information. They can view a list of all previous drugs taken by a patient, or for a quicker inquiry, they can check if a certain drug was taken by a patient in the past. Doctors can also see a list of past appointments for a patient, to better understand their medical history. TODO They can also view which prescriptions they previously prescribed and to whom, and which pharmacy was the prescription ordered from. Doctors can also view the average and the maximum number of refills for all drugs. Doctors can also view all refills for all drugs, and view drugs were prescribed the most and drugs that were prescribed the least. They can also view patients who ordered all products from a certain company.  Doctors also have the right to delete a patient. Pharmacists can view all prescriptions prescribed by a doctor, update the status of prescriptions from not ready to ready for pick up, can view past prescriptions for a patient, view a list of prescriptions filled on a current day, and reduce the refill number of a patient's prescription. They can view a list of all drugs in the database, and delete a drug from a database if there is no record of it interacting with other drugs. One would use our application as following, a patient makes an appointment with a doctor. During an appointment, a doctor can prescribe a drug to a patient. 
-#### TODO A patient then can order the drug from a pharmacy. 
+Our application makes communication between doctors, patients and pharmacies easier. There are 3 types of users, doctors, pharmacists and patients. Patients can schedule an appointment with any doctor, and cancel one if they need to. Patients can also view all of their upcoming appointments, or just the ones on a certain date, or during a certain time. Patients can also look at a list of drugs that interact with a certain drug or with a certain prescription. They can also view which prescriptions are ready for pickup in the pharmacy and which prescriptions they are still taking or were taking in the past. And finally, patients can find all pharmacies that are currently open.  Doctors can view a list of all appointments or just the ones on a certain date, or during a certain time, or on a certain date and certain time, as long as it is the appointments that are scheduled for them. Doctors have access to some but not all of patient's personal information. They can view a list of all previous drugs taken by a patient, or for a quicker inquiry, they can check if a certain drug was taken by a patient in the past. Doctors can also see a list of past appointments for a patient, to better understand their medical history. TODO They can also view which prescriptions they previously prescribed and to whom, and which pharmacy was the prescription ordered from. Doctors can also view the average and the maximum number of refills for all drugs. Doctors can also view all refills for all drugs, and view drugs were prescribed the most and drugs that were prescribed the least. They can also view patients who ordered all products from a certain company.  Doctors also have the right to delete a patient. Pharmacists can view all prescriptions prescribed by a doctor, update the status of prescriptions from not ready to ready for pick up, can view past prescriptions for a patient, view a list of prescriptions filled on a current day, and reduce the refill number of a patient's prescription. They can view a list of all drugs in the database, and delete a drug from a database if there is no record of it interacting with other drugs. One would use our application as following, a patient makes an appointment with a doctor. During an appointment, a doctor can prescribe a drug to a patient and order it for a patient at the same time. 
 When the drug is ready, pharmacist can change the status of the prescription to "ready for pick up". If refillable, a patient can refill their prescription at a pharmacy, and the pharmacist will decrease the number of refills, during subsequent refills.
 
+###########
 --- A description of how your final schema differed from the schema you turned in. 
 	 If the final schema differed, why? 
 	Note that turning in a final schema that's different from what you planned is fine, we just want to know what changed and why. 
@@ -15,6 +12,26 @@ When the drug is ready, pharmacist can change the status of the prescription to 
 Our final schema doesn't have a lot of differences compared to the schema we have turned in. We added a lot of "on delete cascade" because we have realized it makes more sense for the corresponding entities to get deleted, if they tuple they are referencing gets deleted, such as if a patient gets deleted, the corresponding appointments and prescriptions will get deleted as well.
 We have changed the InteractsWith table from storing the generic name and company name of the interacting drugs, to storing the brand name and generic name of the interacting drugs, because interaction of the drugs, in our opinion, doesn't depend on the company that produced it. As a result of that, we changed the primary key of the drug table. In the original schema, drug's primary key were generic name and company name, and we have changed the keys of that table to be brand name and generic name, because those were the two attributes referenced by the InteractsWith table. 
 We made a phone number to be a  candidate key of the Pharmacy table, because each pharmacy has a unique phone number.
----- A description of how this differed from the formal specifications. If your project differed from the specification, why? Note that differing from the formal specification does not function in your application.
+###########
+-- List all functional dependencies that are applicable to the table (including the ones involving the primary key). For each functional dependency, briefly describe its meaning in English.
 
-# TODO AFTER PROFESSOR ANSWERS WHAT THIS QUESTION IS ASKING
+The only functional dependencies we have are the ones involving primary keys.
+( -> means determines)
+
+Doctor table: LicenseNum -> all attributes, because each doctor has a unique license number.
+
+Patient table: CareCardNum -> all attributes, because each patient has a unique care card number.
+
+Prescription table : Prescription id -> all attributes, each prescription has a unique id.
+
+Includes table: PrescriptID, BrandName, GenericName -> all attributes. An includes tuple is distinguished by a prescription id, brandname and a generic name.
+
+InteractsWith tabe: brandnames and generic names of both drugs makes up the primary key. This table has those 4 attributes as primary keys.
+
+Pharmacy table: address -> all attributes. Each pharmacy has a unique address.
+
+OrderedFrom table: prescription id , pharmacy address-> all attributes, each order has a unique prescription id and a unique pharmacy it was ordered from.
+
+TimeBlock table: date, start time and end time make up the primary key. This table has those 3 attributes as a primary key.
+
+MakesAppointmentWith table: LicenseNum, date, starttime, endtime -> all attributes. Doctor can only have one appt on a certain date, with a certain start and end time.
