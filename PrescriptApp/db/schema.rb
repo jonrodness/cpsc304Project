@@ -156,20 +156,20 @@ ActiveRecord::Schema.define(version: 20150323152414) do
   add_index "views", ["email"], name: "index_views_on_email", unique: true, using: :btree
   add_index "views", ["reset_password_token"], name: "index_views_on_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "Includes", "Drug", column: "BrandName", primary_key: "BrandName", name: "Includes_ibfk_2"
-  add_foreign_key "Includes", "Drug", column: "GenericName", primary_key: "GenericName", name: "Includes_ibfk_2"
-  add_foreign_key "Includes", "Prescription", column: "PrescriptID", primary_key: "PrescriptID", name: "Includes_ibfk_1"
-  add_foreign_key "InteractsWith", "Drug", column: "dBrandName", primary_key: "BrandName", name: "InteractsWith_ibfk_1", on_delete: :cascade
-  add_foreign_key "InteractsWith", "Drug", column: "dGenericName", primary_key: "GenericName", name: "InteractsWith_ibfk_1", on_delete: :cascade
-  add_foreign_key "InteractsWith", "Drug", column: "iBrandName", primary_key: "BrandName", name: "InteractsWith_ibfk_2", on_delete: :cascade
-  add_foreign_key "InteractsWith", "Drug", column: "iGenericName", primary_key: "GenericName", name: "InteractsWith_ibfk_2", on_delete: :cascade
-  add_foreign_key "MakesAppointmentWith", "Doctor", column: "LicenseNum", primary_key: "LicenseNum", name: "MakesAppointmentWith_ibfk_1"
-  add_foreign_key "MakesAppointmentWith", "Patient", column: "CareCardNum", primary_key: "CareCardNum", name: "MakesAppointmentWith_ibfk_3"
-  add_foreign_key "MakesAppointmentWith", "TimeBlock", column: "EndTime", primary_key: "EndTime", name: "MakesAppointmentWith_ibfk_2"
-  add_foreign_key "MakesAppointmentWith", "TimeBlock", column: "StartTime", primary_key: "StartTime", name: "MakesAppointmentWith_ibfk_2"
-  add_foreign_key "MakesAppointmentWith", "TimeBlock", column: "TimeBlockDate", primary_key: "TimeBlockDate", name: "MakesAppointmentWith_ibfk_2"
+  add_foreign_key "Includes", "Drug", column: "BrandName", primary_key: "BrandName", name: "Includes_ibfk_2", on_delete: :cascade
+  add_foreign_key "Includes", "Drug", column: "GenericName", primary_key: "GenericName", name: "Includes_ibfk_2", on_delete: :cascade
+  add_foreign_key "Includes", "Prescription", column: "PrescriptID", primary_key: "PrescriptID", name: "Includes_ibfk_1", on_delete: :cascade
+  add_foreign_key "InteractsWith", "Drug", column: "dBrandName", primary_key: "BrandName", name: "InteractsWith_ibfk_1"
+  add_foreign_key "InteractsWith", "Drug", column: "dGenericName", primary_key: "GenericName", name: "InteractsWith_ibfk_1"
+  add_foreign_key "InteractsWith", "Drug", column: "iBrandName", primary_key: "BrandName", name: "InteractsWith_ibfk_2"
+  add_foreign_key "InteractsWith", "Drug", column: "iGenericName", primary_key: "GenericName", name: "InteractsWith_ibfk_2"
+  add_foreign_key "MakesAppointmentWith", "Doctor", column: "LicenseNum", primary_key: "LicenseNum", name: "MakesAppointmentWith_ibfk_1", on_delete: :cascade
+  add_foreign_key "MakesAppointmentWith", "Patient", column: "CareCardNum", primary_key: "CareCardNum", name: "MakesAppointmentWith_ibfk_3", on_delete: :cascade
+  add_foreign_key "MakesAppointmentWith", "TimeBlock", column: "EndTime", primary_key: "EndTime", name: "MakesAppointmentWith_ibfk_2", on_delete: :cascade
+  add_foreign_key "MakesAppointmentWith", "TimeBlock", column: "StartTime", primary_key: "StartTime", name: "MakesAppointmentWith_ibfk_2", on_delete: :cascade
+  add_foreign_key "MakesAppointmentWith", "TimeBlock", column: "TimeBlockDate", primary_key: "TimeBlockDate", name: "MakesAppointmentWith_ibfk_2", on_delete: :cascade
   add_foreign_key "OrderedFrom", "Pharmacy", column: "PharmacyAddress", primary_key: "Address", name: "OrderedFrom_ibfk_2", on_delete: :cascade
   add_foreign_key "OrderedFrom", "Prescription", column: "PrescriptID", primary_key: "PrescriptID", name: "OrderedFrom_ibfk_1", on_delete: :cascade
-  add_foreign_key "Prescription", "Doctor", column: "LicenseNum", primary_key: "LicenseNum", name: "Prescription_ibfk_1"
+  add_foreign_key "Prescription", "Doctor", column: "LicenseNum", primary_key: "LicenseNum", name: "Prescription_ibfk_1", on_delete: :cascade
   add_foreign_key "Prescription", "Patient", column: "CareCardNum", primary_key: "CareCardNum", name: "Prescription_ibfk_2", on_delete: :cascade
 end

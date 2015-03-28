@@ -1,7 +1,7 @@
 
-drop database doctors;
-create database doctors;
-    use doctors;
+drop database PrescriptApp_development;
+create database PrescriptApp_development;
+    use PrescriptApp_development;
 
 drop table MakesAppointmentWith;
 drop table OrderedFrom;
