@@ -466,6 +466,28 @@
       </div>
     </div>
   </div>
+   <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse25">
+          <h3>Send prescription to pharmacy</h3>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse25" class="panel-collapse collapse">
+      <div class="panel-body">
+        <%= form_tag(qD23_path, :method=>'post') do %>
+        <%= label_tag("phAddr", "Pharmacy address:") %> 
+        <%= text_field_tag "phAddr" %> </br>
+        <%= label_tag("prescription", "Prescription number:") %> 
+        <%= text_field_tag "prescription" %> </br>
+        <p>
+          <%= submit_tag 'Submit' %>
+        </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div> 
 </div>
 </div>
