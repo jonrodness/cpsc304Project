@@ -52,6 +52,10 @@ delete
 	where BrandName = 'Advil' and
 		GenericName = 'Ibuprofen';
 
+delete 
+	from Drug
+	where BrandName = 'Tylenol' and
+		GenericName = 'Acetaminophen';
 #result
 select * 
 from Drug;
