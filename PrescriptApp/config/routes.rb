@@ -77,6 +77,8 @@ Rails.application.routes.draw do
   get 'qD20' => 'tables#qD20', :as => 'qD20'
   post '/tables/qD21' => 'tables#qD21', :as => 'qD21'
   get 'qD22' => 'tables#qD22', :as => 'qD22'
+  post '/tables/qD23' => 'tables#qD23', :as => 'qD23'
+
 
 
   # Example of regular route:

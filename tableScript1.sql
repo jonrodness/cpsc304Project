@@ -113,7 +113,7 @@ CREATE TABLE OrderedFrom
     (PrescriptID CHAR(4),
     PharmacyAddress VARCHAR(50),
     OrderNo CHAR(11),
-    PRIMARY KEY (PrescriptID),
+    PRIMARY KEY (PrescriptID, PharmacyAddress),
     FOREIGN KEY (PrescriptID) REFERENCES Prescription (PrescriptID) ON DELETE CASCADE,
     FOREIGN KEY (PharmacyAddress) REFERENCES Pharmacy (Address) ON DELETE CASCADE,
     UNIQUE (OrderNo));
