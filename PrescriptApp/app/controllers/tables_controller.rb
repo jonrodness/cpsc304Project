@@ -21,7 +21,6 @@ class TablesController < ApplicationController
 			@result = Table.connection.select_all("select * from Drug")
 	end
 				
-		#@license = current_user.license_num
 
 	end
 
@@ -32,14 +31,12 @@ class TablesController < ApplicationController
 
 	# View prescriptions prescribed by doctor
 	def qPh1
-		# TESTED - WORKS
 		@result = Table.connection.select_all("select CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor Name', D.Type as 'Doctor Type', I.BrandName as 'Brand Name',  P.Dosage, P.date_prescribed as 'Date Prescribed' from Doctor D, Prescription P, Includes I  where D.LicenseNum=P.LicenseNum and I.PrescriptID=P.PrescriptID group by D.LastName")
 		@title = "Prescriptions, sorted by doctors' last names"
 		render "index"
 	end
 
 	# Update prescription status
-		# TESTED - WORKS
 	 def qPh2
 	 	prescription = params[:prescription]
 
@@ -54,7 +51,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # View past prescriptions
-		 # TESTED - WORKS
 	 def qPh3
 	 	ccNum = params[:ccNum]
 	 	# check that care card number is a non-negative number
@@ -68,7 +64,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Gets a list of prescriptions filled that day
-	 	# CAN'T TEST WITHOUT PRESCRIPTIONS FOR THE CURRENT DAY
 	 def qPh4
 	 	@result = Table.connection.select_all("select Pr.PrescriptID as 'Prescription ID', I.GenericName as 'Generic Name', Pr.Dosage 
 	 											from Prescription Pr, Patient P, Includes I 
@@ -80,7 +75,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Reduce the refill number of a patient’s prescription
-		 # TESTED - WORKS
 	 def qPh5
 	 	prescription = params[:prescription]
 
@@ -94,7 +88,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Show all drugs in the database
-	 	#TESTED - WORKS
 	 def qPh6
 	 	@result = Table.connection.select_all("select BrandName as 'Brand Name', GenericName as 'Generic Name', CompanyName as 'Company Name', Price 
                                             from Drug")
@@ -103,7 +96,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Delete a drug from the database
-	 	# TESTED - WORKS
 	 def qPh7
 	 	brandName = params[:brandName]
 	 	genericName = params[:genericName]
@@ -122,7 +114,6 @@ class TablesController < ApplicationController
 	 ############################# Patient Queries ################################
 
 	 # Update patient address
-	     # TESTED - WORKS
 	 def qPa1a
 	 	pAddress = params[:pAddress]
 	 	# check that address field is not empty
@@ -135,7 +126,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Update patient phone number
-	     # TESTED - WORKS
 	 def qPa1b
 	 	pPhoneNum = params[:pPhoneNum]
 
@@ -151,7 +141,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Pharmacies that are currently open: Weekday
-	 	# TESTED - WORKS
 	 def qPa2
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
 		@title = "Pharmacies open right now"
@@ -159,7 +148,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Pharmacies that are currently open: Weekend
-	 	# TESTED - WORKS
 	 def qPa3
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing")
 		@title = "Pharmacies open right now"
@@ -167,10 +155,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Make an Appointment
-		 # USE VARIABLES FOR start and end time, doctorid
-		 # ADD VARIABLE FOR ccNum (from current_user)
-		 # USE EXECUTE, NOT CONNECTION!
-     # TESTED - WORKS
 	 def qPa4
 		date = params[:date]
 	    sTime = params[:sTime]
@@ -197,10 +181,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Cancel an Appointment
-		 # USE VARIABLES FOR start and end time
-		 # ADD VARIABLE FOR ccNum (from current_user)
-		 # USE EXECUTE, NOT CONNECTION!
-		 # TESTED - WORKS
 	 def qPa5
 	 	date = params[:date]
 	 	sTime = params[:sTime]
@@ -213,8 +193,6 @@ class TablesController < ApplicationController
 	 end
 
 	# View all upcoming appointments
-		# ADD VARIABLE for ccNum
-		# TESTED - WORKS
 	 def qPa6a
 	 	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}'")
 		@title = "Upcoming appointments"
@@ -222,9 +200,6 @@ class TablesController < ApplicationController
 	 end
 
 	# View upcoming appointments by date
-		# USE VARIABLE FOR date
-	 	# ADD VARIABLE for ccNum
-	 	# TESTED - WORKS
 	 def qPa6b
 	 	date = params[:date]
 	 	@result = Table.connection.select_all("select TIME_FORMAT(MakeApptW.StartTime, '%h:%i%p') as 'Start Time', TIME_FORMAT(MakeApptW.EndTime, '%h:%i%p') as 'End Time', MakeApptW.TimeBlockDate as 'Date', CONCAT(D.FirstName, ' ', D.LastName) as 'Doctor', CONCAT(MakeApptW.TimeMade, ' ', MakeApptW.DateMade) as 'Appointment made on ' from MakesAppointmentWith MakeApptW, Doctor D, Patient P where MakeApptW.LicenseNum = D.LicenseNum and MakeApptW.CareCardNum = P.CareCardNum and P.CareCardNum = '#{@userCCNum}' and MakeApptW.TimeBlockDate = '#{date}'")
@@ -233,9 +208,6 @@ class TablesController < ApplicationController
 	 end
 	
 	# View upcoming appointments by time	
-		# USE VARIABLES FOR start and end time
-		# ADD VARIABLE for ccNum
-		# TESTED - WORKS
 	 def qPa6c
 	 	sTime = params[:sTime]
 	 	startTime = sTime["test(4i)"] + ":" + sTime["test(5i)"]
@@ -253,8 +225,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Check Drug Interactions
-	 	# USE VARIABLE FOR drug
-	 	# TESTED - WORKS
 	 def qPa7
 	 	drug = params[:drug]
     @namesArray = Table.connection.select_all("select BrandName from Drug")
@@ -268,9 +238,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Check Interactions for this prescriptionID
-	 	# USE VARIABLES FOR prescription
-	 	# do we need variable for patientID?
-	 	# TESTED - WORKS
 	 def qPa8
 	 	prescription = params[:prescription]
 	 	# check that prescription field is not empty
@@ -283,7 +250,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # View Prescription Status
-	 # TESTED - WORKS
 	 def qPa9
 	 	@result = Table.connection.select_all("select 
 	 	LicenseNum as 'Doctor Number', PrescriptID as 'Prescription ID', Refills, Dosage, 
@@ -295,8 +261,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Generate Report: Current Prescription
-	 	# ADD VARIABLE FOR CCNum
-	 	# TESTED - WORKS
 	 def qPa10
 	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, '/', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills > 0 order by Pr.date_prescribed desc")
 		@title = "Current prescriptions:"
@@ -304,8 +268,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Generate Report: Previous Prescription
-	 	# ADD VARIABLE FOR CCNum
-	 	# TESTED - WORKS
 	 def qPa11
 	 	@result = Table.connection.select_all("select distinct Pr.PrescriptID as 'Prescription ID', (Pr.date_prescribed) as 'Date prescribed', CONCAT(D.FirstName, ' ', D.LastName) as 'Prescribed by', CONCAT (Dr.BrandName, '/', Dr.GenericName) as Drug, Pr.dosage as 'Drug dosage',  Pr.refills as 'Refills' from Patient P, Prescription Pr, Doctor D, Pharmacy Pm,  Includes I, Drug Dr where P.CareCardNum LIKE '#{@userCCNum}' and P.CareCardNum = Pr.CareCardNum and Pr.LicenseNum = D.LicenseNum and I.PrescriptID = Pr.PrescriptID and I.BrandName = Dr.BrandName and I.GenericName = Dr.GenericName and Pr.refills = 0 order by Pr.date_prescribed desc")
 		@title = "Previous prescriptions:"
@@ -317,7 +279,6 @@ class TablesController < ApplicationController
  	############################# Doctor Queries ################################
 
  	# Update doctor address
-	 	# TESTED - WORKS
 	 def qD1a
 	 	dAddress = params[:dAddress]
 	 	Table.connection.execute("update Doctor set Address = '#{dAddress}'")
@@ -327,7 +288,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Update doctor phone number
-	 	# TESTED - WORKS
 	 def qD1b
 	 	dPhoneNum = params[:dPhoneNum]
 	 	# check that phone number is 10 digits
@@ -339,7 +299,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Update patient height
-	 	# TESTED - WORKS
 	 def qD1c
 	 	pHeight = params[:pHeight]
 	 	ccNum = params[:ccNum]
@@ -364,7 +323,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Update patient weight
-	 	 	# TESTED - WORKS
 	 def qD1d
 	 	pWeight = params[:pWeight]
 	 	ccNum = params[:ccNum]
@@ -389,7 +347,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Prescribe a Drug
-	 	# TESTED - WORKS
 	 def qD2
 	 	prescription  = params[:prescription]
 	 	refills = params[:refills]
@@ -422,7 +379,6 @@ class TablesController < ApplicationController
 	 end
 
  	# Pharmacies that are currently open: Weekday
- 		# TESTED - WORKS
 	 def qD3
 	 	@table = Table.new
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekdayHoursOpening and P.WeekdayHoursClosing")
@@ -431,7 +387,6 @@ class TablesController < ApplicationController
 	 end
  	
  	# Pharmacies that are currently open: Weekend
- 		# TESTED - WORKS
 	 def qD4
 	 	@table = Table.new
 	 	@result = Table.connection.select_all("select Address, Name, PhoneNumber, TIME_FORMAT(WeekDayHoursOpening, '%h:%i%p')  as 'Weekday Opening', TIME_FORMAT(WeekDayHoursClosing, '%h:%i%p')  as 'Weekday Closing', TIME_FORMAT(WeekendHoursOpening, '%h:%i%p') as 'Weekend Closing', TIME_FORMAT(WeekendHoursClosing, '%h:%i%p') as 'Weekend Closing' from Pharmacy P where curtime() between P.WeekendHoursOpening and P.WeekendHoursClosing")
@@ -440,7 +395,6 @@ class TablesController < ApplicationController
 	 end
 
 	# View Appointments for picked date and time
-	 	# ADD DOCTOR LICENSE VARIABLE
 	 def qD5
 	 	@result = Table.connection.select_all("select MakeApptW.StartTime, MakeApptW.EndTime, MakeApptW.TimeBlockDate,
 														CONCAT(P.FirstName, ' ', P.LastName) as 'Patient',  
@@ -491,7 +445,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # View patient information
-	 	# TESTED - WORKS
 	 def qD8
 	 	ccNum = params[:ccNum]
 
@@ -506,7 +459,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # View a list of previous prescriptions for a certain patient
-	 	 # TESTED - WORKS
 	 def qD9
 	 	ccNum = params[:ccNum]
 	 	# check that care card number is a non-negative number
@@ -526,8 +478,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # View a list of previous drugs prescribed to a certain patient
-	 	# TESTED - WORKS
-	 	# DO WE WANT TO LIMIT THIS TO ONLY THE PATIENTS THIS DOCTOR SEES?
 	 def qD10
 	 	ccNum = params[:ccNum]
 	 	# check that care card number is a non-negative number
@@ -542,7 +492,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Check if a certain drug was taken in the past by a certain patient
-	 	# TESTED - WORKS, BUT SEARCHING BY GENERIC NAME YIELDS MULTIPLE ROWS FOR EACH RECORD
 	 def qD11
 	 	ccNum = params[:ccNum]
 	 	brandName = params[:brandName]
@@ -560,7 +509,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # View possible drug interactions
-	 	# TESTED - WORKS
 	 def qD12
 	 	iGenericName = params[:iGenericName]
 	 	# check that generic name is filled
@@ -577,7 +525,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # View patient's past appointments
-	 	# CANNOT TEST BECAUSE ALL POPULATIONS IN SCRIPT FOR MAKESAPPOINTMENT ARE IN FUTURE
 	 def qD13
 	 	ccNum = params[:ccNum]
 	 	# check that care card number is a non-negative number
@@ -595,7 +542,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Generate a report about which prescriptions a doctor has previously prescribed...
-	 	# TESTED - WORKS WITH STATIC LICENSE NUMBER
 	 def qD14
 	 	@result = Table.connection.select_all("select Pr.PrescriptID as 'Prescription ID', 
 	 												CONCAT(P.FirstName, ' ', P.LastName) as 'Patient Name', 
@@ -615,8 +561,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Show the average number of refills for a certain drug
-	 		 # TESTED - WORKS
-	 		 # NOT FOR SPECIFIC DRUG?
 	 def qD15
 	 	@result = Table.connection.select_all("select CONCAT(Dr.BrandName, ' ', Dr.GenericName) as 'Drug', AVG(P.Refills) as 'Average number of refills'
 											from Prescription P, Drug Dr, Includes I
@@ -630,7 +574,6 @@ class TablesController < ApplicationController
 	 end
 
  	# View patients who have been prescribed a drug from a specific company
-		 # TESTED - WORKS
 	def qD16
 		cName = params[:cName]
 		# check that generic name is filled
@@ -652,7 +595,6 @@ class TablesController < ApplicationController
 	 end
 
 	 # Add a new patient to the database
-	 	# TESTED - WORKS
 	 def qD17
 	 	pFName = params[:pFName]
 	 	pLName = params[:pLName]
@@ -771,6 +713,7 @@ class TablesController < ApplicationController
     render "index"
   end        
 
+  # View all patients
   def qD22
     @result = Table.connection.select_all("Select Pa.CareCardNum as 'Care Card Number', CONCAT(Pa.FirstName, ' ', Pa.LastName) as 'Patient Name',
                       Address, PhoneNumber as 'Phone Number'
@@ -779,6 +722,7 @@ class TablesController < ApplicationController
     render "index"
   end
 
+  # Send to prescription to pharmacy
  def qD23
  	phAddr = params[:phAddr]
  	prescription = params[:prescription]
