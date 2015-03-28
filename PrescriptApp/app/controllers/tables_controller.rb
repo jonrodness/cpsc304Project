@@ -765,9 +765,10 @@ class TablesController < ApplicationController
  	prescription = params[:prescription]
  	Table.connection.execute("insert into OrderedFrom
 								values ('#{prescription}', '#{phAddr}', null)")
- 	@result = Table.connection.select_all("select * from OrderedFrom Ph where Ph.PrescriptID = #{prescription} and Ph.PharmacyAddress = #{phAddr}")
+ 	@result = Table.connection.select_all("select * from OrderedFrom Ph where Ph.PrescriptID = '#{prescription}'' and Ph.PharmacyAddress = '#{phAddr}'")
  	render "index"
  end
+
 
 private 
 
