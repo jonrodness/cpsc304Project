@@ -465,8 +465,8 @@ Where NOT EXISTS
 
 # (qd17)
 INSERT INTO Patient
-VALUES ('#{ccNum}', '#{pFName}', '#{pLName}', '#{pAge}', '#{pWeight}', '#{pHeight}', 
-'#{pAddress}', '#{pPhoneNum}')
+VALUES ('9483104918', 'Bobbanny', 'Bobinoie', '19', '234', '160', 
+'Mars', '7784567658978')
 
 # (qD18) Show max number of refills for each drug
 select CONCAT(Dr.BrandName, '/', Dr.GenericName) as 'Drug', 
@@ -524,7 +524,7 @@ from Patient Pa;
 Select * from MakesAppointmentWith;
 Select * from Includes;
 
-# (qD22) a user can order a prescription from a pharmacy
+# (qD22)a doctor can order a prescription from a pharmacy
 	# #OrderedFrom(PrescriptID,PharmacyAddress, OrderNo )
 insert into OrderedFrom
 	values ('0498', '885 Broadway W, Vancouver, BC V5Z 1J9', null);
