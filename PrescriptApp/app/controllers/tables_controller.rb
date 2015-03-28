@@ -738,6 +738,7 @@ class TablesController < ApplicationController
     render "index"
   end  
 
+  # select drug that was prescribed the least for each company 
   def qD20a
   	@result = Table.connection.select_all("select Temp.BrandName, Temp.GenericName,Temp.CompanyName, Temp.count
 																						from (select D.BrandName, D.GenericName, D.CompanyName, COUNT(*) as 'count'
