@@ -230,55 +230,6 @@ INSERT INTO Prescription
 VALUES ('1232131241', '1114', '10', '4 pills 2 times per day for 10 days', 
        '1234567890', '1', '2012-08-24');
 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1115', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1116', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1117', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1118', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1119', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1120', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1121', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1122', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1123', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1124', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1125', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-# INSERT INTO Prescription
-# VALUES ('1232131241', '1126', '10', '4 pills 2 times per day for 10 days', 
-#        '1234567890', '1', '2012-08-24');
-# 
-
 
 INSERT INTO Prescription
 VALUES ('5483843482', '0004', '0', '1 tbsp 1 time per day for 1 day', 
