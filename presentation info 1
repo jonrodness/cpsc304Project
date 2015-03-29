@@ -1,4 +1,11 @@
-
+1. > mysql -u root
+2. (within mysql):
+		> source tableScript1.sql
+3. > rake db:migrate
+4. > rails s
+5. sign up as doctor, number: 1232131241
+6. sign up as patient, number: 3453438890
+7. sign up as pharmacist, address: 102-888 8th Ave W, Vancouver, BC V5Z 3Y1
 
 1) (1 point) projection and selection (user must able to specify selection
 constant)
@@ -12,13 +19,13 @@ Care Card Num
 1234567890
 2346528765
 
-2) (1 point) join
+2) (1 point) join !!! - do we have a join query?
 
 3) (1 point) division
 • insert a new tuple and rerun
 
 qD16 (Pfizer--should show only alfred at first, then add Advil for Chris via Prescription--use values as described below)
-
+!!! - can't add prescription due to robustness
 INSERT INTO Prescription
 VALUES ('1232131241', '9999', '10', '4 pills 2 times per day for 10 days', 
        '3453438890', '1', '2015-03-21');
@@ -44,14 +51,14 @@ regarding blocking and show code)
 
 show appointments first
 
-delete patient (qPa12)
+delete patient (qPa12) !!! - delete care card number 1457629875
 
-show that the related appointments and prescriptions are deleted now
+show that the related appointments and prescriptions are deleted now !!! - related appointments still appear, BUT WE CAN CIRCUMVENT BY CLICKING ON THE FIRST 'VIEW PATIENT'S PRESCRIBED DRUGS'
 
 • case 2: deletion without causing cascades
 try to delete drug that interacts with another drug (does not work)  (qpH6)
 
-# qPa5 - can cancel an appointment they made, by looking at the list of self booked appointments
+# qPa5 - can cancel an appointment they made, by looking at the list of self booked appointments !!! - cancel appointment on 2015 Oct 24, 3PM
 
 
 7) (1 point) update
@@ -59,7 +66,7 @@ try to delete drug that interacts with another drug (does not work)  (qpH6)
 • correct the value and update again
 
 # qPh5 (reduce the refill number of a patient’s prescription)
--if you try to reduce refill on a prescription with 0 refills, does not work (try to do this for prescription number 0004)
+-if you try to reduce refill on a prescription with 0 refills, does not work (try to do this for prescription number 0298)
 
  8) (2 points) GUI
 • type checking
