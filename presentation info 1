@@ -20,12 +20,18 @@ Care Card Num
 2346528765
 
 2) (1 point) join !!! - do we have a join query?
+Jon - don't have to do: errthing is join!
 
 3) (1 point) division
 • insert a new tuple and rerun
 
-qD16 (Pfizer--should show only alfred at first, then add Advil for Chris via Prescription--use values as described below)
-!!! - can't add prescription due to robustness
+qD16 (View patients who have been prescribed a drug from a specific company) (Pfizer--should show only alfred at first, then add Advil for Chris via Prescription--use values as described below)
+Jon - WORKS 
+- must make new prescription to refer to for later
+- use carecard number: 3453438890
+- use Advil/Ibuprofen
+- use prescription number that does not exist
+- other fields can be anything
 INSERT INTO Prescription
 VALUES ('1232131241', '9999', '10', '4 pills 2 times per day for 10 days', 
        '3453438890', '1', '2015-03-21');
@@ -34,22 +40,36 @@ VALUES ('1232131241', '9999', '10', '4 pills 2 times per day for 10 days',
 
 4) (1 point) aggregation
 • rerun with a different aggregation
-
  qD15 - show the average number of refills for a certain drug
- qd17-show max ( to prove use qd18--shows all the refills for the drugs)
+Jon - WORKS 
+ qd18 (not qd17)-show max 
+Jon - WORKS 
+( to prove use qd19 (not qd18)--shows all the refills for the drugs)
+Jon - WORKS 
+
 
 
 5) (2 points) nested aggregation
 • show query or view
 • rerun with a different aggregation
 qd20 (to fix still)
+Jon - WORKS for qd20a and qd20b (most and least prescribed drug)
+
 
 
 6) (1 point) deletion
 • case 1: deletion causing cascades (students need to explain policy
 regarding blocking and show code)
 
-show appointments first
+-show doctor appointments first (see patient Anny)
+-show all patients (Anny's carecard number is 1234567890)
+-Show all prescriptions for 1234567890
+-delete patient 1234567890
+-show all patients (anny is gone)
+-show doctor appointments (no more appointments)
+-show prescriptions for 1234567890 (no more prescriptions)
+Jon - WORKS
+
 
 delete patient (qPa12) !!! - delete care card number 1457629875
 
@@ -58,7 +78,14 @@ show that the related appointments and prescriptions are deleted now !!! - relat
 • case 2: deletion without causing cascades
 try to delete drug that interacts with another drug (does not work)  (qpH6)
 
-# qPa5 - can cancel an appointment they made, by looking at the list of self booked appointments !!! - cancel appointment on 2015 Oct 24, 3PM
+-log out and sign up as pharmacist
+-click view all drugs in the database
+-delete advil/ibuprofen (cannot complete query)
+-click view all drugs in the database
+-delete tylenol/Acetaminophen (will work)
+
+Jon - WORKS
+
 
 
 7) (1 point) update
@@ -68,7 +95,15 @@ try to delete drug that interacts with another drug (does not work)  (qpH6)
 # qPh5 (reduce the refill number of a patient’s prescription)
 -if you try to reduce refill on a prescription with 0 refills, does not work (try to do this for prescription number 0298)
 
+- click on print put list of prescriptions filled today (take note of prescription number)
+- reduce the refill number of patient's precrption with above prescription number
+- do last step again to display decrement of refill number
+- can test with prescript# 0007 two times and show that it continues to be zero refills
+Jon -WORKS
+
  8) (2 points) GUI
 • type checking
 • location of error messages
 • look of GUI 
+
+Jon - NOT NEEDED: (# qPa5 - can cancel an appointment they made, by looking at the list of self booked appointments !!! - cancel appointment on 2015 Oct 24, 3PM)
